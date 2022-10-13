@@ -95,15 +95,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    protected void switchToLogInWindow(){
-        Intent intent = new Intent(this, LogIn.class);
+    public void switchToLogInWindow(){
+        Intent intent = new Intent(MainActivity.this, LogIn.class);
         startActivity(intent);
     }
 
     @Override
     public void onClick(View view){
         if(view.getId() == R.id.backToLog){
-            switchToLogInWindow();
+
         }
     }
 

@@ -23,10 +23,10 @@ public class WelcomeWindow extends AppCompatActivity implements View.OnClickList
   @Override
   protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.welcome_window);
+    setContentView(R.layout.welcomewindow);
 
-    Button registerButton = findViewById(R.id.RegisterButton);
-    Button logInButton = findViewById(R.id.LogInButton);
+    Button registerButton = findViewById(R.id.welcomeRegisterButton);
+    Button logInButton = findViewById(R.id.welcomeLogInButton);
     registerButton.setOnClickListener(WelcomeWindow.this);
     logInButton.setOnClickListener(WelcomeWindow.this);
 
@@ -45,10 +45,10 @@ public class WelcomeWindow extends AppCompatActivity implements View.OnClickList
 
   @Override
   public void onClick(View view) {
-    if(view.getId() == R.id.RegisterButton){
+    if(view.getId() == R.id.welcomeRegisterButton){
       switch2RegisterWindow();
     }
-    if(view.getId() == R.id.LogInButton){
+    if(view.getId() == R.id.welcomeLogInButton){
       switch2LogInWindow();
     }
   }
