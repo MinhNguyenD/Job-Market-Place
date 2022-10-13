@@ -2,20 +2,30 @@ package com.voidstudio.quickcashreg;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.Arrays;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //THE REGISTER FUNCTIONALITY SHOULD BE IN A SEPARATE ACTIVITY
+
+        //Button for logIn Window
+        Button backToLogInScreen = (Button)findViewById(R.id.backToLog);
+        backToLogInScreen.setOnClickListener(this);
+
+
+
 
         TextView userName = (TextView) findViewById(R.id.userName);
         TextView eMail = (TextView) findViewById(R.id.eMail);
@@ -24,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         TextView hintForPassWord = (TextView) findViewById(R.id.hintForPassword);
         TextView hintForEmail = (TextView) findViewById(R.id.hintForEmail);
+
 
         // check e-mail form
         eMail.addTextChangedListener(new TextWatcher() {
@@ -83,4 +94,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    protected void switchToLogInWindow(){
+        Intent intent = new Intent(this, LogIn.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View view){
+        if(view.getId() == R.id.backToLog){
+            switchToLogInWindow();
+        }
+    }
+
+
 }

@@ -98,8 +98,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
+        android:layout_marginBottom="297dp"
         android:ems="10"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/backToLog"
         app:layout_constraintEnd_toEndOf="@+id/eMail"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -125,12 +127,14 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordConfirm" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/backToLog"
+        android:layout_width="161dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="180dp"
         android:text="Back To Log In"
-        app:layout_constraintEnd_toEndOf="@+id/button"
-        app:layout_constraintStart_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
