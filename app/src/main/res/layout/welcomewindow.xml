@@ -10,11 +10,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="158dp"
-        android:layout_marginTop="210dp"
-        android:layout_marginEnd="159dp"
-        android:layout_marginBottom="473dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginEnd="165dp"
+        android:layout_marginBottom="24dp"
         android:text="Log In"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/welcomeRegisterButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,13 @@
         android:id="@+id/welcomeRegisterButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="147dp"
+        android:layout_marginBottom="330dp"
         android:text="Register"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="341dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcomeLogInButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

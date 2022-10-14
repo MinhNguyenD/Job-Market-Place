@@ -53,6 +53,16 @@ public class LogInEspressoTests {
     intended(hasComponent(LogIn.class.getName()));
   }
 
+  /** UAT-III **/
+  @Test
+  public void checkIfMovedToRegisterPage(){
+    Espresso.onView(withId(R.id.backToLog)).perform(click());
+    Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
+    intended(hasComponent(MainActivity.class.getName()));
+  }
+
+
+
 
 
 }
