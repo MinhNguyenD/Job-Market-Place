@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*
         Check if email address is valid
      */
-    protected boolean isValidEmailAddress(String emailAddress) {
+    protected static boolean isValidEmailAddress(String emailAddress) {
         /*
             Reference: OWASP Email Regex
             https://owasp.org/www-community/OWASP_Validation_Regex_Repository
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*
         Check if password is valid
      */
-    protected boolean isValidPassword(String password) {
+    protected static boolean isValidPassword(String password) {
         if(password.length() >= 6){
             return true;
         }
@@ -226,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*
         Check if password match with confirm password
      */
-    protected boolean isValidConfirmPassword(String password, String confirmPassword) {
+    protected static boolean isValidConfirmPassword(String password, String confirmPassword) {
         if(password.equals(confirmPassword)){
             return true;
         }
