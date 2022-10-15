@@ -47,7 +47,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     }
 
     protected String getPassword() {
-        EditText passwordBox = findViewById(R.id.logInPassword);
+        EditText passwordBox = findViewById(R.id.textPassword);
         return passwordBox.getText().toString().trim();
     }
 
