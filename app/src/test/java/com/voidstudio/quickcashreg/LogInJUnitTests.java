@@ -37,6 +37,14 @@ public class LogInJUnitTests {
         assertTrue("This username does not exist",
                 LogIn.logIn(fakeUser,"password"));
     }
+    /*** UAT-4 ***/
+    @Test
+    public void incorrectPass(){
+        //Will always fail
+        String realUser = "RealUser123";
+        String fakePass = "LordOfCyberSecurityImpenetrableSuperServerDefenseNoHackingHere123456789!@#$%^&*()";
+        assertFalse("Password is incorrect",LogIn.logIn(realUser,fakePass));
+    }
 
 
 
