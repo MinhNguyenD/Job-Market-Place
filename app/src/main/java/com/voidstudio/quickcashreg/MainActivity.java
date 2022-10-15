@@ -282,33 +282,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //startActivity(intent);
     }
 
+    protected void setStatusMessage(String message) {
+        TextView statusLabel = findViewById(R.id.statusLabel);
+        statusLabel.setText(message.trim());
+    }
+
     public void onClick(View view){
         String userName = getUserName();
         String email = getEmail();
         String password = getPassword();
         String confirmPassword = getConfirmPassword();
         String message ="";
+        String errorMessage = new String("ERROR MESSAGE");
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
 
         if(userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
             if(!isValidPassword(password)){
                 message = "Invalid Password";
+                errorMessage = getResources().getString(R.string.INVALID_PASSWORD);
             }
             else if(!isValidEmailAddress(email)){
                 message = "Invalid Email";
+                errorMessage = getResources().getString(R.string.INVALID_EMAIL);
             }
             else if(!isValidConfirmPassword(password,confirmPassword)){
                 message = "Password and Confirm Password are not match";
+                errorMessage = getResources().getString(R.string.INVALID_CONFIRM_PASSWORD);
             }
 
             else if(userNameExisted(userName)){
                 message = "User Name is already registered";
+                errorMessage = getResources().getString(R.string.USERNAME_EXISTED);
             }
 
         }
         else{
             message = "User created successfully";
+            errorMessage = getResources().getString(R.string.EMPTY_STRING);
             saveEmailAddressToFirebase(email,userName);
             savePasswordToFirebase(password,userName);
             finish();
@@ -316,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //switchToLogInWindow();
         }
 
-
+        setStatusMessage(message);
         alertBuilder.setMessage(message);
         alertBuilder.setPositiveButton("OK", null);
         alertBuilder.create();
