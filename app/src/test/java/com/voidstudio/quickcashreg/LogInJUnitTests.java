@@ -10,4 +10,13 @@ import static org.junit.Assert.assertTrue;
 
 
 public class LogInJUnitTests {
+    @BeforeClass
+    public static void setup(){
+
+    }
+    @AfterClass
+    public static void tearDown(){
+        System.gc();
+    }
+
 }
