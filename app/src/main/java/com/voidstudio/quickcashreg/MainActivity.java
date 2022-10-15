@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseDatabase firebaseDB;
     private static final String FIREBASE_URL = "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
     private DatabaseReference firebaseDBReference;
@@ -41,6 +41,15 @@ public class MainActivity extends AppCompatActivity {
         TextView hintForEmail = (TextView) findViewById(R.id.hintForEmail);
 
         initializeDatabase();
+
+        registerButton.setOnClickListener(this);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: Switch to Login Activity (Uncomment after merge)
+                //switchToLogInWindow();
+            }
+        });
 
         // check e-mail form
         eMail.addTextChangedListener(new TextWatcher() {
@@ -218,5 +227,53 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+    /*
+        TODO: Uncomment after merge
+        Switch to Login window from Register window
+    */
+    public void switchToLogInWindow(){
+        //Intent intent = new Intent(MainActivity.this, LogIn.class);
+        //startActivity(intent);
+    }
+
+    public void onClick(View view){
+        String userName = getUserName();
+        String email = getEmail();
+        String password = getPassword();
+        String confirmPassword = getConfirmPassword();
+        String message ="";
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+
+
+
+        if(userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
+            if(!isValidPassword(password)){
+                message = "Invalid Password";
+            }
+            else if(!isValidEmailAddress(email)){
+                message = "Invalid Email";
+            }
+            else if(!isValidConfirmPassword(password,confirmPassword)){
+                message = "Password and Confirm Password are not match";
+            }
+
+            else if(userNameExisted(userName)){
+                message = "User Name is already registered";
+            }
+
+        }
+        else{
+            message = "User created successfully";
+            saveEmailAddressToFirebase(email,userName);
+            savePasswordToFirebase(password,userName);
+            finish();
+            //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
+            //switchToLogInWindow();
+        }
+        alertBuilder.setMessage(message);
+        alertBuilder.setPositiveButton("OK", null);
+        alertBuilder.create();
+        alertBuilder.show();
+    }
 
 }
