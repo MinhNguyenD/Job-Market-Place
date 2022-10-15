@@ -15,13 +15,14 @@
         android:layout_marginEnd="100dp"
         android:layout_marginBottom="33dp"
         android:ems="10"
+        android:hint="Enter Username"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text="Username"
         app:layout_constraintBottom_toTopOf="@+id/logInPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Username" />
 
     <EditText
         android:id="@+id/logInPassword"
@@ -32,12 +33,13 @@
         android:layout_marginEnd="101dp"
         android:layout_marginBottom="443dp"
         android:ems="10"
+        android:hint="Enter Password"
         android:inputType="textPersonName"
-        android:text="Password"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/logInUserName"
+        tools:text="Password" />
 
     <Button
         android:id="@+id/continueButton"

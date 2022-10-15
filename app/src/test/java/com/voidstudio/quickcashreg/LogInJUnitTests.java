@@ -1,6 +1,7 @@
 package com.voidstudio.quickcashreg;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,8 +18,8 @@ public class LogInJUnitTests {
 
     @BeforeClass
     public static void setup(){
-
     }
+
     @AfterClass
     public static void tearDown(){
         System.gc();
@@ -34,7 +35,7 @@ public class LogInJUnitTests {
     public void noExistingUser(){
         String fakeUser = "FakeUser123";
         //random name for time being
-        assertTrue("This username does not exist",
+        assertFalse("This username does not exist",
                 LogIn.logIn(fakeUser,"password"));
     }
     /*** UAT-4 ***/
