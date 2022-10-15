@@ -256,11 +256,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*
-    Save email address into database
-    Note: We use username as an unique ID for a user
-*/
+        Save email address into database
+        Note: We use username as an unique ID for a user
+    */
     protected Task<Void> saveEmailAddressToFirebase(String email, String userName) {
         firebaseDBReference.child("users").child(userName).child("email").setValue(email);
+        return null;
+    }
+
+
+    /*
+        Save user type into database
+        Note: We use username as an unique ID for a user
+    */
+    protected Task<Void> saveUserTypeToFirebase(String userType, String userName) {
+        firebaseDBReference.child("users").child(userName).child("userType").setValue(userType);
         return null;
     }
 
@@ -297,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
 
-        if(userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
+        if(!isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
             if(!isValidPassword(password)){
                 message = "Invalid Password";
                 errorMessage = getResources().getString(R.string.INVALID_PASSWORD);
@@ -315,6 +325,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 message = "User Name is already registered";
                 errorMessage = getResources().getString(R.string.USERNAME_EXISTED);
             }
+            else if (!isValidRole(selectedRole)) {
+                message = "Please Choose Your Role";
+            }
 
         }
         else{
@@ -322,6 +335,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             errorMessage = getResources().getString(R.string.EMPTY_STRING);
             saveEmailAddressToFirebase(email,userName);
             savePasswordToFirebase(password,userName);
+            saveUserTypeToFirebase(selectedRole, userName);
             finish();
             //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
             //switchToLogInWindow();
