@@ -18,6 +18,7 @@ import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -77,6 +78,7 @@ public class RegisterEspressoTest {
         onView(withId(R.id.eMail)).perform(typeText("hello@dal.ca"));
         onView(withId(R.id.password)).perform(typeText("1234567"));
         onView(withId(R.id.passwordConfirm)).perform(typeText("1234567"));
+        onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
         onView(withId(R.id.buttonreg)).perform(click());
         onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
     }

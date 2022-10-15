@@ -310,20 +310,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
             if(!isValidPassword(password)){
                 message = "Invalid Password";
-                errorMessage = getResources().getString(R.string.INVALID_PASSWORD);
+                errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
             }
             else if(!isValidEmailAddress(email)){
                 message = "Invalid Email";
-                errorMessage = getResources().getString(R.string.INVALID_EMAIL);
+                errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
             }
             else if(!isValidConfirmPassword(password,confirmPassword)){
                 message = "Password and Confirm Password are not match";
-                errorMessage = getResources().getString(R.string.INVALID_CONFIRM_PASSWORD);
+                errorMessage = getResources().getString(R.string.INVALID_CONFIRM_PASSWORD).trim();
             }
 
             else if(userNameExisted(userName)){
                 message = "User Name is already registered";
-                errorMessage = getResources().getString(R.string.USERNAME_EXISTED);
+                errorMessage = getResources().getString(R.string.USERNAME_EXISTED).trim();
             }
             else if (!isValidRole(selectedRole)) {
                 message = "Please Choose Your Role";
@@ -336,11 +336,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             saveEmailAddressToFirebase(email,userName);
             savePasswordToFirebase(password,userName);
             saveUserTypeToFirebase(selectedRole, userName);
-            finish();
             //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
             //switchToLogInWindow();
         }
-
+        setStatusMessage(errorMessage);
         setStatusMessage(message);
         alertBuilder.setMessage(message);
         alertBuilder.setPositiveButton("OK", null);
