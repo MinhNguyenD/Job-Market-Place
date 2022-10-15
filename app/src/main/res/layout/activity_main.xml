@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@+id/userName" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -56,7 +56,7 @@
         app:layout_constraintEnd_toStartOf="@+id/eMail" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/Password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toStartOf="@+id/password" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/ConfirmPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="12dp"
@@ -74,7 +74,7 @@
         app:layout_constraintTop_toTopOf="@+id/passwordConfirm" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonreg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
@@ -95,7 +95,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/UserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="15dp"
@@ -114,13 +114,47 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordConfirm" />
 
     <Button
-        android:id="@+id/backToLog"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="70dp"
         android:text="Back To Log In"
+        app:layout_constraintEnd_toEndOf="@+id/buttonreg"
+        app:layout_constraintStart_toStartOf="@+id/buttonreg"
+        app:layout_constraintTop_toBottomOf="@+id/buttonreg" />
+
+    <TextView
+        android:id="@+id/hintForRoleSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Become an Employer/Employee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/roleList"
+        android:layout_width="199dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hintForRoleSelection" />
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=""
+        android:textSize="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
