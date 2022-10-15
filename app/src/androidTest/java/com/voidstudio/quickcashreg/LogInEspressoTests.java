@@ -69,6 +69,12 @@ public class LogInEspressoTests {
         onView(withId(R.id.textPassword)).check(matches(withText("password123")));
         onView(withId(R.id.showHidePassword)).check(matches(withText("Hide Password")));
     }
-    
+    /** AT-II **/
+    public void isPasswordHiddenAfterClickButtonTwice() {
+        onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        onView(withId(R.id.showHidePassword)).perform(click());
+        onView(withId(R.id.showHidePassword)).perform(click());
+        onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
+    }
 
 }
