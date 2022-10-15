@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -99,6 +100,41 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+        Getter method to get user name
+    */
+    protected String getUserName(){
+        EditText userName = findViewById(R.id.userName);
+        return userName.getText().toString().trim();
+    }
+
+    /*
+        Getter method to get email address
+    */
+    protected String getEmail(){
+        EditText emailAddress = findViewById(R.id.eMail);
+        return emailAddress.getText().toString().trim();
+    }
+
+    /*
+        Getter method to get password
+    */
+    protected String getPassword(){
+        EditText password = findViewById(R.id.password);
+        return password.getText().toString().trim();
+    }
+
+    /*
+        Getter method to get confirm password
+     */
+    protected String getConfirmPassword(){
+        EditText confirmPassword = findViewById(R.id.passwordConfirm);
+        return confirmPassword.getText().toString().trim();
+    }
+
+    /*
+        initialize the database and reference
+     */
     protected void initializeDatabase() {
         firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
         firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
