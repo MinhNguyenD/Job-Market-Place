@@ -1,7 +1,9 @@
 package com.voidstudio.quickcashreg;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +37,11 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
   protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
     setContentView(R.layout.login);
+
+    Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
+    backToRegisterScreen.setOnClickListener(this);
+
+
   }
 
   //protected void initializeDatabase(){
@@ -134,12 +141,21 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     }
   }
 
+  protected void switchToRegisterWindow(){
+    Intent registerSwitch = new Intent(LogIn.this, MainActivity.class);
+    startActivity(registerSwitch);
+  }
+
   @Override
-  public void onClick(View view){
-    emptyCredentials();
-    logIn(getUserName(),getPassword());
-    Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
-    //Replace toast with new activity in future iterations.
+  public void onClick(View view) {
+    if (view.getId() == R.id.logInRegisterButton) {
+      switchToRegisterWindow();
+    } else {
+      emptyCredentials();
+      logIn(getUserName(), getPassword());
+      Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
+      //Replace toast with new activity in future iterations
+    }
   }
 
 
