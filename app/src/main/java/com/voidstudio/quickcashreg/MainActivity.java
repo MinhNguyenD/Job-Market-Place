@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDB;
     private static final String FIREBASE_URL = "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
     private DatabaseReference firebaseDBReference;
+    private boolean userNameExisted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
+        initialize the database and reference
+    */
+    protected void initializeDatabase() {
+        firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
+        firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+    }
+
+    /*
         Getter method to get user name
     */
     protected String getUserName(){
@@ -132,11 +141,65 @@ public class MainActivity extends AppCompatActivity {
         return confirmPassword.getText().toString().trim();
     }
 
+
     /*
-        initialize the database and reference
+        Check if email address is valid
      */
-    protected void initializeDatabase() {
-        firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-        firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+    protected boolean isValidEmailAddress(String emailAddress) {
+        /*
+            Reference: OWASP Email Regex
+            https://owasp.org/www-community/OWASP_Validation_Regex_Repository
+         */
+        Pattern p = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
+        Matcher m = p.matcher(emailAddress);
+        if(m.find()){
+            return true;
+        }
+        return false;
     }
+
+    /*
+        Check if password is valid
+     */
+    protected boolean isValidPassword(String password) {
+        if(password.length() >= 6){
+            return true;
+        }
+        return false;
+    }
+
+    /*
+        Check if password match with confirm password
+     */
+    protected boolean isValidConfirmPassword(String password, String confirmPassword) {
+        if(password.equals(confirmPassword)){
+            return true;
+        }
+        return false;
+    }
+
+
+    /*
+        Check if user name existed in current database
+     */
+    protected boolean userNameExisted(String userName){
+        firebaseDBReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.hasChild(userName)){
+                    userNameExisted = true;
+                }
+                else{
+                    userNameExisted = false;
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+        return userNameExisted;
+    }
+
+
+
 }
