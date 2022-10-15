@@ -24,6 +24,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
   private static final String INCORRECT_PASSWORD = "Incorrect Password!";
 
   private static String alertMessage = "BROKEN";
+  private static String databseUser;
 
 
   //Success message may be replaced with switch of activities in future iter
@@ -121,17 +122,16 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
   protected boolean passwordMatch(String password){
     //UNCOMMENT WHEN CONNECTED TO FIREBASE
-     userChild.child(getUserName()).
+     firebaseDBReference.child("users").child(getUserName()).
      addListenerForSingleValueEvent(new ValueEventListener() {
        @Override
        public void onDataChange(@NonNull DataSnapshot snapshot) {
-         if(snapshot.hasChild(password)){
+         if(password.equals(snapshot.child(password).getKey())){
            correctPassword = true;
          }
          else{
            correctPassword = false;
          }
-
        }
        @Override
        public void onCancelled(@NonNull DatabaseError error) {
@@ -169,14 +169,15 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
   @Override
   public void onClick(View view) {
+    emptyCredentials();
+    existingUser(getUserName());
+    passwordMatch(getPassword());
     if (view.getId() == R.id.logInRegisterButton) {
       switchToRegisterWindow();
     } else if(view.getId() == R.id.continueButton){
-      emptyCredentials();
-      existingUser(getUserName());
-      passwordMatch(getPassword());
       logIn(getUserName(), getPassword());
       Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
+
       //Replace toast with new activity in future iterations
     }
   }
