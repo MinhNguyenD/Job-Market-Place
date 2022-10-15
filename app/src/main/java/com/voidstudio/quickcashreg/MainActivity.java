@@ -48,13 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initializeDatabase();
 
         registerButton.setOnClickListener(this);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: Switch to Login Activity (Uncomment after merge)
-                //switchToLogInWindow();
-            }
-        });
+        loginButton.setOnClickListener(this);
 
         setUpRoleListSpinner();
         roleListSpinnerListener();
@@ -288,8 +282,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Switch to Login window from Register window
     */
     public void switchToLogInWindow(){
-        //Intent intent = new Intent(MainActivity.this, LogIn.class);
-        //startActivity(intent);
+        Intent intent = new Intent(MainActivity.this, LogIn.class);
+        startActivity(intent);
     }
 
     protected void setStatusMessage(String message) {
@@ -306,45 +300,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String errorMessage = new String("ERROR MESSAGE");
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
+        if(view.getId() == R.id.buttonreg) {
+            if (!isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password, confirmPassword) || !isValidEmailAddress(email)) {
+                if (!isValidPassword(password)) {
+                    message = "Invalid Password";
+                    errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
+                } else if (!isValidEmailAddress(email)) {
+                    message = "Invalid Email";
+                    errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
+                } else if (!isValidConfirmPassword(password, confirmPassword)) {
+                    message = "Password and Confirm Password are not match";
+                    errorMessage = getResources().getString(R.string.INVALID_CONFIRM_PASSWORD).trim();
+                } else if (userNameExisted(userName)) {
+                    message = "User Name is already registered";
+                    errorMessage = getResources().getString(R.string.USERNAME_EXISTED).trim();
+                } else if (!isValidRole(selectedRole)) {
+                    message = "Please Choose Your Role";
+                }
 
-        if(!isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
-            if(!isValidPassword(password)){
-                message = "Invalid Password";
-                errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
+            } else {
+                message = "User created successfully";
+                errorMessage = getResources().getString(R.string.EMPTY_STRING);
+                saveEmailAddressToFirebase(email, userName);
+                savePasswordToFirebase(password, userName);
+                saveUserTypeToFirebase(selectedRole, userName);
+                //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
+                switchToLogInWindow();
             }
-            else if(!isValidEmailAddress(email)){
-                message = "Invalid Email";
-                errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
-            }
-            else if(!isValidConfirmPassword(password,confirmPassword)){
-                message = "Password and Confirm Password are not match";
-                errorMessage = getResources().getString(R.string.INVALID_CONFIRM_PASSWORD).trim();
-            }
-
-            else if(userNameExisted(userName)){
-                message = "User Name is already registered";
-                errorMessage = getResources().getString(R.string.USERNAME_EXISTED).trim();
-            }
-            else if (!isValidRole(selectedRole)) {
-                message = "Please Choose Your Role";
-            }
-
+            setStatusMessage(errorMessage);
+            setStatusMessage(message);
+            alertBuilder.setMessage(message);
+            alertBuilder.setPositiveButton("OK", null);
+            alertBuilder.create();
+            alertBuilder.show();
         }
-        else{
-            message = "User created successfully";
-            errorMessage = getResources().getString(R.string.EMPTY_STRING);
-            saveEmailAddressToFirebase(email,userName);
-            savePasswordToFirebase(password,userName);
-            saveUserTypeToFirebase(selectedRole, userName);
-            //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
-            //switchToLogInWindow();
+        if(view.getId() == R.id.loginButton){
+            switchToLogInWindow();
         }
-        setStatusMessage(errorMessage);
-        setStatusMessage(message);
-        alertBuilder.setMessage(message);
-        alertBuilder.setPositiveButton("OK", null);
-        alertBuilder.create();
-        alertBuilder.show();
+
+
+
     }
 
 }

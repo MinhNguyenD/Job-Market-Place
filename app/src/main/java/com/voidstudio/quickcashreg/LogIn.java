@@ -181,6 +181,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
       passwordMatch(getPassword());
       if(logIn(getUserName(),getPassword())){
         //Put intent and activity here
+        //Successful login currently switches back to register
+        //Put Switch to inAppActivity after stay logged in merge
+        Intent intent = new Intent(LogIn.this,MainActivity.class);
+        startActivity(intent);
         Toast.makeText(LogIn.this,alertMessage,Toast.LENGTH_LONG).show();
       }
 
