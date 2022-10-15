@@ -200,6 +200,23 @@ public class MainActivity extends AppCompatActivity {
         return userNameExisted;
     }
 
+    /*
+    Save email address into database
+    Note: We use username as an unique ID for a user
+*/
+    protected Task<Void> saveEmailAddressToFirebase(String email, String userName) {
+        firebaseDBReference.child("users").child(userName).child("email").setValue(email);
+        return null;
+    }
+
+    /*
+        Save password into database
+        Note: We use username as an unique ID for a user
+     */
+    protected Task<Void> savePasswordToFirebase(String password, String userName) {
+        firebaseDBReference.child("users").child(userName).child("password").setValue(password);
+        return null;
+    }
 
 
 }
