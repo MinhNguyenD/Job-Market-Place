@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">quickCashReg</string>
+    <string name="EMPTY_STRING">""</string>
 </resources>

@@ -133,4 +133,24 @@
         app:layout_constraintStart_toStartOf="@+id/buttonreg"
         app:layout_constraintTop_toBottomOf="@+id/buttonreg" />
 
+    <TextView
+        android:id="@+id/hintForRoleSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Become an Employer/Employee"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/roleList"
+        android:layout_width="199dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="10dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hintForRoleSelection" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,8 +8,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String FIREBASE_URL = "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
     private DatabaseReference firebaseDBReference;
     private boolean userNameExisted;
+    private Spinner roleList;
+    private String selectedRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        setUpRoleListSpinner();
+        roleListSpinnerListener();
+
+
         // check e-mail form
+        emailFormatChecker(eMail, hintForEmail);
+
+        // check confirm password is same or not
+        confirmPasswordChecker(password, passwordConfirm, hintForPassWord);
+    }
+
+    protected boolean isValidRole(String role) {
+        if(role.equals("-")){
+            return false;
+        }
+
+        return true;
+    }
+
+    private void roleListSpinnerListener() {
+        roleList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View selectedItemView, int pos, long l) {
+                selectedRole = adapterView.getItemAtPosition(pos).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setUpRoleListSpinner() {
+        roleList = findViewById(R.id.roleList);
+        String[] roles = new String[]{"-", "Employee", "Employer"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, roles);
+        roleList.setAdapter(adapter);
+    }
+
+    private void emailFormatChecker(TextView eMail, TextView hintForEmail) {
         eMail.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -81,8 +126,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+    }
 
-        // check confirm password is same or not
+    private void confirmPasswordChecker(TextView password, TextView passwordConfirm, TextView hintForPassWord) {
         passwordConfirm.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -245,7 +291,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
 
-
         if(userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password,confirmPassword)||!isValidEmailAddress(email)){
             if(!isValidPassword(password)){
                 message = "Invalid Password";
@@ -270,6 +315,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
             //switchToLogInWindow();
         }
+
+
         alertBuilder.setMessage(message);
         alertBuilder.setPositiveButton("OK", null);
         alertBuilder.create();
