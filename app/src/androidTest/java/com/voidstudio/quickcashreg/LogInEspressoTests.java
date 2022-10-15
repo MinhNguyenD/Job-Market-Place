@@ -1,11 +1,12 @@
 package com.voidstudio.quickcashreg;
 
 import android.content.Context;
-import android.support.test.espresso.intent.Intents;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.intent.Intents;
 import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -30,8 +31,8 @@ import static org.junit.Assert.assertEquals;
 
 public class LogInEspressoTests {
     @Rule
-    public ActivityScenarioRule<MainActivity> myRule = new ActivityScenarioRule<MainActivity>
-            (MainActivity.class);
+    public ActivityScenarioRule<LogIn> myRule = new ActivityScenarioRule<LogIn>
+            (LogIn.class);
     @BeforeClass
     public static void setup(){
         Intents.init();
@@ -62,26 +63,29 @@ public class LogInEspressoTests {
         };
     }
 
+    @Test
     /** AT-I **/
     public void isPasswordShowed() {
-        onView(withId(R.id.textPassword)).perform(typeText("password123"));
-        onView(withId(R.id.showHidePassword)).perform(click());
-        onView(withId(R.id.textPassword)).check(matches(withText("password123")));
-        onView(withId(R.id.showHidePassword)).check(matches(withText("Hide Password")));
+        Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        Espresso.onView(withId(R.id.showHidePassword)).perform(click());
+        Espresso.onView(withId(R.id.textPassword)).check(matches(withText("password123")));
+        Espresso.onView(withId(R.id.showHidePassword)).check(matches(withText("Hide Password")));
     }
 
+    @Test
     /** AT-II **/
     public void isPasswordHiddenAfterClickButtonTwice() {
-        onView(withId(R.id.textPassword)).perform(typeText("password123"));
-        onView(withId(R.id.showHidePassword)).perform(click());
-        onView(withId(R.id.showHidePassword)).perform(click());
-        onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
+        Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        Espresso.onView(withId(R.id.showHidePassword)).perform(click());
+        Espresso.onView(withId(R.id.showHidePassword)).perform(click());
+        Espresso.onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
     }
 
+    @Test
     /** AT-III **/
     public void isPasswordHiddenBeforeToggle() {
-        onView(withId(R.id.textPassword)).perform(typeText("password123"));
-        onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
+        Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        Espresso.onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
     }
 
 }

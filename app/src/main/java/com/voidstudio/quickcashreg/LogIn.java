@@ -1,7 +1,10 @@
 package com.voidstudio.quickcashreg;
 
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +36,22 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        // Find the Show Password button and the Password Field
+        Button showPassword = findViewById(R.id.showHidePassword);
+        showPassword.setOnClickListener(LogIn.this);
+    }
+
+    public void showHidePassword(Button showPassword, EditText passwordText) {
+        if (passwordText.getText().toString().isEmpty()) {
+            passwordText.setError("Please enter a password!");
+        } else if (showPassword.getText().toString().equals("Show Password")) {
+            showPassword.setText("Hide Password");
+            passwordText.setTransformationMethod(null);
+        } else {
+            showPassword.setText("Show Password");
+            passwordText.setTransformationMethod(new PasswordTransformationMethod());
+        }
     }
 
     //protected void initializeDatabase(){
@@ -129,6 +148,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        if (view.getId() == R.id.showHidePassword) {
+            showHidePassword(findViewById(R.id.showHidePassword), findViewById(R.id.textPassword));
+        }
+
         emptyCredentials();
         logIn(getUserName(), getPassword());
         Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
