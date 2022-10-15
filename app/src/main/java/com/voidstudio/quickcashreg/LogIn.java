@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
@@ -48,13 +49,14 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.login);
 
+    initializeDatabase();
+
     Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
     backToRegisterScreen.setOnClickListener(LogIn.this);
 
     Button continueButton = (Button)findViewById(R.id.continueButton);
     continueButton.setOnClickListener(LogIn.this);
 
-    initializeDatabase();
 
 
   }
@@ -122,7 +124,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
   protected boolean passwordMatch(String password){
     //UNCOMMENT WHEN CONNECTED TO FIREBASE
-     firebaseDBReference.child("users").child(getUserName()).
+    Query query = firebaseDBReference.child("users").child(getUserName());
+     query.
      addListenerForSingleValueEvent(new ValueEventListener() {
        @Override
        public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,10 +151,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
       alertMessage = EMPTY_CREDENTIALS;
       return false;
     }
-    if(!userExists){
-      alertMessage = USER_DOES_NOT_EXIST;
-      return false;
-    }
+    //if(!userExists){
+    //  alertMessage = USER_DOES_NOT_EXIST;
+    //  return false;
+    //}
     if(!correctPassword){
       alertMessage = INCORRECT_PASSWORD;
       return false;
@@ -169,14 +172,17 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
   @Override
   public void onClick(View view) {
-    emptyCredentials();
-    existingUser(getUserName());
-    passwordMatch(getPassword());
     if (view.getId() == R.id.logInRegisterButton) {
       switchToRegisterWindow();
-    } else if(view.getId() == R.id.continueButton){
-      logIn(getUserName(), getPassword());
-      Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
+    }
+    else if(view.getId() == R.id.continueButton){
+      emptyCredentials();
+      existingUser(getUserName());
+      passwordMatch(getPassword());
+      if(logIn(getUserName(),getPassword())){
+        //Put intent and activity here
+        Toast.makeText(LogIn.this,alertMessage,Toast.LENGTH_LONG).show();
+      }
 
       //Replace toast with new activity in future iterations
     }
