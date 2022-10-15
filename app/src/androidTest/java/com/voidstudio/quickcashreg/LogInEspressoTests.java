@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 
 public class LogInEspressoTests {
 
-  public static String EMPTY_STRING = "";
+
   @Rule
   public ActivityScenarioRule<MainActivity> myRule = new ActivityScenarioRule<MainActivity>
           (MainActivity.class);
@@ -49,14 +49,14 @@ public class LogInEspressoTests {
   /*** UAT-I ***/
   @Test
   public void checkIfMovedToLogInPage() {
-    Espresso.onView(withId(R.id.backToLog)).perform(click());
+    Espresso.onView(withId(R.id.loginButton)).perform(click());
     intended(hasComponent(LogIn.class.getName()));
   }
 
   /** UAT-III **/
   @Test
   public void checkIfMovedToRegisterPage(){
-    Espresso.onView(withId(R.id.backToLog)).perform(click());
+    Espresso.onView(withId(R.id.loginButton)).perform(click());
     Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
     intended(hasComponent(MainActivity.class.getName()));
   }
