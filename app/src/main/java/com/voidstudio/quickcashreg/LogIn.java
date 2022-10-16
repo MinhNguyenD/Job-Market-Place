@@ -235,7 +235,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             showHidePassword(findViewById(R.id.showHidePassword), findViewById(R.id.textPassword));
         } else if(view.getId() == R.id.continueButton) {
             logIn(getUserName(), getPassword());
-            Toast.makeText(LogIn.this, alertMessage + getPassword() + getUserName() + firebaseString, Toast.LENGTH_LONG).show();
+            Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
             //Replace toast with new activity in future iterations
 
             if (logIn(getUserName(), getPassword())) {
