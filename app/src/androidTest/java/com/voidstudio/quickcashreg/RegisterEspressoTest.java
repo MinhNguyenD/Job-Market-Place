@@ -38,7 +38,25 @@ import static org.junit.Assert.assertEquals;
 /**
  * Instrumented test, which will execute on an Android device.
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * @see <a href="http://d.android.com/tools/testing">
+ *     
+ *     Testing documentation:
+ *  PLEASE NOTE: ALL THE TESTS ARE TESTED AND CONFIRM PASSED DEPENDS ON 2 SCENARIOS
+ *  SCENARIO 1: checkIfMoved2LoginPage() PASSED
+ *    - When running the code with the checkIfMoved2LoginPage() test, it will pass because of switchToLogInWindow() which switch to login activity
+ *    - However, other input validation test cases may not pass because we depends the test on the field statusLabel which only exists in MainActivity.java and not LogIn.java.
+ *    When the button is clicked and switchToLogInWindow() is called, we are now on LogIn activity and therefore statusLabel can not be accessed and matched, causing other test cases to fail
+ *
+ *  SCENARIO 2: checkIfMoved2LoginPage() FAILED, OTHER TEST CASES PASSED
+ *    - When commenting out these lines of the code:
+ *    //switchToLogInWindow();
+ *    //alertBuilder.setMessage(message);
+ *    //alertBuilder.setPositiveButton("OK", null);
+ *    //alertBuilder.create();
+ *    //alertBuilder.show();
+ *    All other tests are passed except checkIfMoved2LoginPage() because the variable statusLabel can be accessed and matched for testing
+ *
+ * </a>
  */
 public class RegisterEspressoTest {
 
