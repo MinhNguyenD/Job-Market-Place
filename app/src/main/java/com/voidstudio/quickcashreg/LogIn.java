@@ -63,7 +63,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private String firebaseString;
 
-    private SharedPreferences sp;
+    public SharedPreferences sp;
 
 
     @Override

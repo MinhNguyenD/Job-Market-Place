@@ -1,6 +1,7 @@
 package com.voidstudio.quickcashreg;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -29,7 +31,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
-
+import android.content.SharedPreferences;
 
 
 public class LogInEspressoTests {
@@ -38,8 +40,15 @@ public class LogInEspressoTests {
             (LogIn.class);
     @BeforeClass
     public static void setup(){
-        Intents.init();
+       Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+       SharedPreferences sharedPrefs = context.getSharedPreferences(LogIn.PREFERENCES, Context.MODE_PRIVATE); //
+       SharedPreferences.Editor editor = sharedPrefs.edit();
+       editor.putBoolean(LogIn.ISLOGGED, false);
+       editor.commit();
+       Intents.init();
+
     }
+
 
     @AfterClass
     public static void tearDown(){
