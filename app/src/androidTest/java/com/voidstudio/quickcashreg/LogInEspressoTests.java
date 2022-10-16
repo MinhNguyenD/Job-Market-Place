@@ -24,9 +24,12 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.junit.Assert.assertEquals;
+
 
 
 public class LogInEspressoTests {
@@ -87,5 +90,38 @@ public class LogInEspressoTests {
         Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
         Espresso.onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
     }
+
+  @Rule
+  public ActivityScenarioRule<MainActivity> myRule = new ActivityScenarioRule<MainActivity>
+          (MainActivity.class);
+  @BeforeClass
+  public static void setup(){
+    Intents.init();
+  }
+
+  @AfterClass
+  public static void tearDown(){
+    System.gc();
+  }
+
+
+  /*** UAT-I ***/
+  @Test
+  public void checkIfMovedToLogInPage() {
+    Espresso.onView(withId(R.id.loginButton)).perform(click());
+    intended(hasComponent(LogIn.class.getName()));
+  }
+
+  /** UAT-III **/
+  @Test
+  public void checkIfMovedToRegisterPage(){
+    Espresso.onView(withId(R.id.loginButton)).perform(click());
+    Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
+    intended(hasComponent(MainActivity.class.getName()));
+  }
+
+
+
+
 
 }
