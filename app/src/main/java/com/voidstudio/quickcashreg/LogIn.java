@@ -2,6 +2,7 @@ package com.voidstudio.quickcashreg;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,7 +33,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private static String databaseUser;
 
 
-    //Success message may be replaced with switch of activities in future iter
+    //Success message may be replaced with switch of activities in future iteration
     private static final String SUCCESS = "Success";
 
     private static boolean empty;
@@ -48,7 +49,9 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private DatabaseReference firebaseDBReference;
     private DatabaseReference userChild;
 
-//    static SharedPreferences sp;
+    private String firebaseString;
+
+    //static SharedPreferences sp;
 
 
     @Override
@@ -62,10 +65,27 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         Button continueButton = (Button)findViewById(R.id.continueButton);
         continueButton.setOnClickListener(LogIn.this);
 
+        // Find the Show Password button and the Password Field
+        Button showPassword = findViewById(R.id.showHidePassword);
+        showPassword.setOnClickListener(LogIn.this);
+
         initializeDatabase();
 
 
     }
+
+    public void showHidePassword(Button showPassword, EditText passwordText) {
+        if (passwordText.getText().toString().isEmpty()) {
+            passwordText.setError("Please enter a password!");
+        } else if (showPassword.getText().toString().equals("Show Password")) {
+            showPassword.setText("Hide Password");
+            passwordText.setTransformationMethod(null);
+        } else {
+            showPassword.setText("Show Password");
+            passwordText.setTransformationMethod(new PasswordTransformationMethod());
+        }
+    }
+
 
     /*
     @Override
@@ -84,8 +104,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         Intent inApp = new Intent(this, InAppActivity.class);
         startActivity(inApp);
     }
+    */
 
-     */
 
     protected void initializeDatabase(){
         firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
@@ -154,6 +174,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        firebaseString = snapshot.child(password).getKey();
                         if(password.equals(snapshot.child(password).getKey())){
                             correctPassword = true;
                         }
@@ -186,12 +207,14 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         }
         else{
             alertMessage = SUCCESS;
+
             /*
             // Add username and password to login sharedPreferences state
             sp.edit().putString("Username", username).apply();
             sp.edit().putString("Password", password).apply();
             sp.edit().putBoolean("logged", true).apply();
-             */
+            */
+
             return true;
         }
     }
@@ -204,16 +227,20 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         emptyCredentials();
+        existingUser(getUserName());
+        passwordMatch(getPassword());
         if (view.getId() == R.id.logInRegisterButton) {
             switchToRegisterWindow();
+        }else if (view.getId() == R.id.showHidePassword) {
+            showHidePassword(findViewById(R.id.showHidePassword), findViewById(R.id.textPassword));
         } else if(view.getId() == R.id.continueButton) {
             logIn(getUserName(), getPassword());
-            Toast.makeText(LogIn.this, alertMessage + getPassword() + getUserName(), Toast.LENGTH_LONG).show();
+            Toast.makeText(LogIn.this, alertMessage + getPassword() + getUserName() + firebaseString, Toast.LENGTH_LONG).show();
             //Replace toast with new activity in future iterations
 
             if (logIn(getUserName(), getPassword())) {
                 Intent inApp = new Intent(LogIn.this, InAppActivity.class);
-                inApp.putExtra(WELCOME, "");
+                inApp.putExtra(WELCOME, "Welcome!!!");
                 startActivity(inApp);
             }
         }
