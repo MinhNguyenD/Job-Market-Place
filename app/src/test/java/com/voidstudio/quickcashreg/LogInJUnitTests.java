@@ -18,5 +18,4 @@ public class LogInJUnitTests {
     public static void tearDown(){
         System.gc();
     }
-
 }

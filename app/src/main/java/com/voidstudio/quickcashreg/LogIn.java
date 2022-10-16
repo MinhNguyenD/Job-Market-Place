@@ -1,5 +1,6 @@
 package com.voidstudio.quickcashreg;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -28,6 +29,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private static final String USER_DOES_NOT_EXIST = "This username does not exist";
     private static final String INCORRECT_PASSWORD = "Incorrect Password!";
     public static final String WELCOME = "Welcome to In App!";
+    public static final String PREFERENCES = "login";
+    public static final String USERNAME = "Username";
+    public static final String PASSWORD = "Password";
+    public static final String ISLOGGED = "logged";
 
     private static String alertMessage = "BROKEN";
     private static String databaseUser;
@@ -51,7 +56,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private String firebaseString;
 
-    //static SharedPreferences sp;
+    private SharedPreferences sp;
 
 
     @Override
@@ -69,11 +74,25 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         Button showPassword = findViewById(R.id.showHidePassword);
         showPassword.setOnClickListener(LogIn.this);
 
+        // logic for stay log in
+        sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+
+        if (sp.getBoolean(ISLOGGED, false)) {
+            gotoInAppActivity();
+        }
+        else {
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putBoolean(ISLOGGED, false);
+            editor.commit();
+        }
         initializeDatabase();
-
-
     }
 
+    /**
+     * Method to change the text in the 'Show Password' button and show the password in password field
+     * @param showPassword is the button
+     * @param passwordText is the password field
+     */
     public void showHidePassword(Button showPassword, EditText passwordText) {
         if (passwordText.getText().toString().isEmpty()) {
             passwordText.setError("Please enter a password!");
@@ -86,25 +105,11 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-
-    /*
-    @Override
-    protected void onResume() {
-        super.onResume();
-        sp = getSharedPreferences("login", MODE_PRIVATE);
-        if (sp.getBoolean("logged", true)) {
-            gotoInAppActivity();
-        } else {
-            Button login = findViewById(R.id.continueButton);
-            login.setOnClickListener(LogIn.this);
-        }
-    }
-
     public void gotoInAppActivity() {
         Intent inApp = new Intent(this, InAppActivity.class);
+        inApp.putExtra(WELCOME, "Oh! You logged in again!");
         startActivity(inApp);
     }
-    */
 
 
     protected void initializeDatabase(){
@@ -112,8 +117,6 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
         userChild = firebaseDBReference.child("users");
     }
-
-
 
     protected String getUserName(){
         EditText usernameBox = findViewById(R.id.logInUserName);
@@ -207,14 +210,6 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         }
         else{
             alertMessage = SUCCESS;
-
-            /*
-            // Add username and password to login sharedPreferences state
-            sp.edit().putString("Username", username).apply();
-            sp.edit().putString("Password", password).apply();
-            sp.edit().putBoolean("logged", true).apply();
-            */
-
             return true;
         }
     }
@@ -237,8 +232,16 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             logIn(getUserName(), getPassword());
             Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
             //Replace toast with new activity in future iterations
-
             if (logIn(getUserName(), getPassword())) {
+                sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sp.edit();
+                // Add username and password to login sharedPreferences state
+                editor1.putString(USERNAME, getUserName());
+                editor1.putString(PASSWORD, getPassword());
+                editor1.putBoolean(ISLOGGED, true);
+                editor1.commit();
+                Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
+
                 Intent inApp = new Intent(LogIn.this, InAppActivity.class);
                 inApp.putExtra(WELCOME, "Welcome!!!");
                 startActivity(inApp);

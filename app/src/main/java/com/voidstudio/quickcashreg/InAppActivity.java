@@ -13,9 +13,10 @@ public class InAppActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.in_app_activity);
 
+        // switch to this activity when log in successfully
         Intent thisIntent = getIntent();
         String welcomeMessage = thisIntent.getStringExtra(LogIn.WELCOME);
-        TextView message = findViewById(R.id.textView4);
+        TextView message = findViewById(R.id.message);
         message.setText(welcomeMessage);
     }
 }
