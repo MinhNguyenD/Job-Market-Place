@@ -1,17 +1,20 @@
 package com.voidstudio.quickcashreg;
 
 import android.content.Context;
+import android.text.method.PasswordTransformationMethod;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.matcher.BoundedMatcher;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import org.junit.After;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,7 +33,63 @@ import static org.junit.Assert.assertEquals;
 
 
 public class LogInEspressoTests {
+    @Rule
+    public ActivityScenarioRule<LogIn> myRule = new ActivityScenarioRule<LogIn>
+            (LogIn.class);
+    @BeforeClass
+    public static void setup(){
+        Intents.init();
+    }
 
+    @AfterClass
+    public static void tearDown(){
+        System.gc();
+    }
+
+    /**
+     * Method check the input type of password
+     * Reference: https://stackoverflow.com/questions/48395282/how-to-get-input-type-of-edittext-in-espresso-testing
+     * @return true if password is hidden; false otherwise
+     */
+    private Matcher<View> isPasswordHidden() {
+        return new BoundedMatcher<View, EditText>(EditText.class) {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("Password is hidden");
+            }
+
+            @Override
+            public boolean matchesSafely(EditText editText) {
+                //returns true if password is hidden
+                return editText.getTransformationMethod() instanceof PasswordTransformationMethod;
+            }
+        };
+    }
+
+    @Test
+    /** AT-I **/
+    public void isPasswordShowed() {
+        Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        Espresso.onView(withId(R.id.showHidePassword)).perform(click());
+        Espresso.onView(withId(R.id.textPassword)).check(matches(withText("password123")));
+        Espresso.onView(withId(R.id.showHidePassword)).check(matches(withText("Hide Password")));
+    }
+
+    @Test
+    /** AT-II **/
+    public void isPasswordHiddenAfterClickButtonTwice() {
+        Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        Espresso.onView(withId(R.id.showHidePassword)).perform(click());
+        Espresso.onView(withId(R.id.showHidePassword)).perform(click());
+        Espresso.onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
+    }
+
+    @Test
+    /** AT-III **/
+    public void isPasswordHiddenBeforeToggle() {
+        Espresso.onView(withId(R.id.textPassword)).perform(typeText("password123"));
+        Espresso.onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
+    }
 
   @Rule
   public ActivityScenarioRule<MainActivity> myRule = new ActivityScenarioRule<MainActivity>
