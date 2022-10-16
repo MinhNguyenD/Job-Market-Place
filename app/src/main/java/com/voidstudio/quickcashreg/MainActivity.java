@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView passwordConfirm = (TextView) findViewById(R.id.passwordConfirm);
 
         TextView hintForPassWord = (TextView) findViewById(R.id.hintForPassword);
+        TextView hintForPassWordConfirm = (TextView) findViewById(R.id.hintForPasswordConfirm);
         TextView hintForEmail = (TextView) findViewById(R.id.hintForEmail);
 
         initializeDatabase();
@@ -58,7 +59,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         emailFormatChecker(eMail, hintForEmail);
 
         // check confirm password is same or not
-        confirmPasswordChecker(password, passwordConfirm, hintForPassWord);
+        confirmPasswordChecker(password, passwordConfirm, hintForPassWordConfirm);
+
+        // check password
+        passwordChecker(password,hintForPassWord);
     }
 
     protected boolean isValidRole(String role) {
@@ -105,18 +109,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void afterTextChanged(Editable editable) {
                 String emailString = eMail.getText().toString();
 
-                int countOfAt = 0;
-                for (char c : emailString.toCharArray()) {
-                    if (c == '@') {
-                        countOfAt++;
-                    }
-                }
-
-                if (countOfAt != 1) {
-                    hintForEmail.setText("This Does Not Look Like an E-mial");
+                if (!isValidEmailAddress(emailString)) {
+                    hintForEmail.setText("This Does Not Look Like An Email Address");
                     hintForEmail.setTextColor(Color.RED);
                 } else {
                     hintForEmail.setText("");
+                }
+            }
+        });
+    }
+
+    private void passwordChecker(TextView password, TextView hintForPassWord) {
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String passwordString  = password.getText().toString();
+
+                if (!isValidPassword(passwordString)) {
+                    hintForPassWord.setText("Password has to be at least 6 characters");
+                    hintForPassWord.setTextColor(Color.RED);
+                }
+                else {
+                    hintForPassWord.setText("");
                 }
             }
         });
@@ -139,11 +161,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String passwordString  = password.getText().toString();
                 String passwordStringConfirm  = passwordConfirm.getText().toString();
 
-                if (!passwordStringConfirm.equals(passwordString)) {
-                    hintForPassWord.setText("Two Passwords Is Not Same.");
+                if (!isValidConfirmPassword(passwordString,passwordStringConfirm)) {
+                    hintForPassWord.setText("Two Passwords Are Not The Same.");
                     hintForPassWord.setTextColor(Color.RED);
                 } else {
-                    hintForPassWord.setText("Two Passwords Is Same.");
+                    hintForPassWord.setText("Two Passwords Are The Same.");
                     hintForPassWord.setTextColor(Color.GREEN );
                 }
             }
@@ -278,7 +300,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*
-        TODO: Uncomment after merge
         Switch to Login window from Register window
     */
     public void switchToLogInWindow(){
@@ -316,6 +337,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     errorMessage = getResources().getString(R.string.USERNAME_EXISTED).trim();
                 } else if (!isValidRole(selectedRole)) {
                     message = "Please Choose Your Role";
+                    errorMessage = getResources().getString(R.string.INVALID_ROLE).trim();
                 }
 
             } else {
@@ -324,11 +346,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 saveEmailAddressToFirebase(email, userName);
                 savePasswordToFirebase(password, userName);
                 saveUserTypeToFirebase(selectedRole, userName);
-                //TODO: SWITCH TO LOGIN ACTIVITY (Uncomment after merge)
                 switchToLogInWindow();
             }
             setStatusMessage(errorMessage);
-            setStatusMessage(message);
             alertBuilder.setMessage(message);
             alertBuilder.setPositiveButton("OK", null);
             alertBuilder.create();

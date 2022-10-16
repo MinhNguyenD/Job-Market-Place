@@ -88,6 +88,19 @@ public class RegisterEspressoTest {
       onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
   }
 
+    @Test
+    public void checkIfPasswordIsInValid() {
+        onView(withId(R.id.roleList)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
+        onView(withId(R.id.userName)).perform(typeText("helloWorld2"));
+        onView(withId(R.id.eMail)).perform(typeText("hello@dal.ca"));
+        onView(withId(R.id.password)).perform(typeText("1234"));
+        onView(withId(R.id.passwordConfirm)).perform(typeText("1234"));
+        onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
+        onView(withId(R.id.buttonreg)).perform(click());
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_PASSWORD)));
+    }
+
   @Test
   public void checkIfEmailAddressIsValid(){
 
@@ -102,9 +115,21 @@ public class RegisterEspressoTest {
       onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
   }
 
+    @Test
+    public void checkIfEmailAddressIsInValid(){
+        onView(withId(R.id.roleList)).perform(click());
+        onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
+        onView(withId(R.id.userName)).perform(typeText("dogisnotcat2"));
+        onView(withId(R.id.eMail)).perform(typeText("bcd.456dal.ca"));
+        onView(withId(R.id.password)).perform(typeText("1234567"));
+        onView(withId(R.id.passwordConfirm)).perform(typeText("1234567"));
+        onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
+        onView(withId(R.id.buttonreg)).perform(click());
+        onView(withId(R.id.statusLabel)).check(matches(withText(R.string.INVALID_EMAIL)));
+    }
+
   @Test
   public void checkIfConfirmPasswordIsValid(){
-
       onView(withId(R.id.roleList)).perform(click());
       onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
       onView(withId(R.id.userName)).perform(typeText("catisnotdog"));
@@ -118,7 +143,6 @@ public class RegisterEspressoTest {
 
   @Test
   public void checkIfConfirmPasswordIsInvalid(){
-
       onView(withId(R.id.roleList)).perform(click());
       onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
       onView(withId(R.id.userName)).perform(typeText("rainy123"));
@@ -131,45 +155,7 @@ public class RegisterEspressoTest {
   }
 
   @Test
-  public void checkIfRegisterWithUsernameNotExisted(){
-
-      onView(withId(R.id.roleList)).perform(click());
-      onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
-      onView(withId(R.id.userName)).perform(typeText("student1"));
-      onView(withId(R.id.eMail)).perform(typeText("bcd.456@dal.ca"));
-      onView(withId(R.id.password)).perform(typeText("456123"));
-      onView(withId(R.id.passwordConfirm)).perform(typeText("456123"));
-      onView(withId(R.id.buttonreg)).perform(click());
-      onView(withId(R.id.userName)).perform(typeText("student2"));
-      onView(withId(R.id.eMail)).perform(typeText("minh@dal.ca"));
-      onView(withId(R.id.password)).perform(typeText("456123"));
-      onView(withId(R.id.passwordConfirm)).perform(typeText("456123"));
-      onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
-      onView(withId(R.id.buttonreg)).perform(click());
-      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
-  }
-
-  @Test
-  public void checkIfRegisterWithUsernameExisted(){
-
-      onView(withId(R.id.userName)).perform(typeText("student1"));
-      onView(withId(R.id.eMail)).perform(typeText("bcd.456@dal.ca"));
-      onView(withId(R.id.password)).perform(typeText("456123"));
-      onView(withId(R.id.passwordConfirm)).perform(typeText("456123"));
-      onView(withId(R.id.buttonreg)).perform(click());
-      onView(withId(R.id.userName)).perform(typeText("student1"));
-      onView(withId(R.id.eMail)).perform(typeText("minh@dal.ca"));
-      onView(withId(R.id.password)).perform(typeText("456123"));
-      onView(withId(R.id.passwordConfirm)).perform(typeText("456123"));
-      onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
-      onView(withId(R.id.buttonreg)).perform(click());
-
-      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.USERNAME_EXISTED)));
-  }
-
-  @Test
-  public void checkUserType(){
-
+  public void checkUserTypeIsValid(){
       onView(withId(R.id.roleList)).perform(click());
       onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
       onView(withId(R.id.userName)).perform(typeText("student1"));
@@ -181,7 +167,9 @@ public class RegisterEspressoTest {
   }
 
   @Test
-  public void checkIfMoved2WelcomePage() {
+  public void checkIfMoved2LoginPage() {
+      onView(withId(R.id.roleList)).perform(click());
+      onData(allOf(is(instanceOf(String.class)), is("Employee"))).perform(click());
       onView(withId(R.id.userName)).perform(typeText("myNameisSun"));
       onView(withId(R.id.eMail)).perform(typeText("sunny@dal.ca"));
       onView(withId(R.id.password)).perform(typeText("456123"));

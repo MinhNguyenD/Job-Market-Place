@@ -10,7 +10,7 @@
         android:id="@+id/hintForEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="39dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="3dp"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/password"
@@ -79,9 +79,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:text="Registration"
-        app:layout_constraintEnd_toStartOf="@+id/hintForPassword"
-        app:layout_constraintStart_toStartOf="@+id/hintForPassword"
-        app:layout_constraintTop_toBottomOf="@+id/hintForPassword" />
+        app:layout_constraintEnd_toStartOf="@+id/hintForPasswordConfirm"
+        app:layout_constraintStart_toStartOf="@+id/hintForPasswordConfirm"
+        app:layout_constraintTop_toBottomOf="@+id/hintForPasswordConfirm" />
 
     <EditText
         android:id="@+id/userName"
@@ -104,10 +104,10 @@
         app:layout_constraintEnd_toStartOf="@+id/userName" />
 
     <TextView
-        android:id="@+id/hintForPassword"
+        android:id="@+id/hintForPasswordConfirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="38dp"
+        android:layout_marginStart="3dp"
         android:layout_marginTop="3dp"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/passwordConfirm"
@@ -155,6 +155,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
+
+    <TextView
+        android:id="@+id/hintForPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintTop_toBottomOf="@+id/password" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
