@@ -24,6 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Activity for log in.
+ * Users password and username are required to log in. Tests if user enters correct credentials
+ * Logs in if credentials are correct. Implements switch to register button.
+ * Is able to keep user logged in and hide/show the password they enter.
+ */
 public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private static final String EMPTY_CREDENTIALS = "Username or password is empty";
@@ -106,38 +112,51 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    /**
+     * On successful login, this method switches activity to inApp activity
+     */
     public void gotoInAppActivity() {
         Intent inApp = new Intent(this, InAppActivity.class);
         inApp.putExtra(WELCOME, "Oh! You logged in again!");
         startActivity(inApp);
     }
 
+    /**
+     * If the user wants to register, this method switches the activity to register activity
+     */
+    protected void switchToRegisterWindow(){
+        Intent registerSwitch = new Intent(LogIn.this, MainActivity.class);
+        startActivity(registerSwitch);
+    }
 
+    /**
+     * Database initializer for log in activity
+     */
     protected void initializeDatabase(){
         firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
         firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
         userChild = firebaseDBReference.child("users");
     }
 
-    protected String getUserName(){
+    private String getUserName(){
         EditText usernameBox = findViewById(R.id.logInUserName);
         return usernameBox.getText().toString().trim();
     }
 
-    protected String getPassword(){
+    private String getPassword(){
         EditText passwordBox = findViewById(R.id.textPassword);
         return passwordBox.getText().toString().trim();
     }
 
-    protected boolean isEmptyUsername(String username){
+    private boolean isEmptyUsername(String username){
         return username.isEmpty();
     }
 
-    protected boolean isEmptyPassword(String password){
+    private boolean isEmptyPassword(String password){
         return password.isEmpty();
     }
 
-    protected void emptyCredentials(){
+    private void emptyCredentials(){
         String username = getUserName();
         String password = getPassword();
         if(isEmptyPassword(password)||isEmptyUsername(username)){
@@ -153,7 +172,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @return userExists if username exists in the database
      */
     protected boolean existingUser(String username){
-        //UNCOMMENT WHEN CONNECTED TO FIREBASE
+        //This method is identical to method in register, Consider refactor
         userChild.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -172,8 +191,12 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         return userExists;
     }
 
+    /**
+     * Checks if the entered password matches the password associated to the user
+     * @param password password entered by the user about to log in
+     * @return boolean that is true if the password matches the password associated to the user
+     */
     protected boolean passwordMatch(String password){
-        //UNCOMMENT WHEN CONNECTED TO FIREBASE
         firebaseDBReference.child("users").child(getUserName()).
                 addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -194,9 +217,14 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         return correctPassword;
     }
 
+    /**
+     * Log In method
+     * @param username login username
+     * @param password login password
+     * @return true if log in is successful.
+     */
     public static boolean logIn(String username, String password){
-        //Check if user exists
-        //Check if password is correct
+        //Refactor Later
         if(empty){
             alertMessage = EMPTY_CREDENTIALS;
             return false;
@@ -215,11 +243,15 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    protected void switchToRegisterWindow(){
-        Intent registerSwitch = new Intent(LogIn.this, MainActivity.class);
-        startActivity(registerSwitch);
-    }
-
+    /**
+     * On Click method, 3 on click cases:
+     * If the user clicks on the continue button, attempt log in with entered credentials,
+     * When log in is successful switch to InAppActivity
+     * If the user clicks register button, they are switched to register window
+     * If the user clicks the show password button, the password entered password is shown
+     * in plain text
+     * @param view The button being pressed
+     */
     @Override
     public void onClick(View view) {
         emptyCredentials();

@@ -91,31 +91,18 @@ public class LogInEspressoTests {
         Espresso.onView(withId(R.id.textPassword)).check(matches(isPasswordHidden()));
     }
 
-  @Rule
-  public ActivityScenarioRule<MainActivity> myRule = new ActivityScenarioRule<MainActivity>
-          (MainActivity.class);
-  @BeforeClass
-  public static void setup(){
-    Intents.init();
-  }
 
-  @AfterClass
-  public static void tearDown(){
-    System.gc();
-  }
-
-
-  /*** UAT-I ***/
+  /*** UAT-I (LogIn)***/
   @Test
   public void checkIfMovedToLogInPage() {
+    Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
     Espresso.onView(withId(R.id.loginButton)).perform(click());
     intended(hasComponent(LogIn.class.getName()));
   }
 
-  /** UAT-III **/
+  /** UAT-III (LogIN) **/
   @Test
   public void checkIfMovedToRegisterPage(){
-    Espresso.onView(withId(R.id.loginButton)).perform(click());
     Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
     intended(hasComponent(MainActivity.class.getName()));
   }

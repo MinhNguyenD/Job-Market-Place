@@ -23,6 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Main Activity Class is the Register Page,
+ * This is where the user registers for our app
+ * The user can choose between being an employee or employer.
+ * The user must input
+ */
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseDatabase firebaseDB;
     private static final String FIREBASE_URL = "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
@@ -31,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Spinner roleList;
     private String selectedRole;
 
+    /**
+     * On Create initializes all buttons text views and event listeners. Also chooses layout
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +76,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         passwordChecker(password,hintForPassWord);
     }
 
+    /**
+     * @param role chosen by user, either employee
+     * @return If an invalid role has not been chosen return false
+     * @return If a valid role has been chosen return true
+     */
     protected boolean isValidRole(String role) {
         if(role.equals("-")){
             return false;
@@ -72,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return true;
     }
+
 
     private void roleListSpinnerListener() {
         roleList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -172,50 +189,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    /*
+    /**
         initialize the database and reference
-    */
+    **/
     protected void initializeDatabase() {
         firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
         firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
     }
 
-    /*
+    /**
         Getter method to get user name
-    */
+    **/
     protected String getUserName(){
         EditText userName = findViewById(R.id.userName);
         return userName.getText().toString().trim();
     }
 
-    /*
+    /**
         Getter method to get email address
-    */
+    **/
     protected String getEmail(){
         EditText emailAddress = findViewById(R.id.eMail);
         return emailAddress.getText().toString().trim();
     }
 
-    /*
+    /**
         Getter method to get password
-    */
+    **/
     protected String getPassword(){
         EditText password = findViewById(R.id.password);
         return password.getText().toString().trim();
     }
 
-    /*
+    /**
         Getter method to get confirm password
-     */
+     **/
     protected String getConfirmPassword(){
         EditText confirmPassword = findViewById(R.id.passwordConfirm);
         return confirmPassword.getText().toString().trim();
     }
 
 
-    /*
+    /**
         Check if email address is valid
-     */
+     **/
     protected static boolean isValidEmailAddress(String emailAddress) {
         /*
             Reference: OWASP Email Regex
@@ -229,9 +246,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-    /*
+    /**
         Check if password is valid
-     */
+     **/
     protected static boolean isValidPassword(String password) {
         if(password.length() >= 6){
             return true;
@@ -239,8 +256,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-    /*
-        Check if password match with confirm password
+    /**
+     * Check if password matches confirm password
+     * @param password entered password
+     * @param confirmPassword entered confirmPassword
+     * @return true if password.equals(confirmPassword)
      */
     protected static boolean isValidConfirmPassword(String password, String confirmPassword) {
         if(password.equals(confirmPassword)){
@@ -250,8 +270,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    /*
-        Check if user name existed in current database
+    /**
+     * Checks if username already exists in database
+     * @param userName userName to check
+     * @return boolean of userNameExisted, true if username exists
      */
     protected boolean userNameExisted(String userName){
         firebaseDBReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -271,47 +293,61 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return userNameExisted;
     }
 
-    /*
-        Save email address into database
-        Note: We use username as an unique ID for a user
-    */
+    /**
+     * Save email address into database
+     * Note: We use username as an unique ID for a user
+     * @param email entered email
+     * @param userName user associated with the entered email
+     */
     protected Task<Void> saveEmailAddressToFirebase(String email, String userName) {
         firebaseDBReference.child("users").child(userName).child("email").setValue(email);
         return null;
     }
 
 
-    /*
-        Save user type into database
-        Note: We use username as an unique ID for a user
-    */
+    /**
+     * Save user type into database
+     * Note: We use username as an unique ID for a user
+     * @param userType type of user(employee or employer) to save to DB
+     * @param userName associated user
+     */
     protected Task<Void> saveUserTypeToFirebase(String userType, String userName) {
         firebaseDBReference.child("users").child(userName).child("userType").setValue(userType);
         return null;
     }
 
-    /*
-        Save password into database
-        Note: We use username as an unique ID for a user
+    /**
+     * Save password into database
+     * Note: We use username as an unique ID for a user
+     * @param password password to save to DB
+     * @param userName associated user
      */
     protected Task<Void> savePasswordToFirebase(String password, String userName) {
         firebaseDBReference.child("users").child(userName).child("password").setValue(password);
         return null;
     }
 
-    /*
-        Switch to Login window from Register window
-    */
+    /**
+     * Switches to log in window
+     */
     public void switchToLogInWindow(){
         Intent intent = new Intent(MainActivity.this, LogIn.class);
         startActivity(intent);
     }
 
+    /**
+     * Sets a status message
+     * @param message the message to set as status message.
+     */
     protected void setStatusMessage(String message) {
         TextView statusLabel = findViewById(R.id.statusLabel);
         statusLabel.setText(message.trim());
     }
 
+    /**
+     * On click method, validates entered credentials and moves to desired page
+     * @param view The button pressed
+     */
     public void onClick(View view){
         String userName = getUserName();
         String email = getEmail();
