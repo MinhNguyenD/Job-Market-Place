@@ -1,4 +1,15 @@
-package com.voidstudio.quickcashreg;public class EditTextReader{	public EditTextReader()	{	}@androidx.annotation.NonNull
-    private java.lang.String getTextFromEditText(android.widget.EditText textBox) {
-        return textBox.getText().toString().trim();
-    }}
+package com.voidstudio.quickcashreg;
+
+import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+
+public class EditTextReader {
+  public EditTextReader() {
+  }
+
+  @NonNull
+  protected String getTextFromEditText(EditText textBox) {
+    return textBox.getText().toString().trim();
+  }
+}

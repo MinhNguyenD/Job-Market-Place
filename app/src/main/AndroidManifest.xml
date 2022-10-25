@@ -53,7 +53,7 @@
         </activity>
 
         <activity
-            android:name=".InAppActivity"
+            android:name=".InAppActivityEmployer"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
