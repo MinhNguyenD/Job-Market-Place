@@ -7,5 +7,4 @@
     <string name="INVALID_EMAIL">Invalid Email</string>
     <string name="INVALID_ROLE">Invalid Role</string>
     <string name="FIREBASE_DB_URL">https://quickcash-bd58f-default-rtdb.firebaseio.com</string>
-
 </resources>
