@@ -46,6 +46,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private static boolean empty;
     private static boolean userExists;
     private static boolean correctPassword;
+    private static boolean employee;// if false then user is an employer
 
     private static String user;
     private static String pass;
@@ -82,7 +83,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
 
         if (sp.getBoolean(ISLOGGED, false)) {
-            gotoInAppActivity();
+            goToInAppActivityEmployer();
         }
         else {
             SharedPreferences.Editor editor = sp.edit();
@@ -112,10 +113,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     /**
      * On successful login, this method switches activity to inApp activity
      */
-    public void gotoInAppActivity() {
-        Intent inApp = new Intent(this, InAppActivityEmployer.class);
-        inApp.putExtra(WELCOME, "Oh! You logged in again!");
-        startActivity(inApp);
+    public void goToInAppActivityEmployer() {
+        Intent inAppEmployer = new Intent(this, InAppActivityEmployer.class);
+        inAppEmployer.putExtra(WELCOME, "Oh! You logged in again!");
+        startActivity(inAppEmployer);
     }
 
     /**
@@ -146,6 +147,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         return textReader.getFromEditText(passwordBox);
     }
 
+
     private boolean isEmptyUsername(String username){
         return username.isEmpty();
     }
@@ -161,6 +163,28 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             empty = true;
         }
         else empty = false;
+    }
+
+    private boolean isEmployee(){
+        String userType = "Employee";
+        firebaseDBReference.child("users").child(getUserName()).
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        firebaseString = snapshot.child(userType).getKey();
+                        if(userType.equals(snapshot.child(userType).getKey())){
+                            employee = true;
+                        }
+                        else{
+                            employee = false;
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(LogIn.this,"FAIL",Toast.LENGTH_LONG).show();
+                    }
+                });
+        return employee;
     }
 
 
