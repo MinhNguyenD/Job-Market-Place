@@ -46,7 +46,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private static boolean empty;
     private static boolean userExists;
     private static boolean correctPassword;
-    private static boolean employee;// if false then user is an employer
+    protected static boolean employee;// if false then user is an employer
 
     private static String user;
     private static String pass;
@@ -111,12 +111,18 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     }
 
     /**
-     * On successful login, this method switches activity to inApp activity
+     * On successful login from employer, this method switches activity to inAppActivityEmployer
      */
     public void goToInAppActivityEmployer() {
         Intent inAppEmployer = new Intent(this, InAppActivityEmployer.class);
-        inAppEmployer.putExtra(WELCOME, "Oh! You logged in again!");
+        inAppEmployer.putExtra(WELCOME, "Hi Employer, you logged in");
         startActivity(inAppEmployer);
+    }
+
+    public void goToInAppActivityEmployee() {
+        Intent inAppEmployee = new Intent(this, InAppActivityEmployee.class);
+        inAppEmployee.putExtra(WELCOME, "Hi Employee, you logged in");
+        startActivity(inAppEmployee);
     }
 
     /**
@@ -165,7 +171,11 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
         else empty = false;
     }
 
-    private boolean isEmployee(){
+    /**
+     * Checks if user that is logging in is an employee
+     * @return True if the user is an employee
+     */
+    protected boolean isEmployee(){
         String userType = "Employee";
         firebaseDBReference.child("users").child(getUserName()).
                 addListenerForSingleValueEvent(new ValueEventListener() {
@@ -300,9 +310,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             if (logIn(getUserName(), getPassword())) {
                 stayLoggedIn();
                 Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
-                Intent inApp = new Intent(LogIn.this, InAppActivityEmployer.class);
-                inApp.putExtra(WELCOME, "Welcome!!!");
-                startActivity(inApp);
+                if(isEmployee()) goToInAppActivityEmployee();
+                else goToInAppActivityEmployer();
             }
         }
     }
