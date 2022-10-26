@@ -50,7 +50,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private static String user;
     private static String pass;
     //Edit text reader helper method using delegation
-    private final EditTextReader editTextReader = new EditTextReader();
+    private final TextReader textReader = new TextReader();
 
     private FirebaseDatabase firebaseDB;
     private static final String FIREBASE_URL =
@@ -98,7 +98,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @param passwordText is the password field
      */
     public void showHidePassword(Button showPassword, EditText passwordText) {
-        if (editTextReader.getTextFromEditText(passwordText).isEmpty()) {
+        if (textReader.getFromEditText(passwordText).isEmpty()) {
             passwordText.setError("Please enter a password!");
         } else if (showPassword.getText().toString().equals("Show Password")) {
             showPassword.setText("Hide Password");
@@ -138,12 +138,12 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
 
     private String getUserName(){
         EditText usernameBox = findViewById(R.id.logInUserName);
-        return editTextReader.getTextFromEditText(usernameBox);
+        return textReader.getFromEditText(usernameBox);
     }
 
     private String getPassword(){
         EditText passwordBox = findViewById(R.id.textPassword);
-        return editTextReader.getTextFromEditText(passwordBox);
+        return textReader.getFromEditText(passwordBox);
     }
 
     private boolean isEmptyUsername(String username){

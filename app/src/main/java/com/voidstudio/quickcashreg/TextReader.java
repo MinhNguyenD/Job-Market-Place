@@ -4,12 +4,15 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-public class EditTextReader {
-  public EditTextReader() {
+/**
+ *
+ */
+public class TextReader {
+  public TextReader() {
   }
 
   @NonNull
-  protected String getTextFromEditText(EditText textBox) {
+  protected String getFromEditText(EditText textBox) {
     return textBox.getText().toString().trim();
   }
 }
