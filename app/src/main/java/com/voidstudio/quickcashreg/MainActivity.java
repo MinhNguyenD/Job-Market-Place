@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Spinner roleList;
     private String selectedRole;
 
+    private final TextReader textReader = new TextReader();
+
     /**
      * On Create initializes all buttons text views and event listeners. Also chooses layout
      * @param savedInstanceState
@@ -202,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     **/
     protected String getUserName(){
         EditText userName = findViewById(R.id.userName);
-        return userName.getText().toString().trim();
+        return textReader.getFromEditText(userName);
     }
 
     /**
@@ -210,7 +212,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     **/
     protected String getEmail(){
         EditText emailAddress = findViewById(R.id.eMail);
-        return emailAddress.getText().toString().trim();
+        return textReader.getFromEditText(emailAddress);
     }
 
     /**
@@ -218,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     **/
     protected String getPassword(){
         EditText password = findViewById(R.id.password);
-        return password.getText().toString().trim();
+        return textReader.getFromEditText(password);
     }
 
     /**
@@ -226,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      **/
     protected String getConfirmPassword(){
         EditText confirmPassword = findViewById(R.id.passwordConfirm);
-        return confirmPassword.getText().toString().trim();
+        return textReader.getFromEditText(confirmPassword);
     }
 
 
