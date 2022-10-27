@@ -1,23 +1,15 @@
 package com.voidstudio.quickcashreg;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.content.SharedPreferences;
 
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 /**
  * Activity for log in.
@@ -52,14 +44,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     private static String pass;
     //Edit text reader helper method using delegation
     private final TextReader textReader = new TextReader();
-
-    private FirebaseDatabase firebaseDB;
-    private static final String FIREBASE_URL =
-            "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-    private DatabaseReference firebaseDBReference;
-    private DatabaseReference userChild;
-
-    private String firebaseString;
+    private final Firebase firebase = new Firebase();
 
     public SharedPreferences sp;
 
@@ -90,7 +75,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             editor.putBoolean(ISLOGGED, false);
             editor.commit();
         }
-        initializeDatabase();
+        firebase.initializeDatabase();
+
     }
 
     /**
@@ -137,9 +123,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * Database initializer for log in activity
      */
     protected void initializeDatabase(){
-        firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-        firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
-        userChild = firebaseDBReference.child("users");
+        firebase.initializeDatabase();
     }
 
 
@@ -176,25 +160,9 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @return True if the user is an employee
      */
     protected boolean isEmployee(){
-        String userType = "Employee";
-        firebaseDBReference.child("users").child(getUserName()).
-                addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        firebaseString = snapshot.child(userType).getKey();
-                        if(userType.equals(snapshot.child(userType).getKey())){
-                            employee = true;
-                        }
-                        else{
-                            employee = false;
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(LogIn.this,"FAIL",Toast.LENGTH_LONG).show();
-                    }
-                });
-        return employee;
+       if(firebase.getUserType(getUserName()).equals("Employee")) employee = true;
+       else employee = false;
+       return employee;
     }
 
 
@@ -205,22 +173,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      */
     protected boolean existingUser(String username){
         //This method is identical to method in register, Consider refactor
-        userChild.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(username)){
-                    userExists = true;
-                }
-                else{
-                    userExists = false;
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(LogIn.this,"FAIL",Toast.LENGTH_LONG).show();
-            }
-        });
-        return userExists;
+        return firebase.existingUser(username);
     }
 
     /**
@@ -229,23 +182,10 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @return boolean that is true if the password matches the password associated to the user
      */
     protected boolean passwordMatch(String password){
-        firebaseDBReference.child("users").child(getUserName()).
-                addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        firebaseString = snapshot.child(password).getKey();
-                        if(password.equals(snapshot.child(password).getKey())){
-                            correctPassword = true;
-                        }
-                        else{
-                            correctPassword = false;
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(LogIn.this,"FAIL",Toast.LENGTH_LONG).show();
-                    }
-                });
+        String firebasePassword = firebase.getPassword(getUserName());
+       if(firebasePassword == null) passwordMatch(password);
+        if( firebasePassword.equals(password)) correctPassword = true;
+        else correctPassword = false;
         return correctPassword;
     }
 
@@ -295,15 +235,15 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @param view The button being pressed
      */
     @Override
-    public void onClick(View view) {
+    public synchronized void onClick(View view) {
         emptyCredentials();
-        existingUser(getUserName());
-        passwordMatch(getPassword());
         if (view.getId() == R.id.logInRegisterButton) {
             switchToRegisterWindow();
         }else if (view.getId() == R.id.showHidePassword) {
             showHidePassword(findViewById(R.id.showHidePassword), findViewById(R.id.textPassword));
         } else if(view.getId() == R.id.continueButton) {
+            existingUser(getUserName());
+            passwordMatch(getPassword());
             logIn(getUserName(), getPassword());
             Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
             //Replace toast with new activity in future iterations

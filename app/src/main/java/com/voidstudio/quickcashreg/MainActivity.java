@@ -1,7 +1,5 @@
 package com.voidstudio.quickcashreg;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,12 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final TextReader textReader = new TextReader();
 
+    private final Firebase firebase = new Firebase();
+
     /**
      * On Create initializes all buttons text views and event listeners. Also chooses layout
      * @param savedInstanceState
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView hintForPassWordConfirm = (TextView) findViewById(R.id.hintForPasswordConfirm);
         TextView hintForEmail = (TextView) findViewById(R.id.hintForEmail);
 
-        initializeDatabase();
+        //initializeDatabase();
 
         registerButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
@@ -191,13 +192,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    /**
-        initialize the database and reference
-    **/
-    protected void initializeDatabase() {
-        firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-        firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
-    }
+   // /**
+   //     initialize the database and reference
+   // **/
+   // protected void initializeDatabase() {
+   //     firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
+   //     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+   // }
 
     /**
         Getter method to get user name
@@ -278,21 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @return boolean of userNameExisted, true if username exists
      */
     protected boolean userNameExisted(String userName){
-        firebaseDBReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(userName)){
-                    userNameExisted = true;
-                }
-                else{
-                    userNameExisted = false;
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-        return userNameExisted;
+        return firebase.existingUser(userName);
     }
 
     /**
@@ -301,9 +288,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param email entered email
      * @param userName user associated with the entered email
      */
-    protected Task<Void> saveEmailAddressToFirebase(String email, String userName) {
-        firebaseDBReference.child("users").child(userName).child("email").setValue(email);
-        return null;
+    protected void saveEmailAddressToFirebase(String email, String userName) {
+        firebase.setEmailAddress(email, userName);
     }
 
 
@@ -313,9 +299,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param userType type of user(employee or employer) to save to DB
      * @param userName associated user
      */
-    protected Task<Void> saveUserTypeToFirebase(String userType, String userName) {
-        firebaseDBReference.child("users").child(userName).child("userType").setValue(userType);
-        return null;
+    protected void saveUserTypeToFirebase(String userType, String userName) {
+        firebase.setUserType(userType, userName);
     }
 
     /**
@@ -324,9 +309,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param password password to save to DB
      * @param userName associated user
      */
-    protected Task<Void> savePasswordToFirebase(String password, String userName) {
-        firebaseDBReference.child("users").child(userName).child("password").setValue(password);
-        return null;
+    protected void savePasswordToFirebase(String password, String userName) {
+        firebase.setPassword(password, userName);
     }
 
     /**
