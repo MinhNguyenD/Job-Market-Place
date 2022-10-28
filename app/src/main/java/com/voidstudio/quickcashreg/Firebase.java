@@ -24,6 +24,7 @@ public class Firebase {
 
     }
 
+
   public void initializeDatabase(){
       firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
       firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);

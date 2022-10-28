@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Switches to log in window
      */
     public void switchToLogInWindow(){
-        Intent intent = new Intent(MainActivity.this, LogIn.class);
+        Intent intent = new Intent(MainActivity.this, LogInActivity.class);
         startActivity(intent);
     }
 
