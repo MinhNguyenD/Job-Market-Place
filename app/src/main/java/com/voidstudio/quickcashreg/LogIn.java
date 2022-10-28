@@ -241,6 +241,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
     @Override
     public synchronized void onClick(View view) {
         emptyCredentials();
+        isEmployee();
         if (view.getId() == R.id.logInRegisterButton) {
             switchToRegisterWindow();
         }else if (view.getId() == R.id.showHidePassword) {

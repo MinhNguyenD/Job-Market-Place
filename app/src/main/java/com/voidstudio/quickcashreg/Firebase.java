@@ -114,8 +114,10 @@ public class Firebase {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         if(snapshot.exists()) {
-          firebaseString = snapshot.getValue().toString();
-          pass = firebaseString;
+          if(snapshot.getValue() != null) {
+            firebaseString = snapshot.getValue().toString();
+            pass = firebaseString;
+          }
         }
       }
       @Override
