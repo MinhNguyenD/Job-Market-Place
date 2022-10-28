@@ -160,8 +160,12 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @return True if the user is an employee
      */
     protected boolean isEmployee(){
-       if(firebase.getUserType(getUserName()).equals("Employee")) employee = true;
-       else employee = false;
+       if(firebase.getUserType(getUserName()).equals("Employee")){
+           employee = true;
+       }
+       else {
+           employee = false;
+       }
        return employee;
     }
 
@@ -173,7 +177,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      */
     protected boolean existingUser(String username){
         //This method is identical to method in register, Consider refactor
-        return firebase.existingUser(username);
+        userExists =firebase.existingUser(username);
+        return userExists;
     }
 
     /**
@@ -182,9 +187,8 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
      * @return boolean that is true if the password matches the password associated to the user
      */
     protected boolean passwordMatch(String password){
-        String firebasePassword = firebase.getPassword(getUserName());
-       if(firebasePassword == null) passwordMatch(password);
-        if( firebasePassword.equals(password)) correctPassword = true;
+
+        if(firebase.checkIfPasswordMatches(getUserName(),password)) correctPassword = true;
         else correctPassword = false;
         return correctPassword;
     }
@@ -245,13 +249,17 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener {
             existingUser(getUserName());
             passwordMatch(getPassword());
             logIn(getUserName(), getPassword());
-            Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
+            Toast.makeText(LogIn.this, alertMessage+firebase.pass, Toast.LENGTH_LONG).show();
             //Replace toast with new activity in future iterations
             if (logIn(getUserName(), getPassword())) {
                 stayLoggedIn();
                 Toast.makeText(LogIn.this, alertMessage, Toast.LENGTH_LONG).show();
-                if(isEmployee()) goToInAppActivityEmployee();
-                else goToInAppActivityEmployer();
+                if(employee){
+                    goToInAppActivityEmployee();
+                }
+                else{
+                    goToInAppActivityEmployer();
+                }
             }
         }
     }

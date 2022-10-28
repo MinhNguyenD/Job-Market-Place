@@ -16,9 +16,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,16 +27,13 @@ import java.util.regex.Pattern;
  */
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private FirebaseDatabase firebaseDB;
-    private static final String FIREBASE_URL = "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-    private DatabaseReference firebaseDBReference;
     private boolean userNameExisted;
     private Spinner roleList;
     private String selectedRole;
 
     private final TextReader textReader = new TextReader();
 
-    private final Firebase firebase = new Firebase();
+    private Firebase firebase = new Firebase();
 
     /**
      * On Create initializes all buttons text views and event listeners. Also chooses layout
@@ -60,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView hintForPassWordConfirm = (TextView) findViewById(R.id.hintForPasswordConfirm);
         TextView hintForEmail = (TextView) findViewById(R.id.hintForEmail);
 
-        //initializeDatabase();
+        initializeDatabase();
 
         registerButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
@@ -192,13 +186,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-   // /**
-   //     initialize the database and reference
-   // **/
-   // protected void initializeDatabase() {
-   //     firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-   //     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
-   // }
+        /**
+            initialize the database and reference
+        **/
+        protected void initializeDatabase() {
+           firebase.initializeDatabase();
+        }
 
     /**
         Getter method to get user name
@@ -279,7 +272,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @return boolean of userNameExisted, true if username exists
      */
     protected boolean userNameExisted(String userName){
-        return firebase.existingUser(userName);
+        userNameExisted = firebase.existingUser(userName);
+        return userNameExisted;
     }
 
     /**

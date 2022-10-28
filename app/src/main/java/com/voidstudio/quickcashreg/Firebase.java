@@ -9,25 +9,24 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.concurrent.CountDownLatch;
-
 public class Firebase {
   static final String FIREBASE_URL =
           "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-  public final FirebaseDatabase firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
+  public FirebaseDatabase firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
 
-  private final DatabaseReference firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+  private DatabaseReference firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
   private DatabaseReference userChild;
-  private String firebaseString;
+  protected String firebaseString;
+  protected String pass;
   private boolean exists = false;
   private boolean matches = false;
+    public Firebase() {
 
-  public Firebase() {
-
-  }
+    }
 
   public void initializeDatabase(){
-
+      firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
+      firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
   }
 
   protected String getEmailAddress(String username) {
@@ -80,11 +79,9 @@ public class Firebase {
     return null;
   }
 
-
-
-  protected synchronized boolean existingUser(String username){
+  private Task<Void> existingUserHelper(String username){
     DatabaseReference users = firebaseDBReference.child("users");
-      users.
+    users.
             addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
               public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -99,8 +96,34 @@ public class Firebase {
               public void onCancelled(@NonNull DatabaseError error) {
               }
             });
+    return null;
+  }
+
+
+
+  protected boolean existingUser(String username){
+      existingUserHelper(username);
 
       return exists;
+  }
+
+  private Task<Void> getValueHelper(String username, String value){
+    DatabaseReference user = firebaseDB.getReference().child("users").child(username)
+            .child(value);
+    user.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if(snapshot.exists()) {
+          firebaseString = snapshot.getValue().toString();
+          pass = firebaseString;
+        }
+      }
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return null;
   }
 
   /**
@@ -109,28 +132,20 @@ public class Firebase {
    * @param value the corresponding value
    * @return the value stored in firebase
    */
-  private synchronized String getValueFromUser(String username, String value){
-    CountDownLatch done = new CountDownLatch(1);
-      DatabaseReference user = firebaseDB.getReference().child("users").child(username);
-      if(user.get().isComplete() ){
-        firebaseString = user.get().toString();
+  private String getValueFromUser(String username, String value){
+    getValueHelper(username,value);
+      if(firebaseString != null){
+        return firebaseString;
       }
-      user.addListenerForSingleValueEvent(new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot snapshot) {
-          if(snapshot.exists()) {
-            firebaseString = snapshot.child(value).getKey();
-            done.countDown();
-          }
-        }
-        @Override
-        public void onCancelled(@NonNull DatabaseError error) {
-          done.countDown();
-        }
-      });
-
-      return firebaseString;
+      else return "";
   }
+
+  //Both of these should be in log in(THIS IS FOR DEBUGGING)
+  protected boolean checkIfPasswordMatches(String username, String password){
+     return getPassword(username).equals(password);
+  }
+
+
 
 
 
