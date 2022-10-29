@@ -20,6 +20,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
 
     public static final String WELCOME = "Welcome to In App!";
+    public static final String EMPLOYER = "Employer";
+    public static final String EMPLOYEE = "Employee";
     public static final String PREFERENCES = "login";
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
@@ -55,6 +57,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         if (sp.getBoolean(ISLOGGED, false)) {
             goToInAppActivityEmployer();
         }
+
         else {
             SharedPreferences.Editor editor = sp.edit();
             editor.putBoolean(ISLOGGED, false);
@@ -87,6 +90,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public void goToInAppActivityEmployer() {
         Intent inAppEmployer = new Intent(this, InAppActivityEmployer.class);
         inAppEmployer.putExtra(WELCOME, "Hi Employer, you logged in");
+        inAppEmployer.putExtra(USERNAME, getUserName());
+        inAppEmployer.putExtra(PASSWORD, getPassword());
         startActivity(inAppEmployer);
     }
 
@@ -113,6 +118,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         EditText passwordBox = findViewById(R.id.textPassword);
         return textReader.getFromEditText(passwordBox);
     }
+
 
     private void stayLoggedIn() {
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
@@ -145,7 +151,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
                 stayLoggedIn();
                 logIn.getAlertMessage();
                 logIn.isEmployee();
-                if(logIn.logInAsEmployee){
+                if(logIn.employee){
                     goToInAppActivityEmployee();
                 }
                 else{
