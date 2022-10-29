@@ -7,7 +7,6 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,32 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String EMPTY_CREDENTIALS = "Username or password is empty";
-    private static final String USER_DOES_NOT_EXIST = "This username does not exist";
-    private static final String INCORRECT_PASSWORD = "Incorrect Password!";
+
     public static final String WELCOME = "Welcome to In App!";
     public static final String PREFERENCES = "login";
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
     public static final String ISLOGGED = "logged";
 
-    private static String alertMessage = "BROKEN";
-    private static String databaseUser;
 
-
-    //Success message may be replaced with switch of activities in future iteration
-    private static final String SUCCESS = "Success";
-
-    private static boolean empty;
-    private static boolean userExists;
-    private static boolean correctPassword;
-    protected static boolean employee;// if false then user is an employer
-
-    private static String user;
-    private static String pass;
     //Edit text reader helper method using delegation
     private final TextReader textReader = new TextReader();
-    private final Firebase firebase = new Firebase();
+    private static Firebase firebase;
     private final LogIn logIn = new LogIn(this);
 
     public SharedPreferences sp;
@@ -76,7 +60,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             editor.putBoolean(ISLOGGED, false);
             editor.commit();
         }
-        firebase.initializeDatabase();
+        firebase = Firebase.getInstance();
 
     }
 
@@ -120,14 +104,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         startActivity(registerSwitch);
     }
 
-    /**
-     * Database initializer for log in activity
-     */
-    protected void initializeDatabase(){
-        firebase.initializeDatabase();
-    }
-
-
     protected String getUserName(){
         EditText usernameBox = findViewById(R.id.logInUserName);
         return textReader.getFromEditText(usernameBox);
@@ -136,50 +112,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     protected String getPassword(){
         EditText passwordBox = findViewById(R.id.textPassword);
         return textReader.getFromEditText(passwordBox);
-    }
-
-    /**
-     * Checks if user that is logging in is an employee
-     * @return True if the user is an employee
-     */
-    protected boolean isEmployee(){
-        return logIn.isEmployee();
-    }
-
-    /**
-     * Checks if the entered password matches the password associated to the user
-     * @param password password entered by the user about to log in
-     * @return boolean that is true if the password matches the password associated to the user
-     */
-    protected boolean passwordMatch(String password){
-
-        if(logIn.passwordMatch(password)) correctPassword = true;
-        else correctPassword = false;
-        return correctPassword;
-    }
-
-    /**
-     * Log In method
-     * @return true if log in is successful.
-     */
-    public static boolean logIn(){
-        //Refactor Later
-        if(empty){
-            alertMessage = EMPTY_CREDENTIALS;
-            return false;
-        }
-        if(!userExists){
-            alertMessage = USER_DOES_NOT_EXIST;
-            return false;
-        }
-        if(!correctPassword){
-            alertMessage = INCORRECT_PASSWORD;
-            return false;
-        }
-        else{
-            alertMessage = SUCCESS;
-            return true;
-        }
     }
 
     private void stayLoggedIn() {
@@ -203,28 +135,24 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      */
     @Override
     public synchronized void onClick(View view) {
-        logIn.emptyCredentials();
-        logIn.isEmployee();
         if (view.getId() == R.id.logInRegisterButton) {
             switchToRegisterWindow();
         }else if (view.getId() == R.id.showHidePassword) {
             showHidePassword(findViewById(R.id.showHidePassword), findViewById(R.id.textPassword));
         } else if(view.getId() == R.id.continueButton) {
-            logIn.existingUser(getUserName());
-            passwordMatch(getPassword());
-            logIn();
-            Toast.makeText(LogInActivity.this, alertMessage+firebase.pass, Toast.LENGTH_LONG).show();
-            //Replace toast with new activity in future iterations
-            if (logIn()) {
+            logIn.logIn(getUserName(), getPassword());
+            if (logIn.isLogged) {
                 stayLoggedIn();
-                Toast.makeText(LogInActivity.this, alertMessage, Toast.LENGTH_LONG).show();
-                if(employee){
+                logIn.getAlertMessage();
+                logIn.isEmployee();
+                if(logIn.logInAsEmployee){
                     goToInAppActivityEmployee();
                 }
                 else{
                     goToInAppActivityEmployer();
                 }
             }
+            else logIn.getAlertMessage();
         }
     }
 

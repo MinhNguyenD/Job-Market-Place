@@ -1,12 +1,27 @@
 package com.voidstudio.quickcashreg;
 
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.Task;
+
 public class LogIn {
   private final LogInActivity logInActivity;
-  private final Firebase firebase = new Firebase();
+  private static Firebase firebase;
+
+  private static final String EMPTY_CREDENTIALS = "Username or password is empty";
+  private static final String USER_DOES_NOT_EXIST = "This username does not exist";
+  private static final String INCORRECT_PASSWORD = "Incorrect Password!";
+  private static final String SUCCESS = "Success";
+  private static String alertMessage = "BROKEN";
+
+  protected boolean isLogged;
+  protected boolean logInAsEmployee;
 
   public LogIn(LogInActivity logInActivity) {
     this.logInActivity = logInActivity;
+    firebase = Firebase.getInstance();
   }
+
 
   private String getUserName(){
    return logInActivity.getUserName();
@@ -14,6 +29,11 @@ public class LogIn {
 
   private String getPassword(){
     return logInActivity.getPassword();
+  }
+
+  protected Task<Void> getAlertMessage(){
+    Toast.makeText(logInActivity, alertMessage, Toast.LENGTH_SHORT).show();
+    return null;
   }
 
 
@@ -24,11 +44,11 @@ public class LogIn {
    */
   protected boolean isEmployee() {
     if (firebase.getUserType(getUserName()).equals("Employee")) {
-      LogInActivity.employee = true;
+      logInAsEmployee = true;
     } else {
-      LogInActivity.employee = false;
+      logInAsEmployee = false;
     }
-    return LogInActivity.employee;
+    return logInAsEmployee;
   }
 
   private boolean isEmptyUsername(){
@@ -71,5 +91,35 @@ public class LogIn {
     if(firebase.checkIfPasswordMatches(getUserName(),password)) return true;
     else return false;
   }
+
+  /**
+   * Log In method
+   * @return true if log in is successful.
+   */
+  protected boolean logIn(String username, String password){
+    if(isEmployee()) logInAsEmployee = true;
+
+    if(emptyCredentials()){
+      alertMessage = EMPTY_CREDENTIALS;
+      isLogged = false;
+    }
+
+    else if(!passwordMatch(password)){
+      alertMessage = INCORRECT_PASSWORD;
+      isLogged = false;
+    }
+
+    else if(!existingUser(username)){
+      alertMessage = USER_DOES_NOT_EXIST;
+      isLogged = false;
+    }
+
+    else{
+      alertMessage = SUCCESS;
+      isLogged = true;
+    }
+    return isLogged;
+  }
+
 
 }

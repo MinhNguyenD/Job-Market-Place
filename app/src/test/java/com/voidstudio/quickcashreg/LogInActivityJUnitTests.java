@@ -12,12 +12,14 @@ import org.mockito.Mockito;
 public class LogInActivityJUnitTests {
     static LogInActivity employeeLogInActivity;
     static LogInActivity employerLogInActivity;
+    static LogIn logIn;
 
 
     @BeforeClass
     public static void setup(){
         employeeLogInActivity = Mockito.mock(LogInActivity.class);
         employerLogInActivity = Mockito.mock(LogInActivity.class);
+        logIn = Mockito.mock(LogIn.class);
     }
 
     @AfterClass
@@ -34,29 +36,32 @@ public class LogInActivityJUnitTests {
     @Test
     public void noExistingUser(){
         String fakeUser = "FakeUser123";
+        String fakePassword = "123456";
         //random name for time being
         assertFalse("This username does not exist",
-                LogInActivity.logIn());
+                logIn.logIn(fakeUser,fakePassword));
     }
     /*** UAT-4 ***/
     @Test
     public void incorrectPass(){
         //Will always fail
         String realUser = "RealUser123";
+        Mockito.when(logIn.existingUser(realUser)).thenReturn(true);
         String fakePass = "LordOfCyberSecurityImpenetrableSuperServerDefenseNoHackingHere123456789!@#$%^&*()";
-        assertFalse("Password is incorrect", LogInActivity.logIn());
+        Mockito.when(logIn.passwordMatch(fakePass)).thenReturn(false);
+        assertFalse("Password is incorrect", logIn.logIn(realUser,fakePass));
     }
 
     /**Test if isEmployeeMethodWorks**/
     @Test
     public void checkIfEmployeeIsEmployee(){
-        Mockito.when(employeeLogInActivity.isEmployee()).thenReturn(true);
-        assertTrue(employeeLogInActivity.isEmployee());
+        Mockito.when(logIn.isEmployee()).thenReturn(true);
+        assertTrue(logIn.isEmployee());
     }
 
     @Test public void checkIfEmployer(){
-        Mockito.when(employerLogInActivity.isEmployee()).thenReturn(false);
-        assertFalse(employerLogInActivity.isEmployee());
+        Mockito.when(logIn.isEmployee()).thenReturn(false);
+        assertFalse(logIn.isEmployee());
     }
 
 

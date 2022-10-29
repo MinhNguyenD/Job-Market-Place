@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final TextReader textReader = new TextReader();
 
-    private Firebase firebase = new Firebase();
+    private static Firebase firebase;
 
     /**
      * On Create initializes all buttons text views and event listeners. Also chooses layout
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         TextView hintForPassWordConfirm = (TextView) findViewById(R.id.hintForPasswordConfirm);
         TextView hintForEmail = (TextView) findViewById(R.id.hintForEmail);
 
-        initializeDatabase();
+        firebase = Firebase.getInstance();
 
         registerButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
@@ -186,12 +186,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-        /**
-            initialize the database and reference
-        **/
-        protected void initializeDatabase() {
-           firebase.initializeDatabase();
-        }
 
     /**
         Getter method to get user name

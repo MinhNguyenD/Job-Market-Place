@@ -12,17 +12,29 @@ import com.google.firebase.database.ValueEventListener;
 public class Firebase {
   static final String FIREBASE_URL =
           "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-  public FirebaseDatabase firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-
-  private DatabaseReference firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+  private static FirebaseDatabase firebaseDB;
+  private static Firebase firebase;
+  private static DatabaseReference firebaseDBReference;
   private DatabaseReference userChild;
   protected String firebaseString;
   protected String pass;
   private boolean exists = false;
   private boolean matches = false;
-    public Firebase() {
+  private Firebase() {
+    firebaseDB = FirebaseDatabase.getInstance();
+    firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+  }
 
+  /**
+   * Singleton design pattern. Ensures only one instance of firebase across project
+   * @return
+   */
+  public static Firebase getInstance() {
+    if(firebase == null) {
+      firebase = new Firebase();
     }
+    return firebase;
+  }
 
 
   public void initializeDatabase(){
