@@ -21,7 +21,7 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
         // switch to this activity when log in successfully
         Intent thisIntent = getIntent();
-        String welcomeMessage = thisIntent.getStringExtra(LogIn.WELCOME);
+        String welcomeMessage = thisIntent.getStringExtra(LogInActivity.WELCOME);
         TextView message = findViewById(R.id.Employer);
         message.setText(welcomeMessage);
 
@@ -31,9 +31,9 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
     //Exact same method exists in employee, consider making new class
     private void resetLogInStatus() {
-        SharedPreferences sharedPrefs = getSharedPreferences(LogIn.PREFERENCES, Context.MODE_PRIVATE); //
+        SharedPreferences sharedPrefs = getSharedPreferences(LogInActivity.PREFERENCES, Context.MODE_PRIVATE); //
         SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putBoolean(LogIn.ISLOGGED, false);
+        editor.putBoolean(LogInActivity.ISLOGGED, false);
         editor.commit();
     }
 
@@ -41,7 +41,7 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
     public void onClick(View view){
         if(view.getId() == R.id.logOutEmployer){
             resetLogInStatus();
-            Intent logOutIntent = new Intent(InAppActivityEmployer.this, LogIn.class);
+            Intent logOutIntent = new Intent(InAppActivityEmployer.this, LogInActivity.class);
             startActivity(logOutIntent);
         }
     }

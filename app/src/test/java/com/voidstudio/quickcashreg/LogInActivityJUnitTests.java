@@ -9,15 +9,17 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-public class LogInJUnitTests {
-    static LogIn employeeLogIn;
-    static LogIn employerLogIn;
+public class LogInActivityJUnitTests {
+    static LogInActivity employeeLogInActivity;
+    static LogInActivity employerLogInActivity;
+    static LogIn logIn;
 
 
     @BeforeClass
     public static void setup(){
-        employeeLogIn = Mockito.mock(LogIn.class);
-        employerLogIn = Mockito.mock(LogIn.class);
+        employeeLogInActivity = Mockito.mock(LogInActivity.class);
+        employerLogInActivity = Mockito.mock(LogInActivity.class);
+        logIn = Mockito.mock(LogIn.class);
     }
 
     @AfterClass
@@ -34,29 +36,32 @@ public class LogInJUnitTests {
     @Test
     public void noExistingUser(){
         String fakeUser = "FakeUser123";
+        String fakePassword = "123456";
         //random name for time being
         assertFalse("This username does not exist",
-                LogIn.logIn(fakeUser,"password"));
+                logIn.logIn(fakeUser,fakePassword));
     }
     /*** UAT-4 ***/
     @Test
     public void incorrectPass(){
         //Will always fail
         String realUser = "RealUser123";
+        Mockito.when(logIn.existingUser(realUser)).thenReturn(true);
         String fakePass = "LordOfCyberSecurityImpenetrableSuperServerDefenseNoHackingHere123456789!@#$%^&*()";
-        assertFalse("Password is incorrect",LogIn.logIn(realUser,fakePass));
+        Mockito.when(logIn.passwordMatch(fakePass)).thenReturn(false);
+        assertFalse("Password is incorrect", logIn.logIn(realUser,fakePass));
     }
 
     /**Test if isEmployeeMethodWorks**/
     @Test
     public void checkIfEmployeeIsEmployee(){
-        Mockito.when(employeeLogIn.isEmployee()).thenReturn(true);
-        assertTrue(employeeLogIn.isEmployee());
+        Mockito.when(logIn.isEmployee()).thenReturn(true);
+        assertTrue(logIn.isEmployee());
     }
 
     @Test public void checkIfEmployer(){
-        Mockito.when(employerLogIn.isEmployee()).thenReturn(false);
-        assertFalse(employerLogIn.isEmployee());
+        Mockito.when(logIn.isEmployee()).thenReturn(false);
+        assertFalse(logIn.isEmployee());
     }
 
 

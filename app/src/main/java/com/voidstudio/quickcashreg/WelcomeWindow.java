@@ -1,16 +1,10 @@
 package com.voidstudio.quickcashreg;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 //import com.google.android.gms.tasks.OnFailureListener;
@@ -39,7 +33,7 @@ public class WelcomeWindow extends AppCompatActivity implements View.OnClickList
 
   protected void switch2LogInWindow(){
     //Need to create log in view
-    Intent logInSwitch = new Intent(WelcomeWindow.this, LogIn.class);
+    Intent logInSwitch = new Intent(WelcomeWindow.this, LogInActivity.class);
     startActivity(logInSwitch);
   }
 

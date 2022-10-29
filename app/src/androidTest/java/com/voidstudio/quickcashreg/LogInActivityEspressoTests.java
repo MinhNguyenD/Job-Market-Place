@@ -29,16 +29,16 @@ import org.junit.Test;
 
 
 
-public class LogInEspressoTests {
+public class LogInActivityEspressoTests {
     @Rule
-    public ActivityScenarioRule<LogIn> myRule = new ActivityScenarioRule<LogIn>
-            (LogIn.class);
+    public ActivityScenarioRule<LogInActivity> myRule = new ActivityScenarioRule<LogInActivity>
+            (LogInActivity.class);
     @BeforeClass
     public static void setup(){
        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-       SharedPreferences sharedPrefs = context.getSharedPreferences(LogIn.PREFERENCES, Context.MODE_PRIVATE); //
+       SharedPreferences sharedPrefs = context.getSharedPreferences(LogInActivity.PREFERENCES, Context.MODE_PRIVATE); //
        SharedPreferences.Editor editor = sharedPrefs.edit();
-       editor.putBoolean(LogIn.ISLOGGED, false);
+       editor.putBoolean(LogInActivity.ISLOGGED, false);
        editor.commit();
        Intents.init();
 
@@ -101,7 +101,7 @@ public class LogInEspressoTests {
   public void checkIfMovedToLogInPage() {
     Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
     Espresso.onView(withId(R.id.loginButton)).perform(click());
-    intended(hasComponent(LogIn.class.getName()));
+    intended(hasComponent(LogInActivity.class.getName()));
   }
 
   /** UAT-III (LogIN) **/
