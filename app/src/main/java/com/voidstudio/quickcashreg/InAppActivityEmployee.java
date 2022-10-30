@@ -21,6 +21,9 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     String welcomeMessage = thisIntent.getStringExtra(LogInActivity.WELCOME);
     TextView message = findViewById(R.id.Employee);
     message.setText(welcomeMessage);
+    String username = thisIntent.getStringExtra("username");
+    String password = thisIntent.getStringExtra("password");
+
 
     Button logOut = findViewById(R.id.employeeLogOut);
     logOut.setOnClickListener(InAppActivityEmployee.this);

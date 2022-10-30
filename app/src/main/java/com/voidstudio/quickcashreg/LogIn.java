@@ -4,6 +4,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 
+import users.Employee;
+import users.Employer;
+import users.User;
+
 public class LogIn {
   private final LogInActivity logInActivity;
   private static Firebase firebase;
@@ -15,7 +19,7 @@ public class LogIn {
   private static String alertMessage = "BROKEN";
 
   protected boolean isLogged;
-  protected boolean logInAsEmployee;
+  protected boolean employee;
 
   public LogIn(LogInActivity logInActivity) {
     this.logInActivity = logInActivity;
@@ -44,11 +48,11 @@ public class LogIn {
    */
   protected boolean isEmployee() {
     if (firebase.getUserType(getUserName()).equals("Employee")) {
-      logInAsEmployee = true;
+      employee = true;
     } else {
-      logInAsEmployee = false;
+      employee = false;
     }
-    return logInAsEmployee;
+    return employee;
   }
 
   private boolean isEmptyUsername(){
@@ -97,7 +101,7 @@ public class LogIn {
    * @return true if log in is successful.
    */
   protected boolean logIn(String username, String password){
-    if(isEmployee()) logInAsEmployee = true;
+    if(isEmployee()) employee = true;
 
     if(emptyCredentials()){
       alertMessage = EMPTY_CREDENTIALS;
@@ -119,6 +123,17 @@ public class LogIn {
       isLogged = true;
     }
     return isLogged;
+  }
+
+  protected User setUser(String username, String password){
+    User user;
+    if(employee){
+       user = new Employee(username, password, firebase.getEmailAddress(username));
+    }
+    else{
+      user = new Employer(username,password,firebase.getEmailAddress(username));
+    }
+    return user;
   }
 
 
