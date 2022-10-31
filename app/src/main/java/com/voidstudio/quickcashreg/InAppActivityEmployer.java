@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.Location.GPSActivity;
+
 /**
  * Landing page for successful login
  */
@@ -27,6 +29,9 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
         Button logOut = findViewById(R.id.logOutEmployer);
         logOut.setOnClickListener(InAppActivityEmployer.this);
+
+        Button locationSettings = findViewById(R.id.locationSettings);
+        locationSettings.setOnClickListener(InAppActivityEmployer.this);
     }
 
     //Exact same method exists in employee, consider making new class
@@ -43,6 +48,10 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
             resetLogInStatus();
             Intent logOutIntent = new Intent(InAppActivityEmployer.this, LogInActivity.class);
             startActivity(logOutIntent);
+        }
+        if(view.getId() == R.id.locationSettings){
+            Intent locationIntent = new Intent(InAppActivityEmployer.this, GPSActivity.class);
+            startActivity(locationIntent);
         }
     }
 
