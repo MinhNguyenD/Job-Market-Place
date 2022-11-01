@@ -353,9 +353,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 message = "User created successfully";
                 errorMessage = getResources().getString(R.string.EMPTY_STRING);
-                saveEmailAddressToFirebase(email, userName);
-                savePasswordToFirebase(password, userName);
-                saveUserTypeToFirebase(selectedRole, userName);
+                firebase.addUser(userName,password,email,selectedRole);
                 switchToLogInWindow();
             }
             setStatusMessage(errorMessage);

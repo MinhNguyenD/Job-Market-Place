@@ -15,6 +15,10 @@ public class Employer extends User {
     return null;
   }
 
+  protected boolean validate(){
+    return false;
+  }
+
 
 
 }

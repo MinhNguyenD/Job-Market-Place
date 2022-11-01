@@ -26,6 +26,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
     public static final String ISLOGGED = "logged";
+    public static final String EMPTYPE = "type";
 
 
     //Edit text reader helper method using delegation
@@ -55,7 +56,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
 
         if (sp.getBoolean(ISLOGGED, false)) {
-            goToInAppActivityEmployer();
+            if(sp.getBoolean(EMPTYPE,false)) goToInAppActivityEmployee();
+            else goToInAppActivityEmployer();
         }
 
         else {
@@ -126,6 +128,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         // Add username and password to login sharedPreferences state
         editor1.putString(USERNAME, getUserName());
         editor1.putString(PASSWORD, getPassword());
+        editor1.putBoolean(EMPTYPE, logIn.employee);
         editor1.putBoolean(ISLOGGED, true);
         editor1.commit();
     }
@@ -148,9 +151,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         } else if(view.getId() == R.id.continueButton) {
             logIn.logIn(getUserName(), getPassword());
             if (logIn.isLogged) {
+                logIn.isEmployee();
                 stayLoggedIn();
                 logIn.getAlertMessage();
-                logIn.isEmployee();
                 if(logIn.employee){
                     goToInAppActivityEmployee();
                 }
