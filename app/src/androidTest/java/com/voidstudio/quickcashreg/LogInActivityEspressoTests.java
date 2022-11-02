@@ -108,7 +108,7 @@ public class LogInActivityEspressoTests {
   @Test
   public void checkIfMovedToRegisterPage(){
     Espresso.onView(withId(R.id.logInRegisterButton)).perform(click());
-    intended(hasComponent(MainActivity.class.getName()));
+    intended(hasComponent(RegisterActivity.class.getName()));
   }
 
 

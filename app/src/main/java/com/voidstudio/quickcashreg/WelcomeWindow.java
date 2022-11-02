@@ -27,7 +27,7 @@ public class WelcomeWindow extends AppCompatActivity implements View.OnClickList
   }
 
   protected void switch2RegisterWindow(){
-    Intent registerSwitch = new Intent(WelcomeWindow.this, MainActivity.class);
+    Intent registerSwitch = new Intent(WelcomeWindow.this, RegisterActivity.class);
     startActivity(registerSwitch);
   }
 

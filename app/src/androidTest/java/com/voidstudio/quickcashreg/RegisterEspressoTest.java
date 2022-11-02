@@ -39,7 +39,7 @@ import static org.junit.Assert.assertEquals;
  *  PLEASE NOTE: ALL THE TESTS ARE TESTED AND CONFIRM PASSED DEPENDS ON 2 SCENARIOS
  *  SCENARIO 1: checkIfMoved2LoginPage() PASSED
  *    - When running the code with the checkIfMoved2LoginPage() test, it will pass because of switchToLogInWindow() which switch to login activity
- *    - However, other input validation test cases may not pass because we depends the test on the field statusLabel which only exists in MainActivity.java and not LogIn.java.
+ *    - However, other input validation test cases may not pass because we depends the test on the field statusLabel which only exists in RegisterActivity.java and not LogIn.java.
  *    When the button is clicked and switchToLogInWindow() is called, we are now on LogIn activity and therefore statusLabel can not be accessed and matched, causing other test cases to fail
  *
  *  SCENARIO 2: checkIfMoved2LoginPage() FAILED, OTHER TEST CASES PASSED
@@ -57,7 +57,7 @@ public class RegisterEspressoTest {
 
 
     @Rule
-    public ActivityScenarioRule<MainActivity> myRule = new ActivityScenarioRule<MainActivity>(MainActivity.class);
+    public ActivityScenarioRule<RegisterActivity> myRule = new ActivityScenarioRule<RegisterActivity>(RegisterActivity.class);
 
 
 
@@ -98,7 +98,7 @@ public class RegisterEspressoTest {
       onView(withId(R.id.passwordConfirm)).perform(typeText("1234567"));
       onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
       onView(withId(R.id.buttonreg)).perform(click());
-      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
+      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.SUCCESS)));
   }
 
     @Test
@@ -125,7 +125,7 @@ public class RegisterEspressoTest {
       onView(withId(R.id.passwordConfirm)).perform(typeText("1234567"));
       onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
       onView(withId(R.id.buttonreg)).perform(click());
-      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
+      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.SUCCESS)));
   }
 
     @Test
@@ -151,7 +151,7 @@ public class RegisterEspressoTest {
       onView(withId(R.id.passwordConfirm)).perform(typeText("456123"));
       onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
       onView(withId(R.id.buttonreg)).perform(click());
-      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
+      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.SUCCESS)));
   }
 
   @Test
@@ -176,7 +176,8 @@ public class RegisterEspressoTest {
       onView(withId(R.id.password)).perform(typeText("456123"));
       onView(withId(R.id.passwordConfirm)).perform(typeText("456123"));
       onView(withId(R.id.buttonreg)).perform(closeSoftKeyboard());
-      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.EMPTY_STRING)));
+      onView(withId(R.id.buttonreg)).perform(click());
+      onView(withId(R.id.statusLabel)).check(matches(withText(R.string.SUCCESS)));
   }
 
   @Test
