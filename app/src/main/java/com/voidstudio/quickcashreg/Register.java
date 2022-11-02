@@ -1,10 +1,5 @@
 package com.voidstudio.quickcashreg;
 
-import android.content.Intent;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.regex.Matcher;
@@ -137,9 +132,7 @@ public class Register extends AppCompatActivity {
             }
         } else {
             message = SUCCESS_MESSAGE;
-            saveEmailAddressToFirebase(email, userName);
-            savePasswordToFirebase(password, userName);
-            saveUserTypeToFirebase(selectedRole, userName);
+            firebase.addUser(userName,password,email,selectedRole);
         }
         return message;
     }
