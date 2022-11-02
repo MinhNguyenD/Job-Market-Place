@@ -20,7 +20,8 @@ import com.voidstudio.quickcashreg.R;
 public class GPSActivity extends AppCompatActivity {
 
   private static final int REQUEST_CODE_PERMISSION = 2;
-  String mPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+  String fPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+  String cPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,8 @@ public class GPSActivity extends AppCompatActivity {
 
   protected boolean hasLocationAccessPermission() {
     try {
-      ActivityCompat.requestPermissions(this, new String[]{mPermission}, REQUEST_CODE_PERMISSION);
+      ActivityCompat.requestPermissions(this, new String[]{fPermission}, REQUEST_CODE_PERMISSION);
+      ActivityCompat.requestPermissions(this, new String[]{cPermission}, REQUEST_CODE_PERMISSION);
       return true;
     } catch (Exception exc) {
       return false;
