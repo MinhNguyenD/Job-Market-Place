@@ -26,14 +26,25 @@ import java.util.regex.Pattern;
  * The user must input
  */
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private boolean userNameExisted;
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+//    private boolean userNameExisted;
     private Spinner roleList;
     private String selectedRole;
-
+    private Register register = new Register();
     private final TextReader textReader = new TextReader();
 
     private static Firebase firebase;
+
+
+    public static final String EMPLOYEE_USERTYPE = "Employee";
+    public static final String EMPLOYER_USERTYPE = "Employer";
+    public static final String NULL_USERTYPE = "-";
+
+
+    public static final String CONFIRM_PASSWORD_MESSAGE = "Two passwords are the same";
+    public static final String VALID_MESSAGE_EMPTY_STRING = "";
+
+
 
     /**
      * On Create initializes all buttons text views and event listeners. Also chooses layout
@@ -45,10 +56,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Button registerButton = findViewById(R.id.buttonreg);
         Button loginButton = findViewById(R.id.loginButton);
-        TextView userName = (TextView) findViewById(R.id.userName);
-        TextView eMail = (TextView) findViewById(R.id.eMail);
+
+        TextView email = (TextView) findViewById(R.id.eMail);
         TextView password = (TextView) findViewById(R.id.password);
         TextView passwordConfirm = (TextView) findViewById(R.id.passwordConfirm);
+
 
         TextView hintForPassWord = (TextView) findViewById(R.id.hintForPassword);
         TextView hintForPassWordConfirm = (TextView) findViewById(R.id.hintForPasswordConfirm);
@@ -64,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         // check e-mail form
-        emailFormatChecker(eMail, hintForEmail);
+        emailFormatChecker(email, hintForEmail);
 
         // check confirm password is same or not
         confirmPasswordChecker(password, passwordConfirm, hintForPassWordConfirm);
@@ -72,20 +84,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // check password
         passwordChecker(password,hintForPassWord);
     }
-
-    /**
-     * @param role chosen by user, either employee
-     * @return If an invalid role has not been chosen return false
-     * @return If a valid role has been chosen return true
-     */
-    protected boolean isValidRole(String role) {
-        if(role.equals("-")){
-            return false;
-        }
-
-        return true;
-    }
-
 
     private void roleListSpinnerListener() {
         roleList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -103,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setUpRoleListSpinner() {
         roleList = findViewById(R.id.roleList);
-        String[] roles = new String[]{"-", "Employee", "Employer"};
+        String[] roles = new String[]{NULL_USERTYPE, EMPLOYEE_USERTYPE, EMPLOYER_USERTYPE};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, roles);
         roleList.setAdapter(adapter);
     }
@@ -123,11 +121,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void afterTextChanged(Editable editable) {
                 String emailString = eMail.getText().toString();
 
-                if (!isValidEmailAddress(emailString)) {
-                    hintForEmail.setText("This Does Not Look Like An Email Address");
+                if (!register.isValidEmailAddress(emailString)) {
+                    hintForEmail.setText(register.EMAIL_ERROR_MESSAGE);
                     hintForEmail.setTextColor(Color.RED);
                 } else {
-                    hintForEmail.setText("");
+                    hintForEmail.setText(VALID_MESSAGE_EMPTY_STRING);
                 }
             }
         });
@@ -147,12 +145,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void afterTextChanged(Editable editable) {
                 String passwordString  = password.getText().toString();
 
-                if (!isValidPassword(passwordString)) {
-                    hintForPassWord.setText("Password has to be at least 6 characters");
+                if (!register.isValidPassword(passwordString)) {
+                    hintForPassWord.setText(register.PASSWORD_ERROR_MESSAGE);
                     hintForPassWord.setTextColor(Color.RED);
                 }
                 else {
-                    hintForPassWord.setText("");
+                    hintForPassWord.setText(VALID_MESSAGE_EMPTY_STRING);
                 }
             }
         });
@@ -175,12 +173,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String passwordString  = password.getText().toString();
                 String passwordStringConfirm  = passwordConfirm.getText().toString();
 
-                if (!isValidConfirmPassword(passwordString,passwordStringConfirm)) {
-                    hintForPassWord.setText("Two Passwords Are Not The Same.");
+                if (!register.isValidConfirmPassword(passwordString,passwordStringConfirm)) {
+                    hintForPassWord.setText(register.CONFIRM_PASSWORD_ERROR_MESSAGE);
                     hintForPassWord.setTextColor(Color.RED);
                 } else {
-                    hintForPassWord.setText("Two Passwords Are The Same.");
-                    hintForPassWord.setTextColor(Color.GREEN );
+                    hintForPassWord.setText(CONFIRM_PASSWORD_MESSAGE);
+                    hintForPassWord.setTextColor(Color.GREEN);
                 }
             }
         });
@@ -219,93 +217,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return textReader.getFromEditText(confirmPassword);
     }
 
-
-    /**
-        Check if email address is valid
-     **/
-    protected static boolean isValidEmailAddress(String emailAddress) {
-        /*
-            Reference: OWASP Email Regex
-            https://owasp.org/www-community/OWASP_Validation_Regex_Repository
-         */
-        Pattern p = Pattern.compile("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
-        Matcher m = p.matcher(emailAddress);
-        if(m.find()){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-        Check if password is valid
-     **/
-    protected static boolean isValidPassword(String password) {
-        if(password.length() >= 6){
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Check if password matches confirm password
-     * @param password entered password
-     * @param confirmPassword entered confirmPassword
-     * @return true if password.equals(confirmPassword)
-     */
-    protected static boolean isValidConfirmPassword(String password, String confirmPassword) {
-        if(password.equals(confirmPassword)){
-            return true;
-        }
-        return false;
-    }
-
-
-    /**
-     * Checks if username already exists in database
-     * @param userName userName to check
-     * @return boolean of userNameExisted, true if username exists
-     */
-    protected boolean userNameExisted(String userName){
-        userNameExisted = firebase.existingUser(userName);
-        return userNameExisted;
-    }
-
-    /**
-     * Save email address into database
-     * Note: We use username as an unique ID for a user
-     * @param email entered email
-     * @param userName user associated with the entered email
-     */
-    protected void saveEmailAddressToFirebase(String email, String userName) {
-        firebase.setEmailAddress(email, userName);
-    }
-
-
-    /**
-     * Save user type into database
-     * Note: We use username as an unique ID for a user
-     * @param userType type of user(employee or employer) to save to DB
-     * @param userName associated user
-     */
-    protected void saveUserTypeToFirebase(String userType, String userName) {
-        firebase.setUserType(userType, userName);
-    }
-
-    /**
-     * Save password into database
-     * Note: We use username as an unique ID for a user
-     * @param password password to save to DB
-     * @param userName associated user
-     */
-    protected void savePasswordToFirebase(String password, String userName) {
-        firebase.setPassword(password, userName);
-    }
-
     /**
      * Switches to log in window
      */
     public void switchToLogInWindow(){
-        Intent intent = new Intent(MainActivity.this, LogInActivity.class);
+        Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
         startActivity(intent);
     }
 
@@ -327,49 +243,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String email = getEmail();
         String password = getPassword();
         String confirmPassword = getConfirmPassword();
-        String message ="";
-        String errorMessage = new String("ERROR MESSAGE");
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
         if(view.getId() == R.id.buttonreg) {
-            if (!isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password, confirmPassword) || !isValidEmailAddress(email)) {
-                if (!isValidPassword(password)) {
-                    message = "Invalid Password";
-                    errorMessage = getResources().getString(R.string.INVALID_PASSWORD).trim();
-                } else if (!isValidEmailAddress(email)) {
-                    message = "Invalid Email";
-                    errorMessage = getResources().getString(R.string.INVALID_EMAIL).trim();
-                } else if (!isValidConfirmPassword(password, confirmPassword)) {
-                    message = "Password and Confirm Password are not match";
-                    errorMessage = getResources().getString(R.string.INVALID_CONFIRM_PASSWORD).trim();
-                } else if (userNameExisted(userName)) {
-                    message = "User Name is already registered";
-                    errorMessage = getResources().getString(R.string.USERNAME_EXISTED).trim();
-                } else if (!isValidRole(selectedRole)) {
-                    message = "Please Choose Your Role";
-                    errorMessage = getResources().getString(R.string.INVALID_ROLE).trim();
-                }
-
-            } else {
-                message = "User created successfully";
-                errorMessage = getResources().getString(R.string.EMPTY_STRING);
-                saveEmailAddressToFirebase(email, userName);
-                savePasswordToFirebase(password, userName);
-                saveUserTypeToFirebase(selectedRole, userName);
-                switchToLogInWindow();
+            String message = register.registerUser(userName, email, password, confirmPassword,selectedRole);
+            if(message.equals(register.SUCCESS_MESSAGE)){
+                //switchToLogInWindow();
             }
-            setStatusMessage(errorMessage);
-            alertBuilder.setMessage(message);
-            alertBuilder.setPositiveButton("OK", null);
-            alertBuilder.create();
-            alertBuilder.show();
+            setStatusMessage(message);
+//            alertBuilder.setMessage(message);
+//            alertBuilder.setPositiveButton("OK", null);
+//            alertBuilder.create();
+//            alertBuilder.show();
         }
-        if(view.getId() == R.id.loginButton){
+        else if(view.getId() == R.id.loginButton){
             switchToLogInWindow();
         }
-
-
-
     }
 
 }

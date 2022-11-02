@@ -105,7 +105,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      * If the user wants to register, this method switches the activity to register activity
      */
     protected void switchToRegisterWindow(){
-        Intent registerSwitch = new Intent(LogInActivity.this, MainActivity.class);
+        Intent registerSwitch = new Intent(LogInActivity.this, RegisterActivity.class);
         startActivity(registerSwitch);
     }
 
