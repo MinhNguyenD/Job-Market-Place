@@ -28,7 +28,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public static final String ISLOGGED = "logged";
     public static final String EMPTYPE = "type";
 
-
     //Edit text reader helper method using delegation
     private final TextReader textReader = new TextReader();
     private static Firebase firebase;
@@ -51,7 +50,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         // Find the Show Password button and the Password Field
         Button showPassword = findViewById(R.id.showHidePassword);
         showPassword.setOnClickListener(LogInActivity.this);
-
         // logic for stay log in
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
 
@@ -112,11 +110,13 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
     protected String getUserName(){
-        EditText usernameBox = findViewById(R.id.logInUserName);
+        TextReader textReader = new TextReader();
+        EditText  usernameBox = findViewById(R.id.logInUserName);
         return textReader.getFromEditText(usernameBox);
     }
 
     protected String getPassword(){
+        TextReader textReader = new TextReader();
         EditText passwordBox = findViewById(R.id.textPassword);
         return textReader.getFromEditText(passwordBox);
     }
@@ -151,7 +151,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         } else if(view.getId() == R.id.continueButton) {
             logIn.logIn(getUserName(), getPassword());
             if (logIn.isLogged) {
-                logIn.isEmployee();
+               // logIn.isEmployee();
                 stayLoggedIn();
                 logIn.getAlertMessage();
                 if(logIn.employee){
