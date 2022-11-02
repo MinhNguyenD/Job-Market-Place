@@ -12,7 +12,7 @@ public class TextReader {
   }
 
   @NonNull
-  protected String getFromEditText(EditText textBox) {
+  public String getFromEditText(EditText textBox) {
     return textBox.getText().toString().trim();
   }
 }

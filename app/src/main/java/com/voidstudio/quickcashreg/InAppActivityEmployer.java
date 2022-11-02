@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.jobpost.JobBoardActivity;
+import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
+
 /**
  * Landing page for successful login
  */
@@ -27,6 +30,12 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
         Button logOut = findViewById(R.id.logOutEmployer);
         logOut.setOnClickListener(InAppActivityEmployer.this);
+
+        Button jobBoard = findViewById(R.id.JobBoardButton);
+        jobBoard.setOnClickListener(InAppActivityEmployer.this);
+
+        Button jobPost = findViewById(R.id.JobPost);
+        jobPost.setOnClickListener(InAppActivityEmployer.this);
     }
 
     //Exact same method exists in employee, consider making new class
@@ -43,6 +52,14 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
             resetLogInStatus();
             Intent logOutIntent = new Intent(InAppActivityEmployer.this, LogInActivity.class);
             startActivity(logOutIntent);
+        }
+        if(view.getId() == R.id.JobBoardButton){
+            Intent jobBoardIntent = new Intent(InAppActivityEmployer.this, JobBoardActivity.class);
+            startActivity(jobBoardIntent);
+        }
+        if(view.getId() == R.id.JobPost){
+            Intent jobPostIntent = new Intent(InAppActivityEmployer.this, JobPostActivity.class);
+            startActivity(jobPostIntent);
         }
     }
 
