@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
 
 import java.util.ArrayList;
 
-public class JobBoardActivity extends AppCompatActivity implements RecyclerAdapter.ItemClickListener {
+import users.Employer;
+
+public class EmployerJobBoardActivity extends AppCompatActivity implements RecyclerAdapter.ItemClickListener {
 
   public static final String MY_PREFS = "MY_PREFS";
   RecyclerAdapter adapter;
@@ -23,10 +26,12 @@ public class JobBoardActivity extends AppCompatActivity implements RecyclerAdapt
   static String extractedWage;
   static String extractedTag;
   private static String jobItem;
+  private Employer employer;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employer_job_board);
+    employer = InAppActivityEmployer.employer;
     if(getIntent().getExtras() != null) {
       Bundle bundle = getIntent().getExtras();
       extractedJob = bundle.getString("Job");
@@ -48,14 +53,17 @@ public class JobBoardActivity extends AppCompatActivity implements RecyclerAdapt
       }
     }
     //also add the lat long
-    editor.putString("Halifax", "44.65,-63.58");
+    editor.putString("JobCity", "44.65,-63.58");
     editor.putString("Dhaka", "23.81,90.41");
     editor.apply();
   }
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<String>();
-    if(jobItem != null) tasks.add(jobItem);
+    ArrayList<Job> jobList = employer.getMyJobs();
+    for(Job job:jobList){
+      tasks.add(job.toString());
+    }
     this.store2SharedPrefs(tasks);
 
     RecyclerView recyclerView = findViewById(R.id.recyclerView);

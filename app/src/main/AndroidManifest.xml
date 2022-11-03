@@ -91,7 +91,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".jobpost.JobBoardActivity"
+            android:name=".jobpost.EmployerJobBoardActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -38,12 +38,12 @@ public class JobDetailsActivity extends AppCompatActivity {
   }
 
   protected String getLocationCoordinate(String itemLocation) {
-    SharedPreferences sharedPreferences = getSharedPreferences(JobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = getSharedPreferences(EmployerJobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
     return sharedPreferences.getString(itemLocation, null);
   }
 
   protected String getItemLocation(String item) {
-    SharedPreferences sharedPreferences = getSharedPreferences(JobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = getSharedPreferences(EmployerJobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
     return sharedPreferences.getString(item, null);
   }
 }

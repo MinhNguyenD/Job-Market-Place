@@ -9,7 +9,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.voidstudio.quickcashreg.jobpost.Job;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,10 @@ public class Firebase {
   private static Firebase firebase;
   private static DatabaseReference firebaseDBReference;
   private final String USERS = "users";
+  private final String JOBS = "jobs";
+
+
+
   protected String firebaseString;
   protected String pass;
 
@@ -175,6 +181,47 @@ public class Firebase {
     map.put("type", type);
     firebaseDBReference.child(USERS).child(username).updateChildren(map);
 
+  }
+
+  public void addJob(String jobName, String jobWage, String jobTag, String userName){
+    Map<String, Object> map = new HashMap<>();
+    Job job = new Job(jobName,jobWage,jobTag,userName);
+    map.put(jobName, job);
+    map.put("Posted by", userName);
+    firebaseDBReference.child(JOBS).child(jobName).updateChildren(map);
+    map.remove("Posted by");
+    firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
+  }
+
+  public ArrayList<Job> getJobsFromUser(String username){
+    ArrayList<Job> arrJob = new ArrayList<>();
+    if(username == null){
+      return arrJob;
+    }
+    Query query = firebaseDBReference.child(USERS).child(username).child(JOBS);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        //final String jobName;
+        //final String jobWage;
+        //final String jobTag;
+        for(DataSnapshot sc : snapshot.getChildren()){
+          Job job;
+          if(sc.exists() && sc.getChildrenCount()>0) {
+            job = sc.getValue(Job.class);
+            if(job!=null){
+              arrJob.add(job);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return arrJob;
   }
 
 
