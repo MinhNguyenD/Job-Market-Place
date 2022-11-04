@@ -54,8 +54,12 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
     password = sp.getString(PASSWORD,"");
     email = sp.getString("EMAIL","");
     employer = InAppActivityEmployer.employer;
+
     Button postButton = findViewById(R.id.postJobButton);
     postButton.setOnClickListener(JobPostActivity.this);
+
+    Button myJobsButton = findViewById(R.id.myJobsButton);
+    myJobsButton.setOnClickListener(JobPostActivity.this);
 
     setUpJobTagSpinner();
     jobTagsSpinnerListener();
@@ -104,13 +108,16 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   @Override
   public void onClick(View view){
     if(view.getId() == R.id.postJobButton) {
-      Toast.makeText(JobPostActivity.this, "Posted", Toast.LENGTH_SHORT).show();
-      Intent postedSwitch = new Intent(JobPostActivity.this, EmployerJobBoardActivity.class);
-      postedSwitch.putExtra("Job", getJobTitle());
-      postedSwitch.putExtra("Wage", getWage());
-      postedSwitch.putExtra("Tag", tag);
       postJob(getJobTitle(),getWage(),tag);
-      startActivity(postedSwitch);
+      Toast.makeText(JobPostActivity.this, "Posted", Toast.LENGTH_SHORT).show();
+    }
+
+    if(view.getId() == R.id.myJobsButton){
+      Intent viewMyJobs = new Intent(JobPostActivity.this, EmployerJobBoardActivity.class);
+      viewMyJobs.putExtra("Job", getJobTitle());
+      viewMyJobs.putExtra("Wage", getWage());
+      viewMyJobs.putExtra("Tag", tag);
+      startActivity(viewMyJobs);
     }
 
   }

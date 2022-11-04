@@ -25,19 +25,19 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
   static String extractedJob;
   static String extractedWage;
   static String extractedTag;
-  private static String jobItem;
   private Employer employer;
+  private static Job job;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employer_job_board);
     employer = InAppActivityEmployer.employer;
-    if(getIntent().getExtras() != null) {
+    if(employer != null) {
       Bundle bundle = getIntent().getExtras();
       extractedJob = bundle.getString("Job");
       extractedWage = bundle.getString("Wage");
       extractedTag = bundle.getString("Tag");
-      jobItem = extractedJob + " " + extractedWage + " " + extractedTag;
+      job = new Job(extractedJob,extractedWage,extractedTag,employer.getUsername());
     }
     this.loadSmallTasks();
   }
@@ -60,10 +60,13 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<String>();
-    ArrayList<Job> jobList = employer.getMyJobs();
-    for(Job job:jobList){
-      tasks.add(job.toString());
+    if(employer != null) {
+      ArrayList<Job> jobList = employer.getMyJobs();
+      for(Job job:jobList){
+        tasks.add(job.toString());
+      }
     }
+    if(job!=null)tasks.add(job.toString());
     this.store2SharedPrefs(tasks);
 
     RecyclerView recyclerView = findViewById(R.id.recyclerView);

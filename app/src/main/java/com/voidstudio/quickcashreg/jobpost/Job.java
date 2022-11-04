@@ -5,6 +5,8 @@ public class Job {
   private String wage;
   private String tag;
   private String user;
+  //private Location location;
+  private String hardLocation;
 
   public Job(){
 
@@ -15,6 +17,7 @@ public class Job {
       this.wage = wage;
       this.tag = tag;
       this.user = user;
+      hardLocation = "Location";
   }
 
 

@@ -5,8 +5,8 @@ import com.voidstudio.quickcashreg.Firebase;
 
 public class Employee extends User {
 
-  Firebase firebase;
-  private User employee;
+  public Firebase firebase;
+  private static User employee;
   public Employee(String username, String email, String password){
     this.username = username;
     this.email = email;
