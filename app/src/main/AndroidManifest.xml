@@ -41,7 +41,7 @@
 
             <meta-data
                 android:name="android.app.lib_name"
-                android:value="" />
+                android:value="@string/google_maps_key" />
         </activity>
         <activity
             android:name=".WelcomeWindow"
