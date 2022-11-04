@@ -39,7 +39,7 @@ public class JobTest {
   @Test
   public void jobToString(){
     Job job = new Job(JOB_NAME,JOB_WAGE,JOB_TAG,EMPLOYER);
-    String expected = JOB_NAME+" "+JOB_WAGE+" "+JOB_TAG+"  Posted by:" + EMPLOYER;
+    String expected = "Title: " + JOB_NAME + "\nWage: " + JOB_WAGE + " Tag(s): " + JOB_TAG + "\nPosted by:" + EMPLOYER;
     assertEquals("To string error", job.toString(), expected);
   }
 
