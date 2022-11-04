@@ -41,8 +41,9 @@ public abstract class User {
 
   abstract boolean validate();
 
+  public abstract void setJob(String jobName, String jobWage, String jobTag);
 
-
+  abstract User getInstance();
 
 
 

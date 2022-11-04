@@ -91,13 +91,15 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         Intent inAppEmployer = new Intent(this, InAppActivityEmployer.class);
         inAppEmployer.putExtra(WELCOME, "Hi Employer, you logged in");
         inAppEmployer.putExtra(USERNAME, getUserName());
-        inAppEmployer.putExtra(PASSWORD, getPassword());
         startActivity(inAppEmployer);
     }
 
     public void goToInAppActivityEmployee() {
         Intent inAppEmployee = new Intent(this, InAppActivityEmployee.class);
         inAppEmployee.putExtra(WELCOME, "Hi Employee, you logged in");
+        inAppEmployee.putExtra("USERNAME", getUserName());
+        inAppEmployee.putExtra("PASSWORD", getPassword());
+        inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
         startActivity(inAppEmployee);
     }
 
@@ -130,6 +132,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         editor1.putString(PASSWORD, getPassword());
         editor1.putBoolean(EMPTYPE, logIn.employee);
         editor1.putBoolean(ISLOGGED, true);
+        editor1.putString("EMAIL",firebase.getEmailAddress(getUserName()));
         editor1.commit();
     }
 
