@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,8 +33,9 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        if(mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
         this.captureIntent();
     }
 
@@ -64,7 +66,7 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
      */
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
