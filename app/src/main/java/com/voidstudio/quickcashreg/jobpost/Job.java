@@ -39,6 +39,9 @@ public class Job {
 
   @Override
   public String toString(){
-    return jobName+" "+wage+" "+tag+"  Posted by:" + user;
+    if(jobName!=null) {
+      return "Title: " + jobName + "\nWage: " + wage + " Tag(s): " + tag + "\nPosted by:" + user;
+    }
+    else return "A job field is missing";
   }
 }

@@ -32,8 +32,8 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employer_job_board);
     employer = InAppActivityEmployer.employer;
-    if(employer != null) {
-      Bundle bundle = getIntent().getExtras();
+    Bundle bundle = getIntent().getExtras();
+    if(employer != null && bundle.getString("Job")!=null){
       extractedJob = bundle.getString("Job");
       extractedWage = bundle.getString("Wage");
       extractedTag = bundle.getString("Tag");
@@ -42,17 +42,18 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
     this.loadSmallTasks();
   }
 
-  protected void store2SharedPrefs(ArrayList<String> tasks) {
+  protected void storeTasksAndLocation2SharedPrefs(ArrayList<String> tasks) {
     SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     for (int i = 0; i < tasks.size(); i++) {
       if (i % 2 == 0) {
+        //Replace with location feature
         editor.putString(tasks.get(i), "Halifax");
       } else {
         editor.putString(tasks.get(i), "Dhaka");
       }
     }
-    //also add the lat long
+    //also add the lat long (Replace with location feature)
     editor.putString("JobCity", "44.65,-63.58");
     editor.putString("Dhaka", "23.81,90.41");
     editor.apply();
@@ -62,12 +63,13 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
     ArrayList<String> tasks = new ArrayList<String>();
     if(employer != null) {
       ArrayList<Job> jobList = employer.getMyJobs();
+      if(job != null) jobList.add(job);
+      if(employer.getMyJobs().isEmpty()) tasks.add("NO JOBS");
       for(Job job:jobList){
         tasks.add(job.toString());
       }
     }
-    if(job!=null)tasks.add(job.toString());
-    this.store2SharedPrefs(tasks);
+    this.storeTasksAndLocation2SharedPrefs(tasks);
 
     RecyclerView recyclerView = findViewById(R.id.recyclerView);
     LinearLayoutManager loManager = new LinearLayoutManager(this);

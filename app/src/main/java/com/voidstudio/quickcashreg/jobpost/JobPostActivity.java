@@ -114,9 +114,11 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
 
     if(view.getId() == R.id.myJobsButton){
       Intent viewMyJobs = new Intent(JobPostActivity.this, EmployerJobBoardActivity.class);
-      viewMyJobs.putExtra("Job", getJobTitle());
-      viewMyJobs.putExtra("Wage", getWage());
-      viewMyJobs.putExtra("Tag", tag);
+      if(!getJobTitle().equals("")) {
+        viewMyJobs.putExtra("Job", getJobTitle());
+        viewMyJobs.putExtra("Wage", getWage());
+        viewMyJobs.putExtra("Tag", tag);
+      }
       startActivity(viewMyJobs);
     }
 
