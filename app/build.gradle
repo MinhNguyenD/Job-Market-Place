@@ -55,6 +55,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation 'androidx.test:runner:1.4.0'
     androidTestImplementation 'androidx.test:rules:1.4.0'
+    //implementation 'com.google.android.gms:play-services:8.4.0'
 
     /*Mockito*/
     testImplementation "org.mockito:mockito-inline:3.4.0"
@@ -69,6 +70,10 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    /*GoogleMaps*/
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
 
     /*facebook*/
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
