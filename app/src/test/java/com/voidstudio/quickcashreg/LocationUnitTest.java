@@ -20,7 +20,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.Silent.class)
 public class LocationUnitTest {
     static GPS gps;
-    static Location loc; //= new Location("locationland");
+    static Location loc;
     @BeforeClass
     public static void setup() {
         gps = Mockito.mock(GPS.class);
@@ -30,6 +30,7 @@ public class LocationUnitTest {
     }
     @Test
     public void locationIsCorrect(){
+        Mockito.when(gps.getLocation()).thenReturn(loc);
         Location tempLoc = gps.getLocation();
         assertTrue(loc.getLatitude() == tempLoc.getLatitude() && loc.getLongitude() == tempLoc.getLongitude());
     }
