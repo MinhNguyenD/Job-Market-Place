@@ -55,9 +55,10 @@ public class GPS extends Service implements LocationListener {
     return location != null;
   }
 
-  public Location getLocation() {
 
-    locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+
+  public Location getLocation() {
+    locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
     boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
@@ -68,7 +69,6 @@ public class GPS extends Service implements LocationListener {
             locationManager.requestLocationUpdates(
                     LocationManager.GPS_PROVIDER, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,
                     this);
-
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             return location;
           }

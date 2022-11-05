@@ -129,6 +129,7 @@ public class Firebase {
         if(snapshot.exists()) {
           if(snapshot.getValue() != null) {
             firebaseString = snapshot.getValue().toString();
+
             pass = firebaseString;
           }
         }
