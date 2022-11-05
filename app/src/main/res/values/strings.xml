@@ -6,5 +6,6 @@
     <string name="INVALID_PASSWORD">Invalid Password</string>
     <string name="INVALID_EMAIL">Invalid Email</string>
     <string name="INVALID_ROLE">Invalid Role</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyABXMFldutE0vC5QN8vB-bNTZsILNFyASo</string>
     <string name="FIREBASE_DB_URL">https://quickcash-bd58f-default-rtdb.firebaseio.com</string>
 </resources>
