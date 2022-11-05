@@ -151,7 +151,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         } else if(view.getId() == R.id.continueButton) {
             logIn.logIn(getUserName(), getPassword());
             if (logIn.isLogged) {
-               // logIn.isEmployee();
+                //logIn.isEmployee();
                 stayLoggedIn();
                 logIn.getAlertMessage();
                 if(logIn.employee){

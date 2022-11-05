@@ -17,8 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import users.Employee;
+
 public class InAppActivityEmployee extends AppCompatActivity implements View.OnClickListener {
   String channelID = "Notification";
+  int notificationID = 0;
+  private Employee employee;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,18 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     message.setText(welcomeMessage);
     String username = thisIntent.getStringExtra("username");
     String password = thisIntent.getStringExtra("password");
+
+    // Get currentEmployee
+    employee = (Employee) employee.getInstance();
+
+    // Check if the employee has seen the new job posting or not, if not, pop up the notification
+    if (employee.newJobAlert && !employee.newJobSeen) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+         jobNotification();
+      }
+    } else {
+      employee.newJobAlert = false;
+    }
 
 
     Button logOut = findViewById(R.id.employeeLogOut);
@@ -48,21 +64,21 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)
-  protected void addJobNotification() {
+  protected void jobNotification() {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID);
+    builder.setSmallIcon(R.drawable.information);
     builder.setContentTitle("New Job Posting Alert!");
-    builder.setContentText("");
-    builder.setTicker("");
+    builder.setContentText("Messages go here");
     builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-    // change this to job board activity later
     Intent jobBoardIntent = new Intent(this, InAppActivityEmployee.class);
-    PendingIntent pIntent = PendingIntent.getActivity(getBaseContext(), 0, jobBoardIntent, PendingIntent.FLAG_IMMUTABLE);
-
+    PendingIntent pIntent = PendingIntent.getActivity(this, 0, jobBoardIntent, PendingIntent.FLAG_IMMUTABLE);
     builder.setContentIntent(pIntent);
-    NotificationManagerCompat manager = NotificationManagerCompat.from(this);
+
+    NotificationManager manager = getSystemService(NotificationManager.class);
     manager.createNotificationChannel(new NotificationChannel(channelID, "custom", NotificationManager.IMPORTANCE_HIGH));
-    manager.notify(0, builder.build());
+    manager.notify(notificationID, builder.build());
+
   }
 
   @Override
