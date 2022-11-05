@@ -132,7 +132,7 @@ public class Firebase {
   }
 
   private void getValueHelper(String username, String value){
-    final Query user = firebaseDB.getReference().child("users").child(username).child(value);
+    Query user = firebaseDB.getReference().child("users").child(username).child(value);
     user.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -224,6 +224,30 @@ public class Firebase {
     return arrJob;
   }
 
+  public ArrayList<Job> getAllJobs(){
+    ArrayList<Job> arrJob = new ArrayList<>();
+    Query query = firebaseDBReference.child(JOBS);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for(DataSnapshot sc : snapshot.getChildren()){
+          Job job;
+          if(sc.exists() && sc.getChildrenCount()>0) {
+            job = sc.getValue(Job.class);
+            if(job!=null){
+              arrJob.add(job);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return arrJob;
+  }
 
 
 
