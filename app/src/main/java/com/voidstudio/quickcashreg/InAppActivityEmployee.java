@@ -18,8 +18,18 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import users.Employee;
+import users.Employer;
 
 public class InAppActivityEmployee extends AppCompatActivity implements View.OnClickListener {
+  private static String username;
+  private static String password;
+  private static String email;
+
+  public static final String USERNAME = "Username";
+  public static final String PASSWORD = "Password";
+
+  private static Firebase firebase;
+
   String channelID = "Notification";
   int notificationID = 0;
   private Employee employee;
@@ -37,16 +47,20 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     String username = thisIntent.getStringExtra("username");
     String password = thisIntent.getStringExtra("password");
 
-    // Get currentEmployee
-    employee = (Employee) employee.getInstance();
+    // Get current Employee
+    employee = new Employee(username, password);
 
     // Check if the employee has seen the new job posting or not, if not, pop up the notification
+    SharedPreferences jobPostNoti = getSharedPreferences("jobPost", MODE_PRIVATE);
+    SharedPreferences.Editor editor = jobPostNoti.edit();
+    employee.newJobAlert = jobPostNoti.getBoolean("newJobAlert", true);
+    employee.newJobSeen = jobPostNoti.getBoolean("newJobSeen", true);
+
     if (employee.newJobAlert && !employee.newJobSeen) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-         jobNotification();
+        jobNotification();
+        editor.putBoolean("newJobSeen", true);
       }
-    } else {
-      employee.newJobAlert = false;
     }
 
 
@@ -61,6 +75,9 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     SharedPreferences.Editor editor = sharedPrefs.edit();
     editor.putBoolean(LogInActivity.ISLOGGED, false);
     editor.commit();
+
+    sharedPrefs = getSharedPreferences("jobPost", MODE_PRIVATE);
+    sharedPrefs.edit().clear().commit();
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)
@@ -68,7 +85,7 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID);
     builder.setSmallIcon(R.drawable.information);
     builder.setContentTitle("New Job Posting Alert!");
-    builder.setContentText("Messages go here");
+    builder.setContentText("New Job is Posted!!");
     builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
     Intent jobBoardIntent = new Intent(this, InAppActivityEmployee.class);

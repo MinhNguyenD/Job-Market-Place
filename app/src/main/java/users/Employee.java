@@ -19,6 +19,20 @@ public class Employee extends User {
         firebase = Firebase.getInstance();
     }
 
+    public Employee(String username, String email, String password, Employer employer){
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.employer = employer;
+        firebase = Firebase.getInstance();
+    }
+
+    public Employee(String username, String password) {
+        this.username = username;
+        this.password = password;
+        firebase = Firebase.getInstance();
+    }
+
     protected Task<Void> search(){
         return null;
     }
@@ -32,13 +46,8 @@ public class Employee extends User {
     }
     public User getInstance(){
         if(employee == null){
-            employee = new Employer(username, email, password);
+            employee = new Employee(username, email, password);
         }
         return employee;
-    }
-
-    public void update() {
-        //Update newJobAlert to true
-        newJobAlert = true;
     }
 }

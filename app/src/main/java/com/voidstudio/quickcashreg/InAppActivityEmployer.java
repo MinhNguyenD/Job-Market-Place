@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,15 +56,18 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         username = sp.getString(USERNAME,"");
         password = sp.getString(PASSWORD,"");
         email = firebase.getEmailAddress(username);
-        employer = new Employer(username,password,email);
+        employer = new Employer(username, email, password);
 
     }
 
     //Exact same method exists in employee, consider making new class
     private void resetLogInStatus() {
-        SharedPreferences sharedPrefs = getSharedPreferences(LogInActivity.PREFERENCES, Context.MODE_PRIVATE); //
+        SharedPreferences sharedPrefs = getSharedPreferences(LogInActivity.PREFERENCES, MODE_PRIVATE); //
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(LogInActivity.ISLOGGED, false);
+        editor.remove(LogInActivity.USERNAME);
+        editor.remove(LogInActivity.PASSWORD);
+        editor.remove(LogInActivity.EMPTYPE);
         editor.commit();
     }
 
