@@ -7,11 +7,12 @@ public class Employee extends User {
 
   public Firebase firebase;
   private static User employee;
-  public Employee(String username, String email, String password){
+  public Employee(String username, String email, String userType, String password){
     this.username = username;
     this.email = email;
     this.password = password;
-    firebase = Firebase.getInstance();
+    this.userType = userType;
+//    firebase = Firebase.getInstance();
   }
 
  protected Task<Void> search(){
