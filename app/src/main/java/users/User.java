@@ -12,34 +12,38 @@ public abstract class User {
 
   }
 
-  protected String getUsername(){
+  public String getUsername(){
     return username;
   }
 
-  protected String getPassword(){
+  public String getPassword(){
     return password;
   };
 
-  protected String getEmail(){
+  public String getEmail(){
     return email;
   };
 
-  protected void setUsername(String username){
+  public void setUsername(String username){
     this.username = username;
   }
 
-  protected void setPassword(String password){
+  public void setPassword(String password){
     this.password = password;
-  };
+  }
 
-  protected void setEmail(String email){
+
+  public void setEmail(String email){
     this.email = email;
   }
 
   abstract Task<Void> search();
 
+  abstract boolean validate();
 
+  public abstract void setJob(String jobName, String jobWage, String jobTag);
 
+  abstract User getInstance();
 
 
 

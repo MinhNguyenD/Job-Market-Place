@@ -47,7 +47,8 @@ public class LogIn {
    * @return True if the user is an employee
    */
   protected boolean isEmployee() {
-    if (firebase.getUserType(getUserName()).equals("Employee")) {
+    firebase.getUserType(getUserName());
+    if (firebase.employee) {
       employee = true;
     } else {
       employee = false;
@@ -101,6 +102,7 @@ public class LogIn {
    * @return true if log in is successful.
    */
   protected boolean logIn(String username, String password){
+
     if(isEmployee()) employee = true;
 
     if(emptyCredentials()){
@@ -109,7 +111,7 @@ public class LogIn {
     }
 
     else if(!passwordMatch(password)){
-      alertMessage = INCORRECT_PASSWORD;
+      alertMessage = INCORRECT_PASSWORD + firebase.pass;
       isLogged = false;
     }
 

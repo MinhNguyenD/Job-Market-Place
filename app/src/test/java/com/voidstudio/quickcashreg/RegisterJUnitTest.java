@@ -32,21 +32,21 @@ public class RegisterJUnitTest {
     //check if email is correctly entered
     @Test
     public void checkIfEmailIsValid(){
-        assertTrue(MainActivity.isValidEmailAddress("bcd456@dal.ca"));
+        assertTrue(Register.isValidEmailAddress("bcd456@dal.ca"));
     }
 
     //check if email is invalid
     @Test
     public void checkIfEmailIsInvalid() {
-        assertFalse(MainActivity.isValidEmailAddress("bcd456dal.ca"));
+        assertFalse(Register.isValidEmailAddress("bcd456dal.ca"));
     }
 
     //check if password is valid (length) : minimum 6 characters
     @Test
     public void checkIfPasswordIsValid(){
-        assertTrue(MainActivity.isValidPassword("123abcd"));
-        assertTrue(MainActivity.isValidPassword("123445"));
-        assertFalse(MainActivity.isValidPassword("Hello"));
+        assertTrue(Register.isValidPassword("123abcd"));
+        assertTrue(Register.isValidPassword("123445"));
+        assertFalse(Register.isValidPassword("Hello"));
     }
 
     //check if password and confirmPassword are the same
@@ -56,8 +56,8 @@ public class RegisterJUnitTest {
         String v2 = "team07";
         String v3 = "team70"; //wrong confirmPassword
 
-        assertTrue(MainActivity.isValidConfirmPassword(v1,v2));
-        assertFalse(MainActivity.isValidConfirmPassword(v1,v3));
+        assertTrue(Register.isValidConfirmPassword(v1,v2));
+        assertFalse(Register.isValidConfirmPassword(v1,v3));
     }
 
 }

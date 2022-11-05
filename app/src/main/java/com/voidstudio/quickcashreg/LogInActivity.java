@@ -26,7 +26,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
     public static final String ISLOGGED = "logged";
-
+    public static final String EMPTYPE = "type";
 
     //Edit text reader helper method using delegation
     private final TextReader textReader = new TextReader();
@@ -41,7 +41,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         firebase = Firebase.getInstance();
-
         Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
         backToRegisterScreen.setOnClickListener(LogInActivity.this);
 
@@ -51,12 +50,12 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         // Find the Show Password button and the Password Field
         Button showPassword = findViewById(R.id.showHidePassword);
         showPassword.setOnClickListener(LogInActivity.this);
-
         // logic for stay log in
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
 
         if (sp.getBoolean(ISLOGGED, false)) {
-            goToInAppActivityEmployer();
+            if(sp.getBoolean(EMPTYPE,false)) goToInAppActivityEmployee();
+            else goToInAppActivityEmployer();
         }
 
         else {
@@ -91,13 +90,15 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         Intent inAppEmployer = new Intent(this, InAppActivityEmployer.class);
         inAppEmployer.putExtra(WELCOME, "Hi Employer, you logged in");
         inAppEmployer.putExtra(USERNAME, getUserName());
-        inAppEmployer.putExtra(PASSWORD, getPassword());
         startActivity(inAppEmployer);
     }
 
     public void goToInAppActivityEmployee() {
         Intent inAppEmployee = new Intent(this, InAppActivityEmployee.class);
         inAppEmployee.putExtra(WELCOME, "Hi Employee, you logged in");
+        inAppEmployee.putExtra("USERNAME", getUserName());
+        inAppEmployee.putExtra("PASSWORD", getPassword());
+        inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
         startActivity(inAppEmployee);
     }
 
@@ -105,16 +106,18 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      * If the user wants to register, this method switches the activity to register activity
      */
     protected void switchToRegisterWindow(){
-        Intent registerSwitch = new Intent(LogInActivity.this, MainActivity.class);
+        Intent registerSwitch = new Intent(LogInActivity.this, RegisterActivity.class);
         startActivity(registerSwitch);
     }
 
     protected String getUserName(){
-        EditText usernameBox = findViewById(R.id.logInUserName);
+        TextReader textReader = new TextReader();
+        EditText  usernameBox = findViewById(R.id.logInUserName);
         return textReader.getFromEditText(usernameBox);
     }
 
     protected String getPassword(){
+        TextReader textReader = new TextReader();
         EditText passwordBox = findViewById(R.id.textPassword);
         return textReader.getFromEditText(passwordBox);
     }
@@ -126,7 +129,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         // Add username and password to login sharedPreferences state
         editor1.putString(USERNAME, getUserName());
         editor1.putString(PASSWORD, getPassword());
+        editor1.putBoolean(EMPTYPE, logIn.employee);
         editor1.putBoolean(ISLOGGED, true);
+        editor1.putString("EMAIL",firebase.getEmailAddress(getUserName()));
         editor1.commit();
     }
 
@@ -148,9 +153,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         } else if(view.getId() == R.id.continueButton) {
             logIn.logIn(getUserName(), getPassword());
             if (logIn.isLogged) {
+               // logIn.isEmployee();
                 stayLoggedIn();
                 logIn.getAlertMessage();
-                logIn.isEmployee();
                 if(logIn.employee){
                     goToInAppActivityEmployee();
                 }

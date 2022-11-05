@@ -7,7 +7,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.voidstudio.quickcashreg.jobpost.Job;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Firebase {
   static final String FIREBASE_URL =
@@ -15,11 +21,16 @@ public class Firebase {
   private static FirebaseDatabase firebaseDB;
   private static Firebase firebase;
   private static DatabaseReference firebaseDBReference;
-  private DatabaseReference userChild;
+  private final String USERS = "users";
+  private final String JOBS = "jobs";
+
+
+
   protected String firebaseString;
   protected String pass;
+
   private boolean exists = false;
-  private boolean matches = false;
+  protected boolean employee = false;
   private Firebase() {
     firebaseDB = FirebaseDatabase.getInstance();
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
@@ -37,6 +48,7 @@ public class Firebase {
   }
 
 
+
   public void initializeDatabase(){
       firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
       firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
@@ -49,7 +61,7 @@ public class Firebase {
   }
 
   protected String getUserType(String username){
-    return getValueFromUser(username, "userType");
+    return getValueFromUser(username, "type");
   }
 
   protected String getPassword(String username){
@@ -92,8 +104,8 @@ public class Firebase {
     return null;
   }
 
-  private Task<Void> existingUserHelper(String username){
-    DatabaseReference users = firebaseDBReference.child("users");
+  private void existingUserHelper(String username){
+    final Query users = firebaseDBReference.child("users");
     users.
             addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
@@ -109,7 +121,6 @@ public class Firebase {
               public void onCancelled(@NonNull DatabaseError error) {
               }
             });
-    return null;
   }
 
 
@@ -120,16 +131,16 @@ public class Firebase {
       return exists;
   }
 
-  private Task<Void> getValueHelper(String username, String value){
-    DatabaseReference user = firebaseDB.getReference().child("users").child(username)
-            .child(value);
+  private void getValueHelper(String username, String value){
+    final Query user = firebaseDB.getReference().child("users").child(username).child(value);
     user.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         if(snapshot.exists()) {
-          if(snapshot.getValue() != null) {
-            firebaseString = snapshot.getValue().toString();
-
+          Object sc = snapshot.getValue();
+          if(sc != null) {
+            firebaseString = sc.toString();
+            if(firebaseString.equals("Employee")) employee = true;
             pass = firebaseString;
           }
         }
@@ -139,8 +150,10 @@ public class Firebase {
 
       }
     });
-    return null;
   }
+
+
+
 
   /**
    * Gets the value as string
@@ -159,6 +172,56 @@ public class Firebase {
   //Both of these should be in log in(THIS IS FOR DEBUGGING)
   protected boolean checkIfPasswordMatches(String username, String password){
      return getPassword(username).equals(password);
+  }
+
+  protected void addUser(String username, String password, String email, String type){
+    Map<String, Object> map = new HashMap<>();
+    map.put("password", password);
+    map.put("email", email);
+    map.put("type", type);
+    firebaseDBReference.child(USERS).child(username).updateChildren(map);
+
+  }
+
+  public void addJob(String jobName, String jobWage, String jobTag, String userName){
+    Map<String, Object> map = new HashMap<>();
+    Job job = new Job(jobName,jobWage,jobTag,userName);
+    map.put(jobName, job);
+    map.put("Posted by", userName);
+    firebaseDBReference.child(JOBS).child(jobName).updateChildren(map);
+    map.remove("Posted by");
+    firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
+  }
+
+  public ArrayList<Job> getJobsFromUser(String username){
+    ArrayList<Job> arrJob = new ArrayList<>();
+    if(username == null){
+      return arrJob;
+    }
+    Query query = firebaseDBReference.child(USERS).child(username).child(JOBS);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        //final String jobName;
+        //final String jobWage;
+        //final String jobTag;
+        for(DataSnapshot sc : snapshot.getChildren()){
+          Job job;
+          if(sc.exists() && sc.getChildrenCount()>0) {
+            job = sc.getValue(Job.class);
+            if(job!=null){
+              arrJob.add(job);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return arrJob;
   }
 
 
