@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -13,11 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.InAppActivityEmployee;
-import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
 
 import java.util.ArrayList;
 
+import users.Employee;
 import users.Employer;
 
 public class EmployeeJobBoardActivity extends AppCompatActivity implements RecyclerAdapter.ItemClickListener {
@@ -27,14 +28,16 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
   static String extractedJob;
   static String extractedWage;
   static String extractedTag;
-  private Employer employer;
+  private static Employee employee;
+  private static String preference;
   private static Job job;
   private static Firebase firebase;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employee_job_board);
-    employer = InAppActivityEmployee.employer;
+    employee = InAppActivityEmployee.employee;
 //    Bundle bundle = getIntent().getExtras();
 //    if(employer != null && bundle.getString("Job")!=null){
 //      extractedJob = bundle.getString("Job");
@@ -42,9 +45,22 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
 //      extractedTag = bundle.getString("Tag");
 //      job = new Job(extractedJob,extractedWage,extractedTag,employer.getUsername());
 //    }
-    firebase = Firebase.getInstance();
     this.loadSmallTasks();
   }
+
+//  @Override
+//  protected void onResume() {
+//    super.onResume();
+//    employee = InAppActivityEmployee.employee;
+//    if (employee == null) {
+//      Toast.makeText(this, "Employee is null", Toast.LENGTH_SHORT).show();
+//    } else {
+//      Toast.makeText(this, "Employee is not null", Toast.LENGTH_SHORT).show();
+//    }
+//    //preference = employee.getPreference();
+//    Toast.makeText(this, "Im back!", Toast.LENGTH_SHORT).show();
+//    loadSmallTasks();
+//  }
 
   protected void storeTasksAndLocation2SharedPrefs(ArrayList<String> tasks) {
     SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
@@ -65,10 +81,21 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<>();
-    ArrayList<Job> jobList = firebase.getAllJobs();
+    ArrayList<Job> jobList = employee.getAllJobs();
+    String preference = employee.getPreference();
 
-    for (Job job: jobList) {
-      tasks.add(job.toString());
+    if (preference != null && !preference.equals("")) {
+      for (Job job: jobList) {
+        if (job.getTag().equals(employee.getPreference())) {
+          Toast.makeText(this, job.getTag(), Toast.LENGTH_SHORT).show();
+          tasks.add(job.toString());
+        }
+      }
+    }
+    else {
+      for (Job job: jobList) {
+        tasks.add(job.toString());
+      }
     }
 //    if(employer != null) {
 //      ArrayList<Job> jobList = employer.getMyJobs();

@@ -40,7 +40,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
+        firebase = Firebase.getInstance();
         Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
         backToRegisterScreen.setOnClickListener(LogInActivity.this);
 
@@ -63,7 +63,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             editor.putBoolean(ISLOGGED, false);
             editor.commit();
         }
-        firebase = Firebase.getInstance();
 
     }
 
