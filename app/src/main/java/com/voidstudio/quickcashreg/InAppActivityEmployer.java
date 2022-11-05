@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.Location.GPSActivity;
 import com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
 
@@ -48,6 +49,12 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         Button jobPost = findViewById(R.id.JobPost);
         jobPost.setOnClickListener(InAppActivityEmployer.this);
 
+        Button locationSettings = findViewById(R.id.locationSettings);
+        locationSettings.setOnClickListener(InAppActivityEmployer.this);
+
+
+
+
 
         firebase = Firebase.getInstance();
         sp = getSharedPreferences("login", MODE_PRIVATE);
@@ -67,27 +74,31 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void onClick(View view){
-        if(view.getId() == R.id.logOutEmployer){
+    public void onClick(View view) {
+        if (view.getId() == R.id.logOutEmployer) {
             resetLogInStatus();
             Intent logOutIntent = new Intent(InAppActivityEmployer.this, LogInActivity.class);
             startActivity(logOutIntent);
         }
-        if(view.getId() == R.id.JobBoardButton){
+        if (view.getId() == R.id.JobBoardButton) {
             Intent jobBoardIntent = new Intent(InAppActivityEmployer.this, EmployerJobBoardActivity.class);
             jobBoardIntent.putExtra("USERNAME", username);
             jobBoardIntent.putExtra("PASSWORD", password);
-            jobBoardIntent.putExtra("EMAIL",email);
+            jobBoardIntent.putExtra("EMAIL", email);
             startActivity(jobBoardIntent);
         }
-        if(view.getId() == R.id.JobPost){
+        if (view.getId() == R.id.JobPost) {
             Intent jobPostIntent = new Intent(InAppActivityEmployer.this, JobPostActivity.class);
             jobPostIntent.putExtra("USERNAME", username);
             jobPostIntent.putExtra("PASSWORD", password);
-            jobPostIntent.putExtra("EMAIL",email);
+            jobPostIntent.putExtra("EMAIL", email);
             startActivity(jobPostIntent);
         }
-    }
 
+        if (view.getId() == R.id.locationSettings) {
+            Intent locationIntent = new Intent(InAppActivityEmployer.this, GPSActivity.class);
+            startActivity(locationIntent);
+        }
+    }
 
 }
