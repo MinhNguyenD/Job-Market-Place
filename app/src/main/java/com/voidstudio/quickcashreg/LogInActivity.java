@@ -40,7 +40,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        firebase = Firebase.getInstance();
         Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
         backToRegisterScreen.setOnClickListener(LogInActivity.this);
 
@@ -64,6 +63,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             editor.commit();
         }
 
+        // Please do not move this command position, moving it to the top of onCreate will mess up login
+        firebase = Firebase.getInstance();
     }
 
     /**

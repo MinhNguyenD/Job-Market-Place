@@ -34,7 +34,7 @@ public class Employee extends User {
     }
     public User getInstance(){
         if(employee == null){
-            employee = new Employer(username, email, password);
+            employee = new Employee(username, email, password);
         }
         return employee;
     }
