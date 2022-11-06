@@ -54,7 +54,7 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         username = sp.getString(USERNAME,"");
         password = sp.getString(PASSWORD,"");
         email = sp.getString("EMAIL","");
-        employer = new Employer(username,password,email);
+        employer = new Employer(username,email, password);
 
     }
 
@@ -91,3 +91,4 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
 
 }
+
