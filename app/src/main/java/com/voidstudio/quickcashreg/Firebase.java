@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg;
 
+import android.location.Location;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
@@ -183,9 +185,9 @@ public class Firebase {
 
   }
 
-  public void addJob(String jobName, String jobWage, String jobTag, String userName, String location){
+  public void addJob(String jobName, String jobWage, String jobTag, String userName, String city, Location jobLocation){
     Map<String, Object> map = new HashMap<>();
-    Job job = new Job(jobName,jobWage,jobTag,userName,location);
+    Job job = new Job(jobName,jobWage,jobTag,userName,city);
     map.put(jobName, job);
     firebaseDBReference.child(JOBS).updateChildren(map);
     firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);

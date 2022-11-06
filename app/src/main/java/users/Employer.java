@@ -1,5 +1,7 @@
 package users;
 
+import android.location.Location;
+
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
@@ -28,8 +30,8 @@ private ArrayList<Job> myJobs;
   }
 
 
-  public void setJob(String jobName, String jobWage, String jobTag, String location){
-    firebase.addJob(jobName,jobWage,jobTag,username, location);
+  public void setJob(String jobName, String jobWage, String jobTag, String location, Location jobLocation){
+    firebase.addJob(jobName,jobWage,jobTag,username, location, jobLocation);
   }
   public User getInstance(){
     if(employer == null){
@@ -42,6 +44,7 @@ private ArrayList<Job> myJobs;
     return myJobs;
   }
 
+  public boolean isEmployee(){return false;}
 
 
 }

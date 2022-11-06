@@ -1,5 +1,7 @@
 package users;
 
+import android.location.Location;
+
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.Firebase;
 
@@ -22,7 +24,7 @@ public class Employee extends User {
     return false;
 
  }
- public void setJob(String jobName, String jobWage, String jobTag, String location){
+ public void setJob(String jobName, String jobWage, String jobTag, String location, Location jobLocation){
 
  }
  public User getInstance(){
@@ -30,5 +32,8 @@ public class Employee extends User {
      employee = new Employer(username, email, password);
    }
    return employee;
+ }
+ public boolean isEmployee(){
+    return true;
  }
 }

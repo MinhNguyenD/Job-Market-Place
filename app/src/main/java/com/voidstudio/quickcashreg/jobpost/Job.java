@@ -1,24 +1,27 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import android.location.Location;
+
 public class Job {
   private String jobName;
   private String wage;
   private String tag;
   private String user;
   //private Location location;
-  private String hardLocation;
-  private String location;
+  private static Location location;
+  private String city;
 
   public Job(){
 
   }
 
-  public Job(String jobName, String wage, String tag, String user, String location){
+  public Job(String jobName, String wage, String tag, String user, String city){
       this.jobName = jobName;
       this.wage = wage;
       this.tag = tag;
       this.user = user;
-      this.location = location;
+      this.city = city;
+
   }
 
 
@@ -38,9 +41,18 @@ public class Job {
     return jobName;
   }
 
-  public String getLocation(){
+  public String getCity(){
+    return city;
+  }
+
+  public void setLocation(Location location){
+    Job.location = location;
+  }
+  public Location getLocation(){
+    if(location == null) return null;
     return location;
   }
+
 
 
   @Override

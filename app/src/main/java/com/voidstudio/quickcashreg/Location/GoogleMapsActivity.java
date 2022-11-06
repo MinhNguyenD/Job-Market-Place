@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -21,7 +22,7 @@ import com.voidstudio.quickcashreg.R;
 
 public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    Location latlong = null;
+    Location location = null;
     String city = new String("Halifax");
     private static final int REQUEST_CODE_PERMISSION = 2;
     String fPermission = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -47,12 +48,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_maps);
-        GPS gps = new GPS(this);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         if(getLocationPermission()){
          initMap();
-         Location location = new Location("gps");
         }
         this.captureIntent();
     }
@@ -75,14 +74,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             Intent latlongItent = getIntent();
             if (latlongItent != null) {
                 Bundle bundle = latlongItent.getExtras();
-                if (bundle.containsKey("taskLocation"))
-                    this.latlong = (Location)bundle.get("taskLocation");
-                if (bundle.containsKey("City"))
+                if (bundle.containsKey("Task Location"))
+                    this.location = (Location)bundle.get("Task Location");
+                if (bundle.containsKey("City")) {
                     this.city = bundle.get("City").toString();
+                    Toast.makeText(this, city, Toast.LENGTH_LONG).show();
+                }
             }
             else{
                 GPS gps = new GPS(this);
-                latlong = gps.getLocation();
+                location = gps.getLocation();
             }
         } catch (Exception exc) {
             exc.printStackTrace();

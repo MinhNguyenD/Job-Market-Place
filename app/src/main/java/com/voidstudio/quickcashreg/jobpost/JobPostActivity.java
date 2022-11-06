@@ -3,6 +3,9 @@ package com.voidstudio.quickcashreg.jobpost;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +23,10 @@ import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.Location.GPS;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.TextReader;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import users.Employer;
 
@@ -113,11 +120,23 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
 
   private void postJob(String jobName, String jobWage, String jobTag){
     employer.setLocation(new GPS(this).getLocation());
-    employer.setJob(jobName,jobWage,jobTag,employer.getLocation().toString());
+    employer.setJob(jobName,jobWage,jobTag,cityFromLocationGetter(employer.getLocation()), employer.getLocation());
 
   }
 
+  public String cityFromLocationGetter(Location location){
+    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+    String city = "";
+    try {
+      List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),
+              1);
+      city = addresses.get(0).getAddressLine(0);
 
+    } catch (IOException e) {
+      Toast.makeText(this,"BadLocation",Toast.LENGTH_SHORT).show();
+    }
+    return city;
+  }
 
 
   @Override

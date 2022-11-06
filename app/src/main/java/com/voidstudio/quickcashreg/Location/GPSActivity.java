@@ -115,7 +115,7 @@ public class GPSActivity extends AppCompatActivity implements View.OnClickListen
     }
   }
 
-  private String cityFromLocationGetter(Location location){
+  public String cityFromLocationGetter(Location location){
     Geocoder geocoder = new Geocoder(this, Locale.getDefault());
     try {
       List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),

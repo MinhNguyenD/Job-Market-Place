@@ -28,9 +28,11 @@ public class JobDetailsActivity extends AppCompatActivity {
 
     Intent sentItem = getIntent();
     String item = sentItem.getStringExtra("selectedItem");
+    String distanceToYou = sentItem.getStringExtra("Distance to you");
     TextView statusLabel = findViewById(R.id.statusLabel);
     String itemLocation = getItemLocation(item);
-    String statusText = "Location: " + itemLocation;
+
+    String statusText = "Location: " + itemLocation + "\nDistance to you: " + distanceToYou;
     statusLabel.setText(statusText);
 
     try {
@@ -46,7 +48,7 @@ public class JobDetailsActivity extends AppCompatActivity {
       public void onClick(View view) {
         String locCoord = getLocationCoordinate(itemLocation);
         Intent mapIntent = new Intent(getBaseContext(), GoogleMapsActivity.class);
-        mapIntent.putExtra("city", itemLocation);
+        mapIntent.putExtra("City", itemLocation);
         mapIntent.putExtra("taskLocation", locCoord);
         startActivity(mapIntent);
       }

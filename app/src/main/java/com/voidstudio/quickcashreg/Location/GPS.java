@@ -83,6 +83,12 @@ public class GPS extends Service implements LocationListener {
     return location;
   }
 
+
+  public double calculateDistanceKM(Location source, Location destination){
+    double sourceToDestination = source.distanceTo(destination)/1000;
+    return sourceToDestination;
+  }
+
   @Nullable
   @Override
   public IBinder onBind(Intent intent) {

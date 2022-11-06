@@ -57,11 +57,13 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
 
         firebase = Firebase.getInstance();
+        gps = new GPS(this);
         sp = getSharedPreferences("login", MODE_PRIVATE);
         username = sp.getString(USERNAME,"");
         password = sp.getString(PASSWORD,"");
         email = sp.getString("EMAIL","");
-        employer = new Employer(username,password,email);
+        employer = new Employer(username,email,password);
+        employer.setLocation(gps.getLocation());
 
     }
 

@@ -9,7 +9,7 @@ public abstract class User {
   protected String username;
   protected String password;
   protected String email;
-  private Location location;
+  private static Location location;
 
   public User(){
 
@@ -52,9 +52,11 @@ public abstract class User {
 
   abstract boolean validate();
 
-  public abstract void setJob(String jobName, String jobWage, String jobTag, String location);
+  public abstract void setJob(String jobName, String jobWage, String jobTag, String location, Location jobLocation);
 
   abstract User getInstance();
+
+  public abstract boolean isEmployee();
 
 
 
