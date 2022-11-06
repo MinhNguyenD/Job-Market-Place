@@ -14,6 +14,10 @@ public class Employer extends User {
 
   protected static Employee employee;
 
+public class Employer extends User {
+  private static Firebase firebase;
+  private static Employer employer;
+  private ArrayList<Job> myJobs;
   public Employer(String username, String email, String password){
     this.username = username;
     this.email = email;
@@ -47,3 +51,5 @@ public class Employer extends User {
   }
 
 }
+
+

@@ -11,11 +11,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
+import com.voidstudio.quickcashreg.jobpost.EmployeeJobBoardActivity;
+import com.voidstudio.quickcashreg.jobpost.SavePreferenceActivity;
+
+import users.Employee;
 
 import com.voidstudio.quickcashreg.jobpost.EmployeeJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.SavePreferenceActivity;

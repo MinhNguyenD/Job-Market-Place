@@ -132,7 +132,7 @@ public class Firebase {
   }
 
   private void getValueHelper(String username, String value){
-    final Query user = firebaseDB.getReference().child("users").child(username).child(value);
+    Query user = firebaseDB.getReference().child("users").child(username).child(value);
     user.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
