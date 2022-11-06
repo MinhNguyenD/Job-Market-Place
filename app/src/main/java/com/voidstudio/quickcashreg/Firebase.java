@@ -187,9 +187,7 @@ public class Firebase {
     Map<String, Object> map = new HashMap<>();
     Job job = new Job(jobName,jobWage,jobTag,userName);
     map.put(jobName, job);
-    map.put("Posted by", userName);
-    firebaseDBReference.child(JOBS).child(jobName).updateChildren(map);
-    map.remove("Posted by");
+    firebaseDBReference.child(JOBS).updateChildren(map);
     firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
   }
 
@@ -224,6 +222,30 @@ public class Firebase {
     return arrJob;
   }
 
+  public ArrayList<Job> getAllJobs(){
+    ArrayList<Job> arrJob = new ArrayList<>();
+    Query query = firebaseDBReference.child(JOBS);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for(DataSnapshot sc : snapshot.getChildren()){
+          Job job;
+          if(sc.exists() && sc.getChildrenCount()>0) {
+            job = sc.getValue(Job.class);
+            if(job!=null){
+              arrJob.add(job);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return arrJob;
+  }
 
 
 

@@ -18,7 +18,6 @@ public class Employer extends User {
     this.username = username;
     this.email = email;
     this.password = password;
-    attachEmployee();
     firebase = Firebase.getInstance();
     observerList = new ArrayList<>();
     myJobs = firebase.getJobsFromUser(username);
@@ -45,10 +44,6 @@ public class Employer extends User {
 
   public ArrayList<Job> getMyJobs(){
     return myJobs;
-  }
-
-  public void attachEmployee() {
-    employee = new Employee("shaoqin", "sh832833@dal.ca", "123456", this);
   }
 
 }

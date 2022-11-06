@@ -2,29 +2,28 @@ package users;
 
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.jobpost.Job;
+
+import java.util.ArrayList;
 
 public class Employee extends User {
 
     // For observing employer
-    protected Employer employer;
     public boolean newJobAlert;
     public boolean newJobSeen;
 
     public Firebase firebase;
     private static User employee;
+    private static String preference;
+    private ArrayList<Job> allJob;
+
+
     public Employee(String username, String email, String password){
         this.username = username;
         this.email = email;
         this.password = password;
         firebase = Firebase.getInstance();
-    }
-
-    public Employee(String username, String email, String password, Employer employer){
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.employer = employer;
-        firebase = Firebase.getInstance();
+        allJob = firebase.getAllJobs();
     }
 
     public Employee(String username, String password) {
@@ -50,4 +49,17 @@ public class Employee extends User {
         }
         return employee;
     }
+
+    public void setPreference(String preference) {
+        Employee.preference = preference;
+    }
+
+    public String getPreference() {
+        return preference;
+    }
+
+    public ArrayList<Job> getAllJobs() {
+        return allJob;
+    }
+
 }

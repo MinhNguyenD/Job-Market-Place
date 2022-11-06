@@ -17,8 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.voidstudio.quickcashreg.jobpost.EmployeeJobBoardActivity;
+import com.voidstudio.quickcashreg.jobpost.SavePreferenceActivity;
+
 import users.Employee;
-import users.Employer;
 
 public class InAppActivityEmployee extends AppCompatActivity implements View.OnClickListener {
   private static String username;
@@ -27,12 +29,14 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
 
   public static final String USERNAME = "Username";
   public static final String PASSWORD = "Password";
+  private SharedPreferences sp;
 
   private static Firebase firebase;
 
   String channelID = "Notification";
   int notificationID = 0;
-  private Employee employee;
+  //private Employee employee;
+  public static Employee employee;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,29 +48,39 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     String welcomeMessage = thisIntent.getStringExtra(LogInActivity.WELCOME);
     TextView message = findViewById(R.id.Employee);
     message.setText(welcomeMessage);
-    String username = thisIntent.getStringExtra("username");
-    String password = thisIntent.getStringExtra("password");
-
-    // Get current Employee
-    employee = new Employee(username, password);
-
-    // Check if the employee has seen the new job posting or not, if not, pop up the notification
-    SharedPreferences jobPostNoti = getSharedPreferences("jobPost", MODE_PRIVATE);
-    SharedPreferences.Editor editor = jobPostNoti.edit();
-    employee.newJobAlert = jobPostNoti.getBoolean("newJobAlert", true);
-    employee.newJobSeen = jobPostNoti.getBoolean("newJobSeen", true);
-
-    if (employee.newJobAlert && !employee.newJobSeen) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        jobNotification();
-        editor.putBoolean("newJobSeen", true);
-      }
-    }
+//    String username = thisIntent.getStringExtra("username");
+//    String password = thisIntent.getStringExtra("password");
 
 
     Button logOut = findViewById(R.id.employeeLogOut);
     logOut.setOnClickListener(InAppActivityEmployee.this);
 
+    Button jobBoard = findViewById(R.id.employeeJobBoard);
+    jobBoard.setOnClickListener(InAppActivityEmployee.this);
+
+    Button savePreference = findViewById(R.id.setPreference);
+    savePreference.setOnClickListener(InAppActivityEmployee.this);
+
+    sp = getSharedPreferences("login", MODE_PRIVATE);
+    username = sp.getString("Username","");
+    password = sp.getString("Password","");
+    email = sp.getString("EMAIL","");
+
+    employee = new Employee(username, email, password);
+
+    // Check if the employee has seen the new job posting or not, if not, pop up the notification
+    SharedPreferences jobPostNoti = getSharedPreferences("jobPost", MODE_PRIVATE);
+    employee.newJobAlert = jobPostNoti.getBoolean("newJobAlert", true);
+    employee.newJobSeen = jobPostNoti.getBoolean("newJobSeen", true);
+
+    SharedPreferences.Editor editor = jobPostNoti.edit();
+    if (employee.newJobAlert && !employee.newJobSeen) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        jobNotification();
+        editor.putBoolean("newJobSeen", true).commit();
+      }
+    }
+    firebase = Firebase.getInstance();
   }
 
   //This method could be in its own class, many different activities will need it
@@ -88,7 +102,7 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     builder.setContentText("New Job is Posted!!");
     builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-    Intent jobBoardIntent = new Intent(this, InAppActivityEmployee.class);
+    Intent jobBoardIntent = new Intent(this, EmployeeJobBoardActivity.class);
     PendingIntent pIntent = PendingIntent.getActivity(this, 0, jobBoardIntent, PendingIntent.FLAG_IMMUTABLE);
     builder.setContentIntent(pIntent);
 
@@ -106,6 +120,20 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
       Intent logOutIntent = new Intent(InAppActivityEmployee.this, LogInActivity.class);
       startActivity(logOutIntent);
     }
+
+    if(view.getId() == R.id.employeeJobBoard){
+      Intent jobBoardIntent = new Intent(InAppActivityEmployee.this, EmployeeJobBoardActivity.class);
+      jobBoardIntent.putExtra("USERNAME", username);
+      jobBoardIntent.putExtra("PASSWORD", password);
+      jobBoardIntent.putExtra("EMAIL",email);
+      startActivity(jobBoardIntent);
+    }
+
+    if (view.getId() == R.id.setPreference) {
+      Intent savePreference = new Intent(InAppActivityEmployee.this, SavePreferenceActivity.class);
+      startActivity(savePreference);
+    }
+
 
   }
 
