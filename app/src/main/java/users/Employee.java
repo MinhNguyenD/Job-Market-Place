@@ -12,6 +12,7 @@ public class Employee extends User {
     private static User employee;
     private static String preference;
     private ArrayList<Job> allJob;
+
     public Employee(String username, String email, String password){
         this.username = username;
         this.email = email;
