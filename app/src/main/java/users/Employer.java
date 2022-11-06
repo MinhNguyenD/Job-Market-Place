@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Employer extends User {
 private static Firebase firebase;
 private static Employer employer;
+
 private ArrayList<Job> myJobs;
   public Employer(String username, String email, String password){
     this.username = username;
@@ -27,8 +28,8 @@ private ArrayList<Job> myJobs;
   }
 
 
-  public void setJob(String jobName, String jobWage, String jobTag){
-    firebase.addJob(jobName,jobWage,jobTag,username);
+  public void setJob(String jobName, String jobWage, String jobTag, String location){
+    firebase.addJob(jobName,jobWage,jobTag,username, location);
   }
   public User getInstance(){
     if(employer == null){

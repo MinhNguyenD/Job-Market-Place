@@ -105,7 +105,7 @@ public class GPSActivity extends AppCompatActivity implements View.OnClickListen
   }
 
 
-  protected boolean hasLocationAccessPermission() {
+  public boolean hasLocationAccessPermission() {
     try {
       ActivityCompat.requestPermissions(this, new String[]{fPermission}, REQUEST_CODE_PERMISSION);
       ActivityCompat.requestPermissions(this, new String[]{cPermission}, REQUEST_CODE_PERMISSION);

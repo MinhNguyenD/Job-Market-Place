@@ -22,7 +22,7 @@ public class Employee extends User {
     return false;
 
  }
- public void setJob(String jobName, String jobWage, String jobTag){
+ public void setJob(String jobName, String jobWage, String jobTag, String location){
 
  }
  public User getInstance(){

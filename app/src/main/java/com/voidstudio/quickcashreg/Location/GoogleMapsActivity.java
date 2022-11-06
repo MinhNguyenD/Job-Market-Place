@@ -26,7 +26,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final int REQUEST_CODE_PERMISSION = 2;
     String fPermission = Manifest.permission.ACCESS_FINE_LOCATION;
     String cPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
-    public int kilometerRadius = 1000;
+    public int kilometerRadius = 10;
 
 
     private GoogleMap mMap;
@@ -104,7 +104,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         GPS gps = new GPS(this);
         double latitude = gps.getLatitude();
         double longitude = gps.getLongitude();
@@ -118,6 +117,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         circleOptions.strokeColor(Color.RED);
         mMap.addCircle(circleOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(itemLocation));
+
 
     }
 }

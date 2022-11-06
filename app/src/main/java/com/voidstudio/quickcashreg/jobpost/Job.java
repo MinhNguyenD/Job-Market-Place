@@ -7,17 +7,18 @@ public class Job {
   private String user;
   //private Location location;
   private String hardLocation;
+  private String location;
 
   public Job(){
 
   }
 
-  public Job(String jobName, String wage, String tag, String user){
+  public Job(String jobName, String wage, String tag, String user, String location){
       this.jobName = jobName;
       this.wage = wage;
       this.tag = tag;
       this.user = user;
-      hardLocation = "Location";
+      this.location = location;
   }
 
 
@@ -36,6 +37,11 @@ public class Job {
   public String getJobName() {
     return jobName;
   }
+
+  public String getLocation(){
+    return location;
+  }
+
 
   @Override
   public String toString(){

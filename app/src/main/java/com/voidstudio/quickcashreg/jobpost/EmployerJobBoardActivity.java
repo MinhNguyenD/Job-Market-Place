@@ -37,7 +37,7 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
       extractedJob = bundle.getString("Job");
       extractedWage = bundle.getString("Wage");
       extractedTag = bundle.getString("Tag");
-      job = new Job(extractedJob,extractedWage,extractedTag,employer.getUsername());
+      job = new Job(extractedJob,extractedWage,extractedTag,employer.getUsername(),employer.getLocation().toString());
     }
     this.loadSmallTasks();
   }

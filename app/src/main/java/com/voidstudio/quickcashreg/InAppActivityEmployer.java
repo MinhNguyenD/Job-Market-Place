@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.Location.GPS;
 import com.voidstudio.quickcashreg.Location.GPSActivity;
 import com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
@@ -26,7 +27,7 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
-
+    private GPS gps;
     private static Firebase firebase;
     private SharedPreferences sp;
     public static Employer employer;
@@ -39,7 +40,6 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         String welcomeMessage = thisIntent.getStringExtra(LogInActivity.WELCOME);
         TextView message = findViewById(R.id.Employer);
         message.setText(welcomeMessage);
-
         Button logOut = findViewById(R.id.logOutEmployer);
         logOut.setOnClickListener(InAppActivityEmployer.this);
 

@@ -1,5 +1,6 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,9 +13,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.InAppActivityEmployer;
+import com.voidstudio.quickcashreg.Location.GPS;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.TextReader;
 
@@ -42,12 +45,22 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   public static final String PASSWORD = "Password";
   private SharedPreferences sp;
 
+  private static final int REQUEST_CODE_PERMISSION = 2;
+  String fPermission = Manifest.permission.ACCESS_FINE_LOCATION;
+  String cPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.job_post);
     firebase = Firebase.getInstance();
+    try {
+      ActivityCompat.requestPermissions(this, new String[]{fPermission}, REQUEST_CODE_PERMISSION);
+      ActivityCompat.requestPermissions(this, new String[]{cPermission}, REQUEST_CODE_PERMISSION);
+    } catch (Exception exc) {
+      Toast.makeText(this,"Enable Location Permission",Toast.LENGTH_LONG).show();
+    }
     Intent thisIntent = getIntent();
     sp = getSharedPreferences("login", MODE_PRIVATE);
     username = sp.getString(USERNAME,"");
@@ -99,7 +112,9 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   }
 
   private void postJob(String jobName, String jobWage, String jobTag){
-    employer.setJob(jobName,jobWage,jobTag);
+    employer.setLocation(new GPS(this).getLocation());
+    employer.setJob(jobName,jobWage,jobTag,employer.getLocation().toString());
+
   }
 
 
