@@ -120,6 +120,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    /**
+     * Reference from https://developer.android.com/training/data-storage/shared-preferences
+     */
     private void stayLoggedIn() {
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sp.edit();

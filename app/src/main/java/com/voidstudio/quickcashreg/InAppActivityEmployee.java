@@ -94,6 +94,9 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     sharedPrefs.edit().clear().commit();
   }
 
+  /**
+   * Reference from Android cookbook from tutorial
+   */
   @RequiresApi(api = Build.VERSION_CODES.O)
   protected void jobNotification() {
     NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelID);
