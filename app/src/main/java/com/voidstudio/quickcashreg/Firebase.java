@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg;
 
+import android.location.Location;
+
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import users.Employee;
+
 public class Firebase {
   static final String FIREBASE_URL =
           "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
@@ -24,16 +28,22 @@ public class Firebase {
   private final String USERS = "users";
   private final String JOBS = "jobs";
 
+  private static DatabaseReference users_ref;
+  private static DatabaseReference jobs_ref;
 
+  protected ArrayList<Employee> recommendList = new ArrayList<>();
 
   protected String firebaseString;
   protected String pass;
 
   private boolean exists = false;
   protected boolean employee = false;
-  private Firebase() {
+  public Firebase() {
     firebaseDB = FirebaseDatabase.getInstance();
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+
+    jobs_ref = firebaseDB.getReference("jobs");
+    users_ref = firebaseDB.getReference("users");
   }
 
   /**
@@ -47,7 +57,13 @@ public class Firebase {
     return firebase;
   }
 
+  public ArrayList<Employee> getRecommendList() {
+    return recommendList;
+  }
 
+  public void setRecommendList(ArrayList<Employee> recommendList) {
+    this.recommendList = recommendList;
+  }
 
   public void initializeDatabase(){
       firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
@@ -224,7 +240,42 @@ public class Firebase {
     return arrJob;
   }
 
+  protected void callListener() {
+    users_ref.orderByChild("email");
+  }
 
+  protected void listenerForUser_Ref() {
+    users_ref.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        recommendList = new ArrayList<>();
+        for (DataSnapshot ds: snapshot.getChildren()) {
+          String type = ds.child("type").getValue(String.class);
+          if (!type.equals("Employee")) {
+            continue;
+          }
+          String name = ds.child("name").getValue(String.class);
+          String email = ds.child("email").getValue(String.class);
+          String miniSalary = ds.child("minimumSalary").getValue(String.class);
+          String orderFinished = ds.child("orderFinished").getValue(String.class);
+          String latitude = ds.child("latitude").getValue(String.class);
+          String longitude = ds.child("longitude").getValue(String.class);
+
+          Location location = new Location("name");
+          location.setLongitude(Double.parseDouble(longitude));
+          location.setLatitude(Double.parseDouble(latitude));
+
+          Employee employee = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
+
+          recommendList.add(employee);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+      }
+    });
+  }
 
 
 

@@ -25,35 +25,34 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
   static String extractedJob;
   static String extractedWage;
   static String extractedTag;
+  private static String jobItem;
   private Employer employer;
-  private static Job job;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employer_job_board);
     employer = InAppActivityEmployer.employer;
-    Bundle bundle = getIntent().getExtras();
-    if(employer != null && bundle.getString("Job")!=null){
+    if(getIntent().getExtras() != null) {
+      Bundle bundle = getIntent().getExtras();
       extractedJob = bundle.getString("Job");
       extractedWage = bundle.getString("Wage");
       extractedTag = bundle.getString("Tag");
-      job = new Job(extractedJob,extractedWage,extractedTag,employer.getUsername());
+      jobItem = extractedJob + " " + extractedWage + " " + extractedTag;
     }
     this.loadSmallTasks();
   }
 
-  protected void storeTasksAndLocation2SharedPrefs(ArrayList<String> tasks) {
+  protected void store2SharedPrefs(ArrayList<String> tasks) {
     SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     for (int i = 0; i < tasks.size(); i++) {
       if (i % 2 == 0) {
-        //Replace with location feature
         editor.putString(tasks.get(i), "Halifax");
       } else {
         editor.putString(tasks.get(i), "Dhaka");
       }
     }
-    //also add the lat long (Replace with location feature)
+    //also add the lat long
     editor.putString("JobCity", "44.65,-63.58");
     editor.putString("Dhaka", "23.81,90.41");
     editor.apply();
@@ -61,15 +60,11 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<String>();
-    if(employer != null) {
-      ArrayList<Job> jobList = employer.getMyJobs();
-      if(job != null) jobList.add(job);
-      if(employer.getMyJobs().isEmpty()) tasks.add("NO JOBS");
-      for(Job job:jobList){
-        tasks.add(job.toString());
-      }
+    ArrayList<Job> jobList = employer.getMyJobs();
+    for(Job job:jobList){
+      tasks.add(job.toString());
     }
-    this.storeTasksAndLocation2SharedPrefs(tasks);
+    this.store2SharedPrefs(tasks);
 
     RecyclerView recyclerView = findViewById(R.id.recyclerView);
     LinearLayoutManager loManager = new LinearLayoutManager(this);

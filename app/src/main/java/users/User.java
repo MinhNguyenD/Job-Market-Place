@@ -1,5 +1,7 @@
 package users;
 
+import android.location.Location;
+
 import com.google.android.gms.tasks.Task;
 
 public abstract class User {
@@ -7,9 +9,14 @@ public abstract class User {
   protected String username;
   protected String password;
   protected String email;
+  protected Location location;
 
   public User(){
 
+  }
+
+  public Location getLocation() {
+    return location;
   }
 
   public String getUsername(){
