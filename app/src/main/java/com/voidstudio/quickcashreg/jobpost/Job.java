@@ -9,7 +9,7 @@ public class Job {
   private String user;
   private String expectedDuration;
   private String datePosted;
-  private Location location;
+//  private Location location;
 
 
   public Job(){
@@ -36,9 +36,9 @@ public class Job {
     return wage;
   }
 
-  public Location getLocation() {
-    return location;
-  }
+//  public Location getLocation() {
+//    return location;
+//  }
 
   public String getDuration() {
     return expectedDuration;

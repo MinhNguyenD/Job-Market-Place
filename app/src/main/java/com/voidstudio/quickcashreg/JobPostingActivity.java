@@ -16,11 +16,7 @@ import com.voidstudio.quickcashreg.jobpost.Job;
 import com.voidstudio.quickcashreg.jobpost.JobDetailsActivity;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class JobPostingActivity extends AppCompatActivity{
 
@@ -40,6 +36,9 @@ public class JobPostingActivity extends AppCompatActivity{
     private Spinner dateListedSpinner;
     private String selectedDate;
 
+    private Spinner tagSpinner;
+    private String selectedTag;
+
     private ArrayList<String> selectedFilters = new ArrayList<String>();
 
 
@@ -58,11 +57,21 @@ public class JobPostingActivity extends AppCompatActivity{
     public static final String OPTION_DAY_DATE_LISTED3 = "Last 30 days";
 
 
+    public static final String OPTION_TAG_1 = "Tag1";
+    public static final String OPTION_TAG_2 = "Tag2";
+    public static final String OPTION_TAG_3 = "Tag3";
+    public static final String OPTION_TAG_4 = "Tag4";
+    public static final String OPTION_TAG_5 = "Tag5";
+
+
     public static final String DEFAULT_DURATION = "Duration";
     public static final String DEFAULT_DISTANCE = "Radius";
     public static final String DEFAULT_DATE_LISTED = "Date listed";
+    public static final String DEFAULT_TAG = "Tag";
 
-    ArrayList<Job> jobList  = new ArrayList<>();
+
+    ArrayList<Job> allJobsList = new ArrayList<>();
+    ArrayList<Job> filteredJobList = new ArrayList<>();
 
     private String currentSearchText = "";
 
@@ -74,12 +83,9 @@ public class JobPostingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_job_posting);
         firebase = Firebase.getInstance();
 
+        allJobsList = firebase.getAllJobs();
+        setUpList(allJobsList);
 
-//        Button seeAllJobsButton = findViewById(R.id.see_all_jobs);
-//        seeAllJobsButton.setOnClickListener(JobPostingActivity.this);
-        jobList = firebase.getAllJobs();
-
-        setUpList(jobList);
         onItemClickListener();
 
         searchView = findViewById(R.id.search_bar);
@@ -95,10 +101,14 @@ public class JobPostingActivity extends AppCompatActivity{
         dateListedSpinner = findViewById(R.id.dayPostedList);
         String[] days = new String[]{DEFAULT_DATE_LISTED,OPTION_DAY_DATE_LISTED1,OPTION_DAY_DATE_LISTED2,OPTION_DAY_DATE_LISTED3};
 
+        tagSpinner = findViewById(R.id.jobTagList);
+        String[] tags = new String[]{DEFAULT_TAG,OPTION_TAG_1,OPTION_TAG_2,OPTION_TAG_3,OPTION_TAG_4,OPTION_TAG_5};
+
 
         setUpDistanceListSpinner(distanceSpinner, distances);
         setUpDistanceListSpinner(durationSpinner, durations);
         setUpDistanceListSpinner(dateListedSpinner, days);
+        setUpDistanceListSpinner(tagSpinner,tags);
 
 
         spinnerListener();
@@ -109,6 +119,7 @@ public class JobPostingActivity extends AppCompatActivity{
         distanceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View selectedItemView, int pos, long l) {
+
                 selectedDistance = adapterView.getItemAtPosition(pos).toString();
                 try {
                     filterList(selectedDistance);
@@ -146,6 +157,23 @@ public class JobPostingActivity extends AppCompatActivity{
                 selectedDate = adapterView.getItemAtPosition(pos).toString();
                 try {
                     filterList(selectedDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        tagSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View selectedItemView, int pos, long l) {
+                selectedTag = adapterView.getItemAtPosition(pos).toString();
+                try {
+                    filterList(selectedTag);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -199,13 +227,81 @@ public class JobPostingActivity extends AppCompatActivity{
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                currentSearchText = newText;
                 ArrayList<Job> filteredBySearchJobs = new ArrayList<Job>();
+                ArrayList<Job> jobList = new ArrayList<>();
+                if(selectedFilters.size() == 0){
+                    jobList = allJobsList;
+                } else{
+                    jobList = filteredJobList;
+                }
                 for(Job job : jobList){
                     if(job.getJobName().toUpperCase().contains(newText.toUpperCase())){
-                        filteredBySearchJobs.add(job);
+                        if(selectedFilters.contains("all")){
+                            filteredBySearchJobs.add(job);
+                        }
+                        else{
+                            for(String filterParam: selectedFilters){
+                                String[] filterId = filterParam.split(" ");
+                                if(filterId[filterId.length -1].contains("km")) {
+//                                    Location jobLocation = job.getLocation();
+//                                    double distance = jobLocation.distanceTo(employeeLocation);
+//                                    if (distance <= Double.valueOf(filterId[0])) {
+//                                        if (currentSearchText == "") {
+//                                            filteredBySearchJobs.add(job);
+//                                        } else {
+//                                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                                filteredBySearchJobs.add(job);
+//                                            }
+//                                        }
+//                                    }
+                                }
+
+                                else if(filterId[filterId.length -1].contains("hour")){
+                                    if (Integer.valueOf(job.getDuration()) <= Integer.valueOf(filterId[0])) {
+                                        if (currentSearchText == "") {
+                                            filteredBySearchJobs.add(job);
+                                        } else {
+                                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+                                                filteredBySearchJobs.add(job);
+                                            }
+                                        }
+                                    }
+                                }
+                                else if(filterId[filterId.length -1].contains("day")){
+//                                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+//                                    Date today = new Date();;
+//                                    Date jobDate = sdf.parse(job.getDatePosted());
+//
+//                                    long diffInMillies = Math.abs(today.getTime() - jobDate.getTime());
+//                                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//                                    if ( diff <= Integer.valueOf(filterId[0])){
+//                                        if (currentSearchText == "") {
+//                                            filteredBySearchJobs.add(job);
+//                                        } else {
+//                                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                                filteredBySearchJobs.add(job);
+//                                            }
+//                                        }
+//                                    }
+                                }
+                                else if(filterId[0].contains("Tag")){
+                                    if (filterId[0].equals(job.getTag())) {
+                                        if (currentSearchText == "") {
+                                            filteredBySearchJobs.add(job);
+                                        } else {
+                                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+                                                filteredBySearchJobs.add(job);
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
                     }
                 }
-                setUpList(filteredBySearchJobs);
+                setAdapter(filteredBySearchJobs);
                 return false;
             }
         });
@@ -215,46 +311,70 @@ public class JobPostingActivity extends AppCompatActivity{
     //TODO: IMPLEMENT METHODS AND VARIABLES MISSING IN EMPLOYEE AND JOB CLASS. USE METHOD TO GET LOCATION OF JOB AND USER LOCATION
     //TODO: IMPLEMENT SALARY RANGE FILTER
     private void filterList(String filterParameter) throws ParseException {
+        String regex = "";
+        if(filterParameter.contains("km")){
+            regex = "km";
+        } else if(filterParameter.contains("hour")){
+            regex = "hour";
+        } else if(filterParameter.contains("day")){
+            regex = "day";
+        } else if(filterParameter.contains("Tag")){
+            regex = "Tag";
+        }
+        replaceFilter(regex,filterParameter);
         if(!selectedFilters.contains(filterParameter)){
             selectedFilters.add(filterParameter);
         }
-        ArrayList<Job> filteredJobList = new ArrayList<>();
-        for(Job job: jobList){
+
+        filteredJobList = new ArrayList<>();
+        for(Job job: allJobsList){
             for(String filterParam: selectedFilters){
+//                checkAndAddFilter(job,filterParam,filteredJobList);
                 String[] filterId = filterParam.split(" ");
                 if(filterId[filterId.length -1].contains("km")) {
-                    Location jobLocation = job.getLocation();
-                    double distance = jobLocation.distanceTo(employeeLocation);
-                    if (distance <= Double.valueOf(filterId[0])) {
-                        if (currentSearchText == "") {
-                            filteredJobList.add(job);
-                        } else {
-                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
-                                filteredJobList.add(job);
-                            }
-                        }
-                    }
+//                    Location jobLocation = job.getLocation();
+//                    double distance = jobLocation.distanceTo(employeeLocation);
+//                    if (distance <= Double.valueOf(filterId[0])) {
+//                        if (currentSearchText == "") {
+//                            filteredJobList.add(job);
+//                        } else {
+//                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                filteredJobList.add(job);
+//                            }
+//                        }
+//                    }
                 }
 
                 else if(filterId[filterId.length -1].contains("hour")){
-                    if (Integer.valueOf(job.getDuration()) <= Integer.valueOf(filterId[0])) {
-                        if (currentSearchText == "") {
-                            filteredJobList.add(job);
-                        } else {
-                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
-                                filteredJobList.add(job);
-                            }
-                        }
-                    }
+//                    if (Integer.valueOf(job.getDuration()) <= Integer.valueOf(filterId[0])) {
+//                        if (currentSearchText == "") {
+//                            filteredJobList.add(job);
+//                        } else {
+//                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                filteredJobList.add(job);
+//                            }
+//                        }
+//                    }
                 }
                 else if(filterId[filterId.length -1].contains("day")){
-                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-                    Date today = new Date();;
-                    Date jobDate = sdf.parse(job.getDatePosted());
-
-                    long diffInMillies = Math.abs(today.getTime() - jobDate.getTime());
-                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-                    if ( diff <= Integer.valueOf(filterId[0])){
+//                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+//                    Date today = new Date();;
+//                    Date jobDate = sdf.parse(job.getDatePosted());
+//
+//                    long diffInMillies = Math.abs(today.getTime() - jobDate.getTime());
+//                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//                    if ( diff <= Integer.valueOf(filterId[0])){
+//                        if (currentSearchText == "") {
+//                            filteredJobList.add(job);
+//                        } else {
+//                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                filteredJobList.add(job);
+//                            }
+//                        }
+//                    }
+                }
+                else if(filterId[0].contains("Tag")){
+                    if (filterId[0].equals(job.getTag())) {
                         if (currentSearchText == "") {
                             filteredJobList.add(job);
                         } else {
@@ -269,6 +389,15 @@ public class JobPostingActivity extends AppCompatActivity{
         setAdapter(filteredJobList);
     }
 
+    private void replaceFilter(String regex, String filterParameter){
+        for(String filter: selectedFilters){
+            if(filter.contains(regex)){
+                int index = selectedFilters.indexOf(filter);
+                selectedFilters.set(index, filterParameter);
+            }
+        }
+
+    }
     private void setAdapter(ArrayList<Job> jobList)
     {
         SearchAdapter adapter = new SearchAdapter(getApplicationContext(), 0, jobList);
@@ -281,7 +410,66 @@ public class JobPostingActivity extends AppCompatActivity{
         dateListedSpinner.setSelection(0);
         durationSpinner.setSelection(0);
         distanceSpinner.setSelection(0);
-        setAdapter(jobList);
+        tagSpinner.setSelection(0);
+        searchView.setQuery("", false);
+        setAdapter(allJobsList);
+    }
+
+    private void checkAndAddFilter(Job job, String filterParam, ArrayList<Job> filteredJobList){
+        String[] filterId = filterParam.split(" ");
+        if(filterId[filterId.length -1].contains("km")) {
+//                    Location jobLocation = job.getLocation();
+//                    double distance = jobLocation.distanceTo(employeeLocation);
+//                    if (distance <= Double.valueOf(filterId[0])) {
+//                        if (currentSearchText == "") {
+//                            filteredJobList.add(job);
+//                        } else {
+//                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                filteredJobList.add(job);
+//                            }
+//                        }
+//                    }
+        }
+
+        else if(filterId[filterId.length -1].contains("hour")){
+//                    if (Integer.valueOf(job.getDuration()) <= Integer.valueOf(filterId[0])) {
+//                        if (currentSearchText == "") {
+//                            filteredJobList.add(job);
+//                        } else {
+//                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                filteredJobList.add(job);
+//                            }
+//                        }
+//                    }
+        }
+        else if(filterId[filterId.length -1].contains("day")){
+//                    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+//                    Date today = new Date();;
+//                    Date jobDate = sdf.parse(job.getDatePosted());
+//
+//                    long diffInMillies = Math.abs(today.getTime() - jobDate.getTime());
+//                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//                    if ( diff <= Integer.valueOf(filterId[0])){
+//                        if (currentSearchText == "") {
+//                            filteredJobList.add(job);
+//                        } else {
+//                            if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+//                                filteredJobList.add(job);
+//                            }
+//                        }
+//                    }
+        }
+        else if(filterId[0].contains("Tag")){
+            if (filterId[0].equals(job.getTag())) {
+                if (currentSearchText == "") {
+                    filteredJobList.add(job);
+                } else {
+                    if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {
+                        filteredJobList.add(job);
+                    }
+                }
+            }
+        }
     }
 
 }

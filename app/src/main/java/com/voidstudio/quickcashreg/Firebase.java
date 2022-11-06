@@ -187,9 +187,7 @@ public class Firebase {
     Map<String, Object> map = new HashMap<>();
     Job job = new Job(jobName,jobWage,jobTag,userName);
     map.put(jobName, job);
-    map.put("Posted by", userName);
-    firebaseDBReference.child(JOBS).child(jobName).updateChildren(map);
-    map.remove("Posted by");
+    firebaseDBReference.child(JOBS).updateChildren(map);
     firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
   }
 
