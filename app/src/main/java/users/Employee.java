@@ -3,6 +3,7 @@ package users;
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.Firebase;
 
+
 public class Employee extends User {
 
   public Firebase firebase;
@@ -26,10 +27,12 @@ public class Employee extends User {
  public void setJob(String jobName, String jobWage, String jobTag){
 
  }
+
  public User getInstance(){
    if(employee == null){
      employee = new Employer(username, email, password);
    }
    return employee;
  }
+
 }

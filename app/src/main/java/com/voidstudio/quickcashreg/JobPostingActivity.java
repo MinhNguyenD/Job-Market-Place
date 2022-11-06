@@ -39,8 +39,7 @@ public class JobPostingActivity extends AppCompatActivity{
     private Spinner tagSpinner;
     private String selectedTag;
 
-    private ArrayList<String> selectedFilters = new ArrayList<String>();
-
+    private static ArrayList<String> selectedFilters = new ArrayList<String>();
 
     public static final String OPTION_KM_DISTANCE1 = "1 km";
     public static final String OPTION_KM_DISTANCE2 = "2 km";
@@ -75,7 +74,6 @@ public class JobPostingActivity extends AppCompatActivity{
 
     private String currentSearchText = "";
 
-    Location employeeLocation = InAppActivityEmployee.employee.getLocation();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
