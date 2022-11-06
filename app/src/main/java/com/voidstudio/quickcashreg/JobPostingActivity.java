@@ -230,7 +230,7 @@ public class JobPostingActivity extends AppCompatActivity{
                 currentSearchText = newText;
                 ArrayList<Job> filteredBySearchJobs = new ArrayList<Job>();
                 ArrayList<Job> jobList = new ArrayList<>();
-                if(selectedFilters.size() == 0){
+                if((selectedFilters.size() == 0) || (selectedFilters.size() == 1 && selectedFilters.get(0).equals("all"))){
                     jobList = allJobsList;
                 } else{
                     jobList = filteredJobList;
@@ -406,7 +406,7 @@ public class JobPostingActivity extends AppCompatActivity{
 
     public void allFilterTapped(View view){
         selectedFilters.clear();
-//        selectedFilters.add("all");
+        selectedFilters.add("all");
         dateListedSpinner.setSelection(0);
         durationSpinner.setSelection(0);
         distanceSpinner.setSelection(0);
