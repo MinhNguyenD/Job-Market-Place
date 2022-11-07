@@ -33,6 +33,14 @@ public class Employee extends User {
         firebase = Firebase.getInstance();
     }
 
+    public Employee(String username, String email, String userType, String password){
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.userType = userType;
+//    firebase = Firebase.getInstance();
+    }
+
     protected Task<Void> search(){
         return null;
     }
