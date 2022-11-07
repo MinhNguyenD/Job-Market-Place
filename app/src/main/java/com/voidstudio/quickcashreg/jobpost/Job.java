@@ -10,6 +10,7 @@ public class Job {
   private String expectedDuration;
   private String datePosted;
 //  private Location location;
+  private String hardLocation;
 
 
   public Job(){
