@@ -13,11 +13,11 @@ public class Job {
   }
 
   public Job(String jobName, String wage, String tag, String user){
-      this.jobName = jobName;
-      this.wage = wage;
-      this.tag = tag;
-      this.user = user;
-      hardLocation = "Location";
+    this.jobName = jobName;
+    this.wage = wage;
+    this.tag = tag;
+    this.user = user;
+    hardLocation = "Location";
   }
 
 

@@ -124,6 +124,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    /**
+     * Reference from https://developer.android.com/training/data-storage/shared-preferences
+     */
     private void stayLoggedIn() {
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sp.edit();
@@ -154,7 +157,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         } else if(view.getId() == R.id.continueButton) {
             logIn.logIn(getUserName(), getPassword());
             if (logIn.isLogged) {
-               // logIn.isEmployee();
+                //logIn.isEmployee();
                 stayLoggedIn();
                 logIn.getAlertMessage();
                 if(logIn.employee){

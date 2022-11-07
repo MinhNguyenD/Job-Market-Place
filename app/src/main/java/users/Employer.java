@@ -10,11 +10,15 @@ public class Employer extends User {
   private static Firebase firebase;
   private static Employer employer;
   private ArrayList<Job> myJobs;
+  public ArrayList<Employee> observerList;
+
+  protected static Employee employee;
   public Employer(String username, String email, String password){
     this.username = username;
     this.email = email;
     this.password = password;
     firebase = Firebase.getInstance();
+    observerList = new ArrayList<>();
     myJobs = firebase.getJobsFromUser(username);
   }
 
@@ -40,8 +44,6 @@ public class Employer extends User {
   public ArrayList<Job> getMyJobs(){
     return myJobs;
   }
-
-
 
 }
 

@@ -88,11 +88,11 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
     startActivity(intent);
   }
 
- // protected void showOnMap(String selectedTask) {
- //   Intent intent = new Intent(this, GoogleMapsActivity.class);
- //   intent.putExtra("taskLocation", "-44,63");
- //   startActivity(intent);
- // }
+  // protected void showOnMap(String selectedTask) {
+  //   Intent intent = new Intent(this, GoogleMapsActivity.class);
+  //   intent.putExtra("taskLocation", "-44,63");
+  //   startActivity(intent);
+  // }
 
   @Override
   public void onItemClick(View view, int position) {

@@ -8,10 +8,15 @@ import java.util.ArrayList;
 
 public class Employee extends User {
 
+    // For observing employer
+    public boolean newJobAlert;
+    public boolean newJobSeen;
+
     public Firebase firebase;
     private static User employee;
     private static String preference;
     private ArrayList<Job> allJob;
+
 
     public Employee(String username, String email, String password){
         this.username = username;
@@ -19,6 +24,12 @@ public class Employee extends User {
         this.password = password;
         firebase = Firebase.getInstance();
         allJob = firebase.getAllJobs();
+    }
+
+    public Employee(String username, String password) {
+        this.username = username;
+        this.password = password;
+        firebase = Firebase.getInstance();
     }
 
     protected Task<Void> search(){
@@ -50,6 +61,7 @@ public class Employee extends User {
     public ArrayList<Job> getAllJobs() {
         return allJob;
     }
+
 }
 
 
