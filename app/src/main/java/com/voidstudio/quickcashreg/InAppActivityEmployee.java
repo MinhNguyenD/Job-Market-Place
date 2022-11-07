@@ -32,6 +32,7 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
   private static String username;
   private static String password;
   private static String email;
+  private static String userType;
 
   public static final String USERNAME = "Username";
   public static final String PASSWORD = "Password";
@@ -48,18 +49,33 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.in_app_activity_employee);
-
+    firebase= Firebase.getInstance();
     // switch to this activity when log in successfully
     Intent thisIntent = getIntent();
     String welcomeMessage = thisIntent.getStringExtra(LogInActivity.WELCOME);
     TextView message = findViewById(R.id.Employee);
     message.setText(welcomeMessage);
-//    String username = thisIntent.getStringExtra("username");
-//    String password = thisIntent.getStringExtra("password");
 
+    sp = getSharedPreferences("login", MODE_PRIVATE);
+    username = sp.getString(USERNAME,"");
+    password = sp.getString(PASSWORD,"");
+    email = firebase.getEmailAddress(username);
 
-    Button logOut = findViewById(R.id.employeeLogOut);
-    logOut.setOnClickListener(InAppActivityEmployee.this);
+    userType =  firebase.getUserType(username);
+    //TODO: REFACTOR SO THAT SHARED PREF CAN STORE USERTYPE
+    employee = new Employee(username,email,userType,password);
+
+    Button logOutButton = findViewById(R.id.employeeLogOut);
+    logOutButton.setOnClickListener(InAppActivityEmployee.this);
+
+    Button userProfileButton = findViewById(R.id.user_profile);
+    userProfileButton.setOnClickListener(InAppActivityEmployee.this);
+
+    Button userApplicationButton = findViewById(R.id.user_application);
+    userApplicationButton.setOnClickListener(InAppActivityEmployee.this);
+
+    Button jobPostingButton = findViewById(R.id.job_posting);
+    jobPostingButton.setOnClickListener(InAppActivityEmployee.this);
 
     Button jobBoard = findViewById(R.id.employeeJobBoard);
     jobBoard.setOnClickListener(InAppActivityEmployee.this);
@@ -123,7 +139,6 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
 
   @Override
   public void onClick(View view){
-
     if(view.getId() == R.id.employeeLogOut){
       resetLogInStatus();
       Intent logOutIntent = new Intent(InAppActivityEmployee.this, LogInActivity.class);
@@ -142,7 +157,21 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
       Intent savePreference = new Intent(InAppActivityEmployee.this, SavePreferenceActivity.class);
       startActivity(savePreference);
     }
-
+    if(view.getId() == R.id.user_profile){
+      Intent userProfileIntent = new Intent(InAppActivityEmployee.this, UserProfileActivity.class);
+      userProfileIntent.putExtra(USERNAME, username);
+      userProfileIntent.putExtra(PASSWORD, password);
+//      userProfileIntent.putExtra("EMAIL",email);
+      startActivity(userProfileIntent);
+    }
+    if(view.getId() == R.id.job_posting){
+      Intent jobPostingIntent = new Intent(InAppActivityEmployee.this, JobPostingActivity.class);
+      startActivity(jobPostingIntent);
+    }
+    if(view.getId() == R.id.user_application){
+      Intent userApplicationIntent = new Intent(InAppActivityEmployee.this, UserApplicationActivity.class);
+      startActivity(userApplicationIntent);
+    }
 
   }
 

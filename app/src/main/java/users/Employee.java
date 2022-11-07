@@ -6,6 +6,7 @@ import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;
 
+
 public class Employee extends User {
 
     // For observing employer
@@ -30,6 +31,14 @@ public class Employee extends User {
         this.username = username;
         this.password = password;
         firebase = Firebase.getInstance();
+    }
+
+    public Employee(String username, String email, String userType, String password){
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.userType = userType;
+//    firebase = Firebase.getInstance();
     }
 
     protected Task<Void> search(){

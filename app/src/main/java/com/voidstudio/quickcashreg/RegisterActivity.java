@@ -248,13 +248,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(view.getId() == R.id.buttonreg) {
             String message = register.registerUser(userName, email, password, confirmPassword,selectedRole);
             if(message.equals(register.SUCCESS_MESSAGE)){
-                //switchToLogInWindow();
+                switchToLogInWindow();
             }
             setStatusMessage(message);
-//            alertBuilder.setMessage(message);
-//            alertBuilder.setPositiveButton("OK", null);
-//            alertBuilder.create();
-//            alertBuilder.show();
+            alertBuilder.setMessage(message);
+            alertBuilder.setPositiveButton("OK", null);
+            alertBuilder.create();
+            alertBuilder.show();
         }
         else if(view.getId() == R.id.loginButton){
             switchToLogInWindow();

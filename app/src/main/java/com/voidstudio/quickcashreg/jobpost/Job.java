@@ -1,12 +1,17 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import android.location.Location;
+
 public class Job {
   private String jobName;
   private String wage;
   private String tag;
   private String user;
-  //private Location location;
+  private String expectedDuration;
+  private String datePosted;
+//  private Location location;
   private String hardLocation;
+
 
   public Job(){
 
@@ -33,15 +38,24 @@ public class Job {
     return wage;
   }
 
+//  public Location getLocation() {
+//    return location;
+//  }
+
+  public String getDuration() {
+    return expectedDuration;
+  }
+
+  public String getDatePosted() {
+    return datePosted;
+  }
+
   public String getJobName() {
     return jobName;
   }
 
   @Override
   public String toString(){
-    if(jobName!=null) {
-      return "Title: " + jobName + "\nWage: " + wage + " Tag(s): " + tag + "\nPosted by:" + user;
-    }
-    else return "A job field is missing";
+    return jobName+" "+wage+" "+tag+"  Posted by:" + user;
   }
 }
