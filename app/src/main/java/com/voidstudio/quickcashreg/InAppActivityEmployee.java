@@ -155,7 +155,21 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
       Intent savePreference = new Intent(InAppActivityEmployee.this, SavePreferenceActivity.class);
       startActivity(savePreference);
     }
-
+    if(view.getId() == R.id.user_profile){
+      Intent userProfileIntent = new Intent(InAppActivityEmployee.this, UserProfileActivity.class);
+      userProfileIntent.putExtra(USERNAME, username);
+      userProfileIntent.putExtra(PASSWORD, password);
+//      userProfileIntent.putExtra("EMAIL",email);
+      startActivity(userProfileIntent);
+    }
+    if(view.getId() == R.id.job_posting){
+      Intent jobPostingIntent = new Intent(InAppActivityEmployee.this, JobPostingActivity.class);
+      startActivity(jobPostingIntent);
+    }
+    if(view.getId() == R.id.user_application){
+      Intent userApplicationIntent = new Intent(InAppActivityEmployee.this, UserApplicationActivity.class);
+      startActivity(userApplicationIntent);
+    }
 
   }
 
