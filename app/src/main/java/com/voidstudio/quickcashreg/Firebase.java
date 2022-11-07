@@ -262,11 +262,4 @@ public class Firebase {
     });
     return arrJob;
   }
-
-      }
-    });
-    return arrJob;
-  }
-
-
 }
