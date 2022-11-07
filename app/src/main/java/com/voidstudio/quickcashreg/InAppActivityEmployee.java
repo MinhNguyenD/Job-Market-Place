@@ -32,6 +32,7 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
   private static String username;
   private static String password;
   private static String email;
+  private static String userType;
 
   public static final String USERNAME = "Username";
   public static final String PASSWORD = "Password";
