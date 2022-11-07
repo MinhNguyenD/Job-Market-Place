@@ -71,6 +71,8 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     Button userProfileButton = findViewById(R.id.user_profile);
     userProfileButton.setOnClickListener(InAppActivityEmployee.this);
 
+    Button userApplicationButton = findViewById(R.id.user_application);
+    userApplicationButton.setOnClickListener(InAppActivityEmployee.this);
 
     Button jobPostingButton = findViewById(R.id.job_posting);
     jobPostingButton.setOnClickListener(InAppActivityEmployee.this);
