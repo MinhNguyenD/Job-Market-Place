@@ -40,8 +40,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-        firebase = Firebase.getInstance();
-
         Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
         backToRegisterScreen.setOnClickListener(LogInActivity.this);
 
@@ -64,6 +62,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             editor.putBoolean(ISLOGGED, false);
             editor.commit();
         }
+
+        // Please do not move this command position, moving it to the top of onCreate will mess up login
+        firebase = Firebase.getInstance();
     }
 
     /**
@@ -123,6 +124,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    /**
+     * Reference from https://developer.android.com/training/data-storage/shared-preferences
+     */
     private void stayLoggedIn() {
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor1 = sp.edit();
@@ -153,7 +157,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         } else if(view.getId() == R.id.continueButton) {
             logIn.logIn(getUserName(), getPassword());
             if (logIn.isLogged) {
-               // logIn.isEmployee();
+                //logIn.isEmployee();
                 stayLoggedIn();
                 logIn.getAlertMessage();
                 if(logIn.employee){

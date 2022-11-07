@@ -21,6 +21,7 @@ public class Job {
     this.wage = wage;
     this.tag = tag;
     this.user = user;
+    hardLocation = "Location";
   }
 
 

@@ -7,14 +7,18 @@ import com.voidstudio.quickcashreg.jobpost.Job;
 import java.util.ArrayList;
 
 public class Employer extends User {
-private static Firebase firebase;
-private static Employer employer;
-private ArrayList<Job> myJobs;
+  private static Firebase firebase;
+  private static Employer employer;
+  private ArrayList<Job> myJobs;
+  public ArrayList<Employee> observerList;
+
+  protected static Employee employee;
   public Employer(String username, String email, String password){
     this.username = username;
     this.email = email;
     this.password = password;
     firebase = Firebase.getInstance();
+    observerList = new ArrayList<>();
     myJobs = firebase.getJobsFromUser(username);
   }
 
@@ -41,6 +45,6 @@ private ArrayList<Job> myJobs;
     return myJobs;
   }
 
-
-
 }
+
+

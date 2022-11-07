@@ -41,6 +41,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   public static final String USERNAME = "Username";
   public static final String PASSWORD = "Password";
   private SharedPreferences sp;
+  private SharedPreferences jobPost;
 
 
   @Override
@@ -102,13 +103,20 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
     employer.setJob(jobName,jobWage,jobTag);
   }
 
-
+  private void saveJobPostState() {
+    jobPost = getSharedPreferences("jobPost", MODE_PRIVATE);
+    SharedPreferences.Editor edit = jobPost.edit();
+    edit.putBoolean("newJobAlert", true);
+    edit.putBoolean("newJobSeen", false);
+    edit.commit();
+  }
 
 
   @Override
   public void onClick(View view){
     if(view.getId() == R.id.postJobButton) {
       postJob(getJobTitle(),getWage(),tag);
+      saveJobPostState();
       Toast.makeText(JobPostActivity.this, "Posted", Toast.LENGTH_SHORT).show();
     }
 
@@ -126,3 +134,4 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
 
 
 }
+
