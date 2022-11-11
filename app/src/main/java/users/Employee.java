@@ -111,6 +111,9 @@ public class Employee extends User {
         return allJob;
     }
 
+    public String recommendInfo() {
+        return "Name: " + this.username + " Email: " + this.email;
+    }
 }
 
 
