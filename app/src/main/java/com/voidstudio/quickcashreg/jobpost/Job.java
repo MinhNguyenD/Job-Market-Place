@@ -9,7 +9,7 @@ public class Job {
   private String user;
   private String expectedDuration;
   private String datePosted;
-//  private Location location;
+  private Location location;
   private String hardLocation;
 
 
