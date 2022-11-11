@@ -40,14 +40,6 @@ public class Employee extends User {
         this.location = location;
     }
 
-    public Employee(String username, String email, String password){
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        firebase = new Firebase();
-    }
-
-
     public void setMinimumSalaryAccepted(double minimumSalaryAccepted) {
         this.minimumSalaryAccepted = minimumSalaryAccepted;
     }
