@@ -9,7 +9,7 @@ public class Job {
   private String user;
   private String expectedDuration;
   private String datePosted;
-//  private Location location;
+  private Location location;
   private String hardLocation;
 
 
@@ -25,6 +25,13 @@ public class Job {
     hardLocation = "Location";
   }
 
+  public void setLocation(Location location) {
+    this.location = location;
+  }
+
+  public Location getLocation() {
+    return location;
+  }
 
   public String getUser() {
     return user;

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.EmployeeRecommendationActivity;
 import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
@@ -48,19 +49,15 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.job_post);
-    firebase = Firebase.getInstance();
+    firebase = new Firebase();
     Intent thisIntent = getIntent();
     sp = getSharedPreferences("login", MODE_PRIVATE);
     username = sp.getString(USERNAME,"");
     password = sp.getString(PASSWORD,"");
     email = sp.getString("EMAIL","");
     employer = InAppActivityEmployer.employer;
-
     Button postButton = findViewById(R.id.postJobButton);
     postButton.setOnClickListener(JobPostActivity.this);
-
-    Button myJobsButton = findViewById(R.id.myJobsButton);
-    myJobsButton.setOnClickListener(JobPostActivity.this);
 
     setUpJobTagSpinner();
     jobTagsSpinnerListener();
@@ -118,16 +115,16 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
       postJob(getJobTitle(),getWage(),tag);
       saveJobPostState();
       Toast.makeText(JobPostActivity.this, "Posted", Toast.LENGTH_SHORT).show();
-    }
 
-    if(view.getId() == R.id.myJobsButton){
-      Intent viewMyJobs = new Intent(JobPostActivity.this, EmployerJobBoardActivity.class);
-      if(!getJobTitle().equals("")) {
-        viewMyJobs.putExtra("Job", getJobTitle());
-        viewMyJobs.putExtra("Wage", getWage());
-        viewMyJobs.putExtra("Tag", tag);
-      }
-      startActivity(viewMyJobs);
+      Intent postedSwitch = new Intent(JobPostActivity.this, EmployeeRecommendationActivity.class);
+
+      postedSwitch.putExtra("Title", getJobTitle());
+      postedSwitch.putExtra("Wage", getWage());
+      postedSwitch.putExtra("Tag", tag);
+//      postedSwitch.putExtra("Name", USERNAME);
+
+//      postJob(getJobTitle(),getWage(),tag);
+      startActivity(postedSwitch);
     }
 
   }
