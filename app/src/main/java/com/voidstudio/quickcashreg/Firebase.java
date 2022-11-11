@@ -262,4 +262,42 @@ public class Firebase {
     });
     return arrJob;
   }
+
+  protected void callListener() {
+    users_ref.orderByChild("email");
+  }
+
+  protected void listenerForUser_Ref() {
+    users_ref.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        recommendList = new ArrayList<>();
+        for (DataSnapshot ds: snapshot.getChildren()) {
+          String type = ds.child("type").getValue(String.class);
+          if (!type.equals("Employee")) {
+            continue;
+          }
+          String name = ds.child("name").getValue(String.class);
+          String email = ds.child("email").getValue(String.class);
+          String miniSalary = ds.child("minimumSalary").getValue(String.class);
+          String orderFinished = ds.child("orderFinished").getValue(String.class);
+
+          String latitude = ds.child("latitude").getValue(String.class);
+          String longitude = ds.child("longitude").getValue(String.class);
+
+          Location location = new Location("name");
+          location.setLongitude(Double.parseDouble(longitude));
+          location.setLatitude(Double.parseDouble(latitude));
+
+          Employee employee = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
+
+          recommendList.add(employee);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+      }
+    });
+  }
 }
