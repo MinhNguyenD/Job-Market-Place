@@ -12,8 +12,15 @@ import java.util.ArrayList;
 public class Employee extends User {
     protected int orderFinished;
     protected double minimumSalaryAccepted;
-    Firebase firebase;
-    private User employee;
+
+        // For observing employer
+    public boolean newJobAlert;
+    public boolean newJobSeen;
+
+    public Firebase firebase;
+    private static User employee;
+    private static String preference;
+    private ArrayList<Job> allJob;
 
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location){
         this.username = username;
@@ -57,33 +64,17 @@ public class Employee extends User {
         return orderFinished;
     }
 
-    protected Task<Void> search(){
-        return null;
-    }
-
     protected boolean validate(){
         return false;
 
     }
 
-    public void setJob(String jobName, String jobWage, String jobTag){
-
-    }
     public User getInstance(){
         if(employee == null){
-            employee = new Employer(username, email, password);
+            employee = new Employee(username, email, password);
         }
         return employee;
     }
-
-    // For observing employer
-    public boolean newJobAlert;
-    public boolean newJobSeen;
-
-    public Firebase firebase;
-    private static User employee;
-    private static String preference;
-    private ArrayList<Job> allJob;
 
 
     public Employee(String username, String email, String password){
@@ -112,18 +103,8 @@ public class Employee extends User {
         return null;
     }
 
-    protected boolean validate(){
-        return false;
-
-    }
     public void setJob(String jobName, String jobWage, String jobTag){
 
-    }
-    public User getInstance(){
-        if(employee == null){
-            employee = new Employee(username, email, password);
-        }
-        return employee;
     }
 
     public void setPreference(String preference) {
