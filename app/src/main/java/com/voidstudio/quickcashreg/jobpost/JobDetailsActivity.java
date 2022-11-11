@@ -23,18 +23,18 @@ public class JobDetailsActivity extends AppCompatActivity {
     String statusText = "Location: " + itemLocation;
     statusLabel.setText(statusText);
 
-  //  ImageButton mapButton = findViewById(R.id.mapButton);
-  //  mapButton.setOnClickListener(new View.OnClickListener() {
+    //  ImageButton mapButton = findViewById(R.id.mapButton);
+    //  mapButton.setOnClickListener(new View.OnClickListener() {
 //
-  //    @Override
-  //    public void onClick(View view) {
-  //      String locCoord = getLocationCoordinate(itemLocation);
-  //      Intent mapIntent = new Intent(getBaseContext(), GoogleMapsActivity.class);
-  //      mapIntent.putExtra("city", itemLocation);
-  //      mapIntent.putExtra("taskLocation", locCoord);
-  //      startActivity(mapIntent);
-  //    }
-  //  });
+    //    @Override
+    //    public void onClick(View view) {
+    //      String locCoord = getLocationCoordinate(itemLocation);
+    //      Intent mapIntent = new Intent(getBaseContext(), GoogleMapsActivity.class);
+    //      mapIntent.putExtra("city", itemLocation);
+    //      mapIntent.putExtra("taskLocation", locCoord);
+    //      startActivity(mapIntent);
+    //    }
+    //  });
   }
 
   protected String getLocationCoordinate(String itemLocation) {
@@ -47,4 +47,3 @@ public class JobDetailsActivity extends AppCompatActivity {
     return sharedPreferences.getString(item, null);
   }
 }
-

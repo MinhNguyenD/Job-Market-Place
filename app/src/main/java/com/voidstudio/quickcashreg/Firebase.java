@@ -66,14 +66,14 @@ public class Firebase {
   }
 
   public void initializeDatabase(){
-      firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-      firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+    firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
+    firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
   }
 
   protected String getEmailAddress(String username) {
-   String email = getValueFromUser(username, "email");
+    String email = getValueFromUser(username, "email");
 
-   return email;
+    return email;
   }
 
   protected String getUserType(String username){
@@ -142,13 +142,13 @@ public class Firebase {
 
 
   protected boolean existingUser(String username){
-      existingUserHelper(username);
+    existingUserHelper(username);
 
-      return exists;
+    return exists;
   }
 
   private void getValueHelper(String username, String value){
-    final Query user = firebaseDB.getReference().child("users").child(username).child(value);
+    Query user = firebaseDB.getReference().child("users").child(username).child(value);
     user.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -179,15 +179,15 @@ public class Firebase {
    */
   private String getValueFromUser(String username, String value){
     getValueHelper(username,value);
-      if(firebaseString != null){
-        return firebaseString;
-      }
-      else return "";
+    if(firebaseString != null){
+      return firebaseString;
+    }
+    else return "";
   }
 
   //Both of these should be in log in(THIS IS FOR DEBUGGING)
   protected boolean checkIfPasswordMatches(String username, String password){
-     return getPassword(username).equals(password);
+    return getPassword(username).equals(password);
   }
 
   protected void addUser(String username, String password, String email, String type){
@@ -203,9 +203,7 @@ public class Firebase {
     Map<String, Object> map = new HashMap<>();
     Job job = new Job(jobName,jobWage,jobTag,userName);
     map.put(jobName, job);
-    map.put("Posted by", userName);
-    firebaseDBReference.child(JOBS).child(jobName).updateChildren(map);
-    map.remove("Posted by");
+    firebaseDBReference.child(JOBS).updateChildren(map);
     firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
   }
 
@@ -240,44 +238,28 @@ public class Firebase {
     return arrJob;
   }
 
-  protected void callListener() {
-    users_ref.orderByChild("email");
-  }
-
-  protected void listenerForUser_Ref() {
-    users_ref.addValueEventListener(new ValueEventListener() {
+  public ArrayList<Job> getAllJobs(){
+    ArrayList<Job> arrJob = new ArrayList<>();
+    Query query = firebaseDBReference.child(JOBS);
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        recommendList = new ArrayList<>();
-        for (DataSnapshot ds: snapshot.getChildren()) {
-          String type = ds.child("type").getValue(String.class);
-          if (!type.equals("Employee")) {
-            continue;
+        for(DataSnapshot sc : snapshot.getChildren()){
+          Job job;
+          if(sc.exists() && sc.getChildrenCount()>0) {
+            job = sc.getValue(Job.class);
+            if(job!=null){
+              arrJob.add(job);
+            }
           }
-          String name = ds.child("name").getValue(String.class);
-          String email = ds.child("email").getValue(String.class);
-          String miniSalary = ds.child("minimumSalary").getValue(String.class);
-          String orderFinished = ds.child("orderFinished").getValue(String.class);
-          String latitude = ds.child("latitude").getValue(String.class);
-          String longitude = ds.child("longitude").getValue(String.class);
-
-          Location location = new Location("name");
-          location.setLongitude(Double.parseDouble(longitude));
-          location.setLatitude(Double.parseDouble(latitude));
-
-          Employee employee = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
-
-          recommendList.add(employee);
         }
       }
 
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
+
       }
     });
+    return arrJob;
   }
-
-
-
-
 }

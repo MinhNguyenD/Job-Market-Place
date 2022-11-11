@@ -9,8 +9,8 @@ public abstract class User {
   protected String username;
   protected String password;
   protected String email;
+  protected String userType;
   protected Location location;
-
   public User(){
 
   }
@@ -29,6 +29,14 @@ public abstract class User {
 
   public String getEmail(){
     return email;
+  };
+
+  public String getUserType(){
+    return userType;
+  };
+
+  public Location getLocation(){
+    return location;
   };
 
   public void setUsername(String username){

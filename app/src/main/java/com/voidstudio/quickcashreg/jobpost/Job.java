@@ -7,17 +7,22 @@ public class Job {
   private String wage;
   private String tag;
   private String user;
-  protected Location location;
+  private String expectedDuration;
+  private String datePosted;
+//  private Location location;
+  private String hardLocation;
+
 
   public Job(){
 
   }
 
   public Job(String jobName, String wage, String tag, String user){
-      this.jobName = jobName;
-      this.wage = wage;
-      this.tag = tag;
-      this.user = user;
+    this.jobName = jobName;
+    this.wage = wage;
+    this.tag = tag;
+    this.user = user;
+    hardLocation = "Location";
   }
 
   public void setLocation(Location location) {
@@ -38,6 +43,18 @@ public class Job {
 
   public String getWage() {
     return wage;
+  }
+
+//  public Location getLocation() {
+//    return location;
+//  }
+
+  public String getDuration() {
+    return expectedDuration;
+  }
+
+  public String getDatePosted() {
+    return datePosted;
   }
 
   public String getJobName() {

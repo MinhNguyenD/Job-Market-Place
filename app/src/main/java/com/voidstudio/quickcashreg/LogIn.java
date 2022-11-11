@@ -130,10 +130,10 @@ public class LogIn {
   protected User setUser(String username, String password){
     User user;
     if(employee){
-       user = new Employee(username, password, firebase.getEmailAddress(username));
+       user = new Employee(username,firebase.getEmailAddress(username),firebase.getUserType(username), password);
     }
     else{
-      user = new Employer(username,password,firebase.getEmailAddress(username));
+      user = new Employer(username,firebase.getEmailAddress(username), password);
     }
     return user;
   }
