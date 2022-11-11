@@ -25,19 +25,15 @@ public abstract class User {
 
   public String getPassword(){
     return password;
-  };
+  }
 
   public String getEmail(){
     return email;
-  };
+  }
 
   public String getUserType(){
     return userType;
-  };
-
-  public Location getLocation(){
-    return location;
-  };
+  }
 
   public void setUsername(String username){
     this.username = username;
