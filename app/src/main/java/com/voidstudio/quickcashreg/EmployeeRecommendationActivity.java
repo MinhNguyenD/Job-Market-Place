@@ -32,15 +32,10 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
 
         Bundle input = getIntent().getExtras();
 
-//        String name = input.getString("Name");
-//        String tag = input.getString("Tag");
-//        String wage = input.getString("Wage");
-//        String title = input.getString("Title");
-
-        String name = "Emma";
-        String tag = "tag";
-        String wage = "100";
-        String title = "Smart";
+       String name = input.getString("Name");
+       String tag = input.getString("Tag");
+       String wage = input.getString("Wage");
+       String title = input.getString("Title");
 
         job = new Job(title, wage, tag, name);
         Location tt = new Location(name);
