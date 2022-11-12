@@ -121,7 +121,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
       postedSwitch.putExtra("Title", getJobTitle());
       postedSwitch.putExtra("Wage", getWage());
       postedSwitch.putExtra("Tag", tag);
-//      postedSwitch.putExtra("Name", USERNAME);
+     postedSwitch.putExtra("Name", USERNAME);
 
 //      postJob(getJobTitle(),getWage(),tag);
       startActivity(postedSwitch);
