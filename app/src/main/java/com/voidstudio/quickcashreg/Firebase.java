@@ -17,33 +17,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import user.UserConstants;
 import users.Employee;
 
 public class Firebase {
-  static final String FIREBASE_URL =
+  private static final String FIREBASE_URL =
           "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-  private static FirebaseDatabase firebaseDB;
+  private FirebaseDatabase firebaseDB;
   private static Firebase firebase;
-  private static DatabaseReference firebaseDBReference;
-  private final String USERS = "users";
-  private final String JOBS = "jobs";
+  private DatabaseReference firebaseDBReference;
+  private static final String USERS = "users";
+  private static final String JOBS = "jobs";
 
-  private static DatabaseReference users_ref;
-  private static DatabaseReference jobs_ref;
+  private final DatabaseReference USERS_REF;
+  private final DatabaseReference JOBS_REF;
 
   protected ArrayList<Employee> recommendList = new ArrayList<>();
 
   protected String firebaseString;
   protected String pass;
-
-  private boolean exists = false;
-  protected boolean employee = false;
+  private boolean exists;
+  protected boolean isEmployee = false;
   public Firebase() {
     firebaseDB = FirebaseDatabase.getInstance();
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
 
-    jobs_ref = firebaseDB.getReference("jobs");
-    users_ref = firebaseDB.getReference("users");
+    JOBS_REF = firebaseDB.getReference(JOBS);
+    USERS_REF = firebaseDB.getReference(USERS);
   }
 
   /**
@@ -70,17 +70,23 @@ public class Firebase {
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
   }
 
-  protected String getEmailAddress(String username) {
-    String email = getValueFromUser(username, "email");
-
-    return email;
+  public String getEmailAddress(String username) {
+    return getValueFromUser(username, "email");
   }
 
-  protected String getUserType(String username){
-    return getValueFromUser(username, "type");
+  public String getUserType(String username){
+    String type = getValueFromUser(username, "type");
+    if(type.equals(UserConstants.EMPLOYEE)){
+      isEmployee = true;
+      return UserConstants.EMPLOYEE;
+    }
+    else{
+      isEmployee = false;
+      return UserConstants.EMPLOYER;
+    }
   }
 
-  protected String getPassword(String username){
+  public String getPassword(String username){
     return getValueFromUser(username, "password");
   }
 
@@ -121,7 +127,8 @@ public class Firebase {
   }
 
   private void existingUserHelper(String username){
-    final Query users = firebaseDBReference.child("users");
+
+    Query users = firebaseDBReference.child("users");
     users.
             addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
@@ -141,7 +148,7 @@ public class Firebase {
 
 
 
-  protected boolean existingUser(String username){
+  public boolean existingUser(String username){
     existingUserHelper(username);
 
     return exists;
@@ -156,7 +163,7 @@ public class Firebase {
           Object sc = snapshot.getValue();
           if(sc != null) {
             firebaseString = sc.toString();
-            if(firebaseString.equals("Employee")) employee = true;
+            if(firebaseString.equals("Employee")) isEmployee = true;
             pass = firebaseString;
           }
         }
@@ -186,11 +193,11 @@ public class Firebase {
   }
 
   //Both of these should be in log in(THIS IS FOR DEBUGGING)
-  protected boolean checkIfPasswordMatches(String username, String password){
+  public boolean checkIfPasswordMatches(String username, String password){
     return getPassword(username).equals(password);
   }
 
-  protected void addUser(String username, String password, String email, String type){
+  public void addUser(String username, String password, String email, String type){
     Map<String, Object> map = new HashMap<>();
     map.put("password", password);
     map.put("email", email);
@@ -216,9 +223,6 @@ public class Firebase {
     query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        //final String jobName;
-        //final String jobWage;
-        //final String jobTag;
         for(DataSnapshot sc : snapshot.getChildren()){
           Job job;
           if(sc.exists() && sc.getChildrenCount()>0) {
@@ -264,11 +268,11 @@ public class Firebase {
   }
 
   protected void callListener() {
-    users_ref.orderByChild("email");
+    USERS_REF.orderByChild("email");
   }
 
   protected void listenerForUser_Ref() {
-    users_ref.addValueEventListener(new ValueEventListener() {
+    USERS_REF.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         recommendList = new ArrayList<>();

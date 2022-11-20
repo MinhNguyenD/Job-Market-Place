@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import user.IUser;
+import user.UserFactory;
 
 
 public class Register extends AppCompatActivity {
 
     private static Firebase firebase;
+    private IUser user;
     private boolean userNameExisted;
 
     public static final String NULL_USERTYPE = "-";
@@ -65,7 +68,6 @@ public class Register extends AppCompatActivity {
         return false;
     }
 
-
     /**
      * Checks if username already exists in database
      * @param userName userName to check
@@ -76,27 +78,6 @@ public class Register extends AppCompatActivity {
         return userNameExisted;
     }
 
-    /**
-     * Save email address into database
-     * Note: We use username as an unique ID for a user
-     * @param email entered email
-     * @param userName user associated with the entered email
-     */
-    protected void saveEmailAddressToFirebase(String email, String userName) {
-        firebase.setEmailAddress(email, userName);
-    }
-
-
-    /**
-     * Save user type into database
-     * Note: We use username as an unique ID for a user
-     * @param userType type of user(employee or employer) to save to DB
-     * @param userName associated user
-     */
-    protected void saveUserTypeToFirebase(String userType, String userName) {
-        firebase.setUserType(userType, userName);
-    }
-
     protected boolean isValidRole(String role) {
         if(role.equals(NULL_USERTYPE)){
             return false;
@@ -105,15 +86,7 @@ public class Register extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Save password into database
-     * Note: We use username as an unique ID for a user
-     * @param password password to save to DB
-     * @param userName associated user
-     */
-    protected void savePasswordToFirebase(String password, String userName) {
-        firebase.setPassword(password, userName);
-    }
+
 
     protected String registerUser(String userName, String email, String password, String confirmPassword, String selectedRole){
         String message = "";
@@ -132,7 +105,8 @@ public class Register extends AppCompatActivity {
             }
         } else {
             message = SUCCESS_MESSAGE;
-            firebase.addUser(userName,password,email,selectedRole);
+            user = new UserFactory().getUser(selectedRole);
+            user.save();
         }
         return message;
     }

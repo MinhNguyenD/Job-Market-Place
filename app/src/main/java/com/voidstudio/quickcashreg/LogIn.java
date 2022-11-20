@@ -1,29 +1,28 @@
 package com.voidstudio.quickcashreg;
 
+import static user.UserConstants.EMPLOYEE;
+
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 
-import users.Employee;
-import users.Employer;
-import users.User;
+import log.in.register.IValidate;
+import log.in.register.ValidateLogIn;
+import user.EmployeeReport;
+import user.EmployerReport;
+import user.IUser;
+import user.UserConstants;
+import user.UserFactory;
 
 public class LogIn {
   private final LogInActivity logInActivity;
-  private static Firebase firebase;
 
-  private static final String EMPTY_CREDENTIALS = "Username or password is empty";
-  private static final String USER_DOES_NOT_EXIST = "This username does not exist";
-  private static final String INCORRECT_PASSWORD = "Incorrect Password!";
-  private static final String SUCCESS = "Success";
-  private static String alertMessage = "BROKEN";
-
-  protected boolean isLogged;
-  protected boolean employee;
+  private IValidate validator;
+  protected IUser user;
+  private String userType;
 
   public LogIn(LogInActivity logInActivity) {
     this.logInActivity = logInActivity;
-    firebase = Firebase.getInstance();
   }
 
 
@@ -36,10 +35,9 @@ public class LogIn {
   }
 
   protected Task<Void> getAlertMessage(){
-    Toast.makeText(logInActivity, alertMessage, Toast.LENGTH_SHORT).show();
+    Toast.makeText(logInActivity, validator.getMessage(), Toast.LENGTH_SHORT).show();
     return null;
   }
-
 
   /**
    * Checks if user that is logging in is an employee
@@ -47,96 +45,51 @@ public class LogIn {
    * @return True if the user is an employee
    */
   protected boolean isEmployee() {
-    firebase.getUserType(getUserName());
-    if (firebase.employee) {
-      employee = true;
-    } else {
-      employee = false;
-    }
-    return employee;
-  }
-
-  private boolean isEmptyUsername(){
-    return getUserName().isEmpty();
-  }
-
-  private boolean isEmptyPassword(){
-    return getPassword().isEmpty();
-  }
-
-
-  /**
-   * Checks if there is empty fields
-   * @return true if there is an empty field
-   */
-  protected boolean emptyCredentials(){
-    if(isEmptyPassword()||isEmptyUsername()){
+    if(validator.getUserType(getUserName()).equals(EMPLOYEE)){
+      userType = EMPLOYEE;
       return true;
     }
-    else return false;
-  }
-
-  /**
-   *
-   * @param username entered username
-   * @return true if username exists in the database
-   */
-  protected boolean existingUser(String username){
-    //This method is identical to method in register, Consider refactor
-    return firebase.existingUser(username);
-  }
-
-  /**
-   * Checks if the entered password matches the password associated to the user
-   * @param password password entered by the user about to log in
-   * @return boolean that is true if the password matches the password associated to the user
-   */
-  protected boolean passwordMatch(String password){
-
-    if(firebase.checkIfPasswordMatches(getUserName(),password)) return true;
-    else return false;
+    else{
+      userType = UserConstants.EMPLOYER;
+      return false;
+    }
   }
 
   /**
    * Log In method
+   * Sets user info when they log in.
    * @return true if log in is successful.
    */
-  protected boolean logIn(String username, String password){
-
-    if(isEmployee()) employee = true;
-
-    if(emptyCredentials()){
-      alertMessage = EMPTY_CREDENTIALS;
-      isLogged = false;
+  protected boolean logIn(){
+    validator = new ValidateLogIn(getUserName(),getPassword());
+    if(validator.validate()){
+      userType = validator.getUserType(getUserName());
+      if(userType.equals(EMPLOYEE)){
+        user = new UserFactory().getUser("Employee");
+        new EmployeeReport(user).setUserInfo(getUserName());
+      }
+      else{
+        user = new UserFactory().getUser("Employer");
+        new EmployerReport(user).setUserInfo(getUserName());
+      }
     }
-
-    else if(!passwordMatch(password)){
-      alertMessage = INCORRECT_PASSWORD + firebase.pass;
-      isLogged = false;
-    }
-
-    else if(!existingUser(username)){
-      alertMessage = USER_DOES_NOT_EXIST;
-      isLogged = false;
-    }
-
-    else{
-      alertMessage = SUCCESS;
-      isLogged = true;
-    }
-    return isLogged;
+    return validator.validate();
   }
 
-  protected User setUser(String username, String password){
-    User user;
-    if(employee){
-       user = new Employee(username,firebase.getEmailAddress(username),firebase.getUserType(username), password);
+  protected void activateUser(String username){
+    userType = validator.getUserType(username);
+    if(userType.equals(EMPLOYEE)){
+      user = new UserFactory().getUser("Employee");
+      new EmployeeReport(user).setUserInfo(getUserName());
     }
     else{
-      user = new Employer(username,firebase.getEmailAddress(username), password);
+      user = new UserFactory().getUser("Employer");
+      new EmployerReport(user).setUserInfo(getUserName());
     }
-    return user;
   }
+
+
+
 
 
 }

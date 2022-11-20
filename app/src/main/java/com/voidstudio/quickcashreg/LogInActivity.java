@@ -30,9 +30,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     //Edit text reader helper method using delegation
     private final TextReader textReader = new TextReader();
-    private static Firebase firebase;
     private final LogIn logIn = new LogIn(this);
-
     public SharedPreferences sp;
 
 
@@ -53,7 +51,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         sp = getSharedPreferences(PREFERENCES, MODE_PRIVATE);
 
         if (sp.getBoolean(ISLOGGED, false)) {
-            if(sp.getBoolean(EMPTYPE,false)) goToInAppActivityEmployee();
+            if(sp.getBoolean(EMPTYPE,false)) {
+                goToInAppActivityEmployee();
+            }
             else goToInAppActivityEmployer();
         }
 
@@ -64,7 +64,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         }
 
         // Please do not move this command position, moving it to the top of onCreate will mess up login
-        firebase = Firebase.getInstance();
     }
 
     /**
@@ -89,17 +88,13 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      */
     public void goToInAppActivityEmployer() {
         Intent inAppEmployer = new Intent(this, InAppActivityEmployer.class);
-        inAppEmployer.putExtra(WELCOME, "Hi Employer, you logged in");
-        inAppEmployer.putExtra(USERNAME, getUserName());
         startActivity(inAppEmployer);
     }
 
     public void goToInAppActivityEmployee() {
         Intent inAppEmployee = new Intent(this, InAppActivityEmployee.class);
         inAppEmployee.putExtra(WELCOME, "Hi Employee, you logged in");
-        inAppEmployee.putExtra("USERNAME", getUserName());
-        inAppEmployee.putExtra("PASSWORD", getPassword());
-        inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
+        inAppEmployee.putExtra(USERNAME,sp.getString(USERNAME,""));
         startActivity(inAppEmployee);
     }
 
@@ -113,7 +108,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     protected String getUserName(){
         TextReader textReader = new TextReader();
-        EditText  usernameBox = findViewById(R.id.logInUserName);
+        EditText usernameBox = findViewById(R.id.logInUserName);
         return textReader.getFromEditText(usernameBox);
     }
 
@@ -133,9 +128,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         // Add username and password to login sharedPreferences state
         editor1.putString(USERNAME, getUserName());
         editor1.putString(PASSWORD, getPassword());
-        editor1.putBoolean(EMPTYPE, logIn.employee);
+        editor1.putBoolean(EMPTYPE, logIn.isEmployee());
         editor1.putBoolean(ISLOGGED, true);
-        editor1.putString("EMAIL",firebase.getEmailAddress(getUserName()));
+        editor1.putString("EMAIL",logIn.user.getEmail());
         editor1.commit();
     }
 
@@ -149,18 +144,16 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
      * @param view The button being pressed
      */
     @Override
-    public synchronized void onClick(View view) {
+    public void onClick(View view) {
         if (view.getId() == R.id.logInRegisterButton) {
             switchToRegisterWindow();
         }else if (view.getId() == R.id.showHidePassword) {
             showHidePassword(findViewById(R.id.showHidePassword), findViewById(R.id.textPassword));
         } else if(view.getId() == R.id.continueButton) {
-            logIn.logIn(getUserName(), getPassword());
-            if (logIn.isLogged) {
-                //logIn.isEmployee();
+            if (logIn.logIn()) {
                 stayLoggedIn();
                 logIn.getAlertMessage();
-                if(logIn.employee){
+                if(logIn.isEmployee()){
                     goToInAppActivityEmployee();
                 }
                 else{

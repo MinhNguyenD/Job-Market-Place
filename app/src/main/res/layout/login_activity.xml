@@ -17,10 +17,12 @@
         android:hint="Username"
         android:inputType="textPersonName"
         android:minHeight="48dp"
+        android:text="@string/EMPTY_STRING"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/EMPTY_STRING" />
 
     <Button
         android:id="@+id/continueButton"
@@ -67,10 +69,12 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
+        android:text="@string/EMPTY_STRING"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.335" />
+        app:layout_constraintVertical_bias="0.335"
+        tools:text="@string/EMPTY_STRING" />
 </androidx.constraintlayout.widget.ConstraintLayout>

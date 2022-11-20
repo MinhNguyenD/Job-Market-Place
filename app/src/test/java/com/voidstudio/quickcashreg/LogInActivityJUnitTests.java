@@ -39,17 +39,14 @@ public class LogInActivityJUnitTests {
         String fakePassword = "123456";
         //random name for time being
         assertFalse("This username does not exist",
-                logIn.logIn(fakeUser,fakePassword));
+                logIn.logIn());
     }
     /*** UAT-4 ***/
     @Test
     public void incorrectPass(){
         //Will always fail
-        String realUser = "RealUser123";
-        Mockito.when(logIn.existingUser(realUser)).thenReturn(true);
-        String fakePass = "LordOfCyberSecurityImpenetrableSuperServerDefenseNoHackingHere123456789!@#$%^&*()";
-        Mockito.when(logIn.passwordMatch(fakePass)).thenReturn(false);
-        assertFalse("Password is incorrect", logIn.logIn(realUser,fakePass));
+        Mockito.when(logIn.logIn()).thenReturn(false);
+        assertFalse(logIn.logIn());
     }
 
     /**Test if isEmployeeMethodWorks**/
