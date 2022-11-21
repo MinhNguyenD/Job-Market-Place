@@ -29,6 +29,8 @@ import static org.junit.Assert.assertEquals;
 
 import static org.junit.Assert.assertEquals;
 
+import com.voidstudio.quickcashreg.Register.RegisterActivity;
+
 
 /**
  * Instrumented test, which will execute on an Android device.

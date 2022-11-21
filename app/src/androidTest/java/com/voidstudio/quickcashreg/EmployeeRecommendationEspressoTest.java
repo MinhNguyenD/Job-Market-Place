@@ -16,6 +16,8 @@ import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.voidstudio.quickcashreg.EmployeeRecommendation.EmployeeRecommendationActivity;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;

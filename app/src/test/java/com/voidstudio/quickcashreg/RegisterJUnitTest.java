@@ -8,6 +8,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.voidstudio.quickcashreg.Register.Register;
+
 
 /**
  * Example local unit test, which will execute on the development machine (host).

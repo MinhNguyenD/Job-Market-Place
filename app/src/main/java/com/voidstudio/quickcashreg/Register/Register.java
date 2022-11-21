@@ -1,11 +1,12 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.Register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.R;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-
 
 public class Register extends AppCompatActivity {
 
@@ -76,26 +77,6 @@ public class Register extends AppCompatActivity {
         return userNameExisted;
     }
 
-    /**
-     * Save email address into database
-     * Note: We use username as an unique ID for a user
-     * @param email entered email
-     * @param userName user associated with the entered email
-     */
-    protected void saveEmailAddressToFirebase(String email, String userName) {
-        firebase.setEmailAddress(email, userName);
-    }
-
-
-    /**
-     * Save user type into database
-     * Note: We use username as an unique ID for a user
-     * @param userType type of user(employee or employer) to save to DB
-     * @param userName associated user
-     */
-    protected void saveUserTypeToFirebase(String userType, String userName) {
-        firebase.setUserType(userType, userName);
-    }
 
     protected boolean isValidRole(String role) {
         if(role.equals(NULL_USERTYPE)){
@@ -105,20 +86,11 @@ public class Register extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Save password into database
-     * Note: We use username as an unique ID for a user
-     * @param password password to save to DB
-     * @param userName associated user
-     */
-    protected void savePasswordToFirebase(String password, String userName) {
-        firebase.setPassword(password, userName);
-    }
-
-    protected String registerUser(String userName, String email, String password, String confirmPassword, String selectedRole){
+    protected String registerUser(String userName, String email, String password, String confirmPassword, String selectedRole, String minimumSalary){
         String message = "";
+        boolean invalidInfo = !isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password, confirmPassword) || !isValidEmailAddress(email);
 
-        if (!isValidRole(selectedRole) || userNameExisted(userName) || !isValidPassword(password) || !isValidConfirmPassword(password, confirmPassword) || !isValidEmailAddress(email)) {
+        if (invalidInfo) {
             if (!isValidPassword(password)) {
                 message = PASSWORD_ERROR_MESSAGE;
             } else if (!isValidEmailAddress(email)) {
@@ -132,8 +104,9 @@ public class Register extends AppCompatActivity {
             }
         } else {
             message = SUCCESS_MESSAGE;
-            firebase.addUser(userName,password,email,selectedRole);
+            firebase.addUser(userName,password,email,selectedRole, minimumSalary);
         }
+
         return message;
     }
 }

@@ -10,6 +10,8 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.Register.RegisterActivity;
+
 /**
  * Activity for log in.
  * Users password and username are required to log in. Tests if user enters correct credentials

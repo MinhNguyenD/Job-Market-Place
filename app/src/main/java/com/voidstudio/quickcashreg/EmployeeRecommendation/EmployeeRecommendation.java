@@ -1,7 +1,8 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.EmployeeRecommendation;
 
 import android.location.Location;
 
+import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.Location.GPS;
 import com.voidstudio.quickcashreg.jobpost.Job;
 

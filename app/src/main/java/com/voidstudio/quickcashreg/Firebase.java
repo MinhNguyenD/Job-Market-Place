@@ -92,7 +92,7 @@ public class Firebase {
    * @param email entered email
    * @param userName user associated with the entered email
    */
-  protected Task<Void> setEmailAddress(String email, String userName) {
+  public Task<Void> setEmailAddress(String email, String userName) {
     firebaseDBReference.child("users").child(userName).child("email").setValue(email);
     return null;
   }
@@ -104,7 +104,7 @@ public class Firebase {
    * @param userType type of user(employee or employer) to save to DB
    * @param userName associated user
    */
-  protected Task<Void> setUserType(String userType, String userName) {
+  public Task<Void> setUserType(String userType, String userName) {
     firebaseDBReference.child("users").child(userName).child("userType").setValue(userType);
     return null;
   }
@@ -115,33 +115,33 @@ public class Firebase {
    * @param password password to save to DB
    * @param userName associated user
    */
-  protected Task<Void> setPassword(String password, String userName) {
+  public Task<Void> setPassword(String password, String userName) {
     firebaseDBReference.child("users").child(userName).child("password").setValue(password);
     return null;
   }
 
   private void existingUserHelper(String username){
     final Query users = firebaseDBReference.child("users");
-    users.
-            addListenerForSingleValueEvent(new ValueEventListener() {
-              @Override
-              public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.hasChild(username)){
-                  exists = true;
-                }
-                else{
-                  exists = false;
-                }
-              }
-              @Override
-              public void onCancelled(@NonNull DatabaseError error) {
-              }
-            });
+    users.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if(snapshot.hasChild(username)){
+          exists = true;
+        }
+        else{
+          exists = false;
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+      }
+    });
   }
 
 
 
-  protected boolean existingUser(String username){
+  public boolean existingUser(String username){
     existingUserHelper(username);
 
     return exists;
@@ -190,13 +190,15 @@ public class Firebase {
     return getPassword(username).equals(password);
   }
 
-  protected void addUser(String username, String password, String email, String type){
+  public void addUser(String username, String password, String email, String type, String minimumSalary){
     Map<String, Object> map = new HashMap<>();
+    map.put("name", username);
     map.put("password", password);
+    map.put("minimumSalary", minimumSalary);
+    map.put("orderFinished", "0");
     map.put("email", email);
     map.put("type", type);
     firebaseDBReference.child(USERS).child(username).updateChildren(map);
-
   }
 
   public void addJob(String jobName, String jobWage, String jobTag, String userName){
@@ -262,12 +264,8 @@ public class Firebase {
     });
     return arrJob;
   }
-
-  protected void callListener() {
-    users_ref.orderByChild("email");
-  }
-
-  protected void listenerForUser_Ref() {
+ 
+  public void listenerForUser_Ref() {
     users_ref.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
