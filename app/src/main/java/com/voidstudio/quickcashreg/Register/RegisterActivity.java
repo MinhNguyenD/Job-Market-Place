@@ -1,4 +1,4 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.Register;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,8 +16,10 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.LogInActivity;
+import com.voidstudio.quickcashreg.R;
+import com.voidstudio.quickcashreg.TextReader;
 
 /**
  * Main Activity Class is the Register Page,
@@ -27,7 +29,6 @@ import java.util.regex.Pattern;
  */
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-//    private boolean userNameExisted;
     private Spinner roleList;
     private String selectedRole;
     private Register register = new Register();
@@ -39,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public static final String EMPLOYEE_USERTYPE = "Employee";
     public static final String EMPLOYER_USERTYPE = "Employer";
     public static final String NULL_USERTYPE = "-";
-
 
     public static final String CONFIRM_PASSWORD_MESSAGE = "Two passwords are the same";
     public static final String VALID_MESSAGE_EMPTY_STRING = "";
@@ -218,6 +218,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     /**
+     Getter method to get confirm password
+     **/
+    protected String getMinimumSalary(){
+        EditText confirmPassword = findViewById(R.id.minimumSalary);
+        return textReader.getFromEditText(confirmPassword);
+    }
+
+    /**
      * Switches to log in window
      */
     public void switchToLogInWindow(){
@@ -243,10 +251,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String email = getEmail();
         String password = getPassword();
         String confirmPassword = getConfirmPassword();
+        String minimumSalary = getMinimumSalary();
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
 
         if(view.getId() == R.id.buttonreg) {
-            String message = register.registerUser(userName, email, password, confirmPassword,selectedRole);
+            String message = register.registerUser(userName, email, password, confirmPassword, selectedRole, minimumSalary);
             if(message.equals(register.SUCCESS_MESSAGE)){
                 switchToLogInWindow();
             }

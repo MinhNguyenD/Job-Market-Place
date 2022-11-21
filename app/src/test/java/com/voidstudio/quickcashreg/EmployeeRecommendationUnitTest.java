@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import android.location.Location;
 
+import com.voidstudio.quickcashreg.EmployeeRecommendation.EmployeeRecommendation;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
 import org.junit.AfterClass;

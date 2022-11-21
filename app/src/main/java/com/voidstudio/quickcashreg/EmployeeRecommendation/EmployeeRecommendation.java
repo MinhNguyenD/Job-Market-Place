@@ -1,7 +1,8 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.EmployeeRecommendation;
 
 import android.location.Location;
 
+import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.Location.GPS;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
@@ -24,9 +25,7 @@ public class EmployeeRecommendation {
     public ArrayList<Employee> getRecommendation (Job job, ArrayList<Employee> employees, double maxDistance) {
         ArrayList<Employee> res = new ArrayList<>();
 
-
         for (Employee employee: employees) {
-            
             if (isValidEmployee(job, employee, maxDistance)) {
                 res.add(employee);
             }
@@ -41,7 +40,7 @@ public class EmployeeRecommendation {
         double distance = jobLocation.distanceTo(employeeLocation);
 
         boolean validSalary = employee.getMinimumSalaryAccepted() < Double.parseDouble(job.getWage());
-        boolean validExperience = employee.getOrderFinished() > 3;
+        boolean validExperience = employee.getOrderFinished() >= 3;
         boolean validDistance = distance < maxDistance;
 
         return validDistance & validExperience & validSalary;

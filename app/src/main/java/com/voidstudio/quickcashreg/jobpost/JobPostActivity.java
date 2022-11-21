@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.voidstudio.quickcashreg.EmployeeRecommendationActivity;
+import com.voidstudio.quickcashreg.EmployeeRecommendation.EmployeeRecommendationActivity;
 import com.voidstudio.quickcashreg.Firebase;
 import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
@@ -121,7 +121,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
       postedSwitch.putExtra("Title", getJobTitle());
       postedSwitch.putExtra("Wage", getWage());
       postedSwitch.putExtra("Tag", tag);
-     postedSwitch.putExtra("Name", USERNAME);
+      postedSwitch.putExtra("Name", USERNAME);
 
 //      postJob(getJobTitle(),getWage(),tag);
       startActivity(postedSwitch);

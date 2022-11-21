@@ -8,4 +8,5 @@
     <string name="INVALID_EMAIL">Invalid email address</string>
     <string name="INVALID_ROLE">Invalid Role</string>
     <string name="FIREBASE_DB_URL">https://quickcash-bd58f-default-rtdb.firebaseio.com</string>
+    <string name="miniSalary" />
 </resources>

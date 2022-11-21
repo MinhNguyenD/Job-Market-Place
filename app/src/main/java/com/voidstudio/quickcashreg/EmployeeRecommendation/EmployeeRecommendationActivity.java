@@ -1,4 +1,4 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.EmployeeRecommendation;
 
 import android.location.Location;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.EmployeeRecommendation.EmployeeRecommendation;
+import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;
@@ -32,16 +35,16 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
 
         Bundle input = getIntent().getExtras();
 
-       String name = input.getString("Name");
-       String tag = input.getString("Tag");
-       String wage = input.getString("Wage");
-       String title = input.getString("Title");
+        String name = input.getString("Name");
+        String tag = input.getString("Tag");
+        String wage = input.getString("Wage");
+        String title = input.getString("Title");
 
         job = new Job(title, wage, tag, name);
-        Location tt = new Location(name);
-        tt.setLatitude(0);
-        tt.setLongitude(0);
-        job.setLocation(tt);
+        Location location = new Location(name);
+        location.setLatitude(0);
+        location.setLongitude(0);
+        job.setLocation(location);
 
         recommendEmployeeList = findViewById(R.id.recommendationEmployeeList);
         seekBarForDistance = (SeekBar)findViewById(R.id.seekBarForDistance);
@@ -75,7 +78,6 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
 
     private void getRecommendInfo(double maxDistance) {
         ArrayList<Employee> employees= firebase.getRecommendList();
-//        ArrayList<Employee> recommendList = employeeRecommendation.getRecommendation(job, employees, maxDistance);
 
         ArrayList<Employee> recommendList = employeeRecommendation.getRecommendation(job, employees, getMaxDistanceInKM());
         String[] recommendInfoList = new String[recommendList.size()];
@@ -97,7 +99,7 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
     }
 
     public int getMaxDistanceInKM() {
-        return getSeekBarForDistanceValue() * 3000;
+        return getSeekBarForDistanceValue() * 3;
     }
 
 
