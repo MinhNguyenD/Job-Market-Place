@@ -1,7 +1,7 @@
 package users;
 
 import com.google.android.gms.tasks.Task;
-import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;

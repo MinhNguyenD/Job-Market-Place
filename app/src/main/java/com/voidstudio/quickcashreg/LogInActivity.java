@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.voidstudio.quickcashreg.Register.RegisterActivity;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 /**
  * Activity for log in.

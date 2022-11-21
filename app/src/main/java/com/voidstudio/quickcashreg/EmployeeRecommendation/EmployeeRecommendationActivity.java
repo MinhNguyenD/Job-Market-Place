@@ -9,8 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.voidstudio.quickcashreg.EmployeeRecommendation.EmployeeRecommendation;
-import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.jobpost.Job;
 

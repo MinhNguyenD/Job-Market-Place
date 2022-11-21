@@ -3,6 +3,7 @@ package com.voidstudio.quickcashreg;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 import users.Employee;
 import users.Employer;

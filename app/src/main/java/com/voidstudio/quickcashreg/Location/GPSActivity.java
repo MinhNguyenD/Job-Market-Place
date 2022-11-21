@@ -14,7 +14,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.voidstudio.quickcashreg.R;
 
-
+import users.User;
 
 
 public class GPSActivity extends AppCompatActivity {
@@ -22,7 +22,8 @@ public class GPSActivity extends AppCompatActivity {
   private static final int REQUEST_CODE_PERMISSION = 2;
   String fPermission = Manifest.permission.ACCESS_FINE_LOCATION;
   String cPermission = Manifest.permission.ACCESS_COARSE_LOCATION;
-
+  User user;
+  String username = "Not yet";
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -31,14 +32,14 @@ public class GPSActivity extends AppCompatActivity {
     locationButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        if (hasLocationAccessPermission()) {
-          GPS gps = new GPS(GPSActivity.this);
-          if (gps.canGetLocation()) {
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-            Toast.makeText(getBaseContext(), "Current location:(" + latitude + "," + longitude + ")",
-                    Toast.LENGTH_LONG).show();
-          }
+        user = User.getUser(username);
+        if(user == null) return;
+        if(user.startLocating(GPSActivity.this)){
+          double[] coords = user.locate.getLatLong();
+          double latitude = coords[0];
+          double longitude = coords[1];
+          Toast.makeText(getBaseContext(), "Current location:(" + latitude + "," + longitude + ")",
+                  Toast.LENGTH_LONG).show();
         }
       }
     });

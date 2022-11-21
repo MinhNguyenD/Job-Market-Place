@@ -2,8 +2,7 @@ package com.voidstudio.quickcashreg.Register;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.voidstudio.quickcashreg.Firebase;
-import com.voidstudio.quickcashreg.R;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
