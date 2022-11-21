@@ -35,16 +35,16 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
 
         Bundle input = getIntent().getExtras();
 
-       String name = input.getString("Name");
-       String tag = input.getString("Tag");
-       String wage = input.getString("Wage");
-       String title = input.getString("Title");
+        String name = input.getString("Name");
+        String tag = input.getString("Tag");
+        String wage = input.getString("Wage");
+        String title = input.getString("Title");
 
         job = new Job(title, wage, tag, name);
-        Location tt = new Location(name);
-        tt.setLatitude(0);
-        tt.setLongitude(0);
-        job.setLocation(tt);
+        Location location = new Location(name);
+        location.setLatitude(0);
+        location.setLongitude(0);
+        job.setLocation(location);
 
         recommendEmployeeList = findViewById(R.id.recommendationEmployeeList);
         seekBarForDistance = (SeekBar)findViewById(R.id.seekBarForDistance);
@@ -78,7 +78,6 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
 
     private void getRecommendInfo(double maxDistance) {
         ArrayList<Employee> employees= firebase.getRecommendList();
-//        ArrayList<Employee> recommendList = employeeRecommendation.getRecommendation(job, employees, maxDistance);
 
         ArrayList<Employee> recommendList = employeeRecommendation.getRecommendation(job, employees, getMaxDistanceInKM());
         String[] recommendInfoList = new String[recommendList.size()];
@@ -100,7 +99,7 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
     }
 
     public int getMaxDistanceInKM() {
-        return getSeekBarForDistanceValue() * 3000;
+        return getSeekBarForDistanceValue() * 3;
     }
 
 

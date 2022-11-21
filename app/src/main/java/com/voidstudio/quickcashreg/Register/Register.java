@@ -30,7 +30,7 @@ public class Register extends AppCompatActivity {
     /**
      Check if email address is valid
      **/
-    protected static boolean isValidEmailAddress(String emailAddress) {
+    public static boolean isValidEmailAddress(String emailAddress) {
         /*
             Reference: OWASP Email Regex
             https://owasp.org/www-community/OWASP_Validation_Regex_Repository
@@ -46,7 +46,7 @@ public class Register extends AppCompatActivity {
     /**
      Check if password is valid
      **/
-    protected static boolean isValidPassword(String password) {
+    public static boolean isValidPassword(String password) {
         if(password.length() >= 6){
             return true;
         }
@@ -59,7 +59,7 @@ public class Register extends AppCompatActivity {
      * @param confirmPassword entered confirmPassword
      * @return true if password.equals(confirmPassword)
      */
-    protected static boolean isValidConfirmPassword(String password, String confirmPassword) {
+    public static boolean isValidConfirmPassword(String password, String confirmPassword) {
         if(password.equals(confirmPassword)){
             return true;
         }
