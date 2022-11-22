@@ -16,7 +16,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.LogInActivity;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.TextReader;

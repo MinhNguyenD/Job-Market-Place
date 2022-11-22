@@ -1,9 +1,6 @@
 package com.voidstudio.quickcashreg;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
-
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,6 +9,9 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 import com.voidstudio.quickcashreg.jobpost.JobDetailsActivity;
 

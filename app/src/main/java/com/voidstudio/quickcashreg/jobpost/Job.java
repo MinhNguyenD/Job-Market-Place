@@ -2,6 +2,9 @@ package com.voidstudio.quickcashreg.jobpost;
 
 import android.location.Location;
 
+import com.voidstudio.quickcashreg.Location.ILocation;
+import com.voidstudio.quickcashreg.Location.JobLocation;
+
 public class Job {
   private String jobName;
   private String wage;
@@ -11,6 +14,8 @@ public class Job {
   private String datePosted;
   private Location location;
   private String hardLocation;
+  public ILocation jobLocation;
+
 
 
   public Job(){
@@ -22,16 +27,24 @@ public class Job {
     this.wage = wage;
     this.tag = tag;
     this.user = user;
-    hardLocation = "Location";
+    jobLocation = new JobLocation(jobName);
   }
 
+
   public void setLocation(Location location) {
-    this.location = location;
+    jobLocation.setLocation(location);
   }
 
   public Location getLocation() {
-    return location;
+    if(jobLocation != null) {
+      return jobLocation.getMyLocation();
+    }
+    else{
+      return null;
+    }
   }
+
+
 
   public String getUser() {
     return user;
@@ -45,9 +58,7 @@ public class Job {
     return wage;
   }
 
-//  public Location getLocation() {
-//    return location;
-//  }
+
 
   public String getDuration() {
     return expectedDuration;

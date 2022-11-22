@@ -11,7 +11,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -21,7 +20,7 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
 
     String latlong = new String("44,-63");
     String city = new String("Halifax");
-
+    public int kilometerRadius = 10;
 
     private GoogleMap mMap;
 
@@ -76,11 +75,13 @@ public class GoogleMapsActivity extends AppCompatActivity implements OnMapReadyC
 
         LatLng itemLocation = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(itemLocation).title(this.city));
-        Circle rCircle = mMap.addCircle(new CircleOptions()
-                .center(itemLocation)
-                .radius(10000)
-                .strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.center(itemLocation);
+        circleOptions.radius(kilometerRadius*1000);
+        circleOptions.strokeColor(Color.RED);
+        mMap.addCircle(circleOptions);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(itemLocation));
+        mMap.addCircle(circleOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(itemLocation));
 
     }

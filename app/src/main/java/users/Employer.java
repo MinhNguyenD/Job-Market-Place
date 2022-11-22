@@ -1,7 +1,7 @@
 package users;
 
 import com.google.android.gms.tasks.Task;
-import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;
@@ -32,7 +32,13 @@ public class Employer extends User {
 
 
   public void setJob(String jobName, String jobWage, String jobTag){
-    firebase.addJob(jobName,jobWage,jobTag,username);
+    Job job = new Job(jobName, jobWage, jobTag, username);
+    if(locate.getMyLocation()!=null){
+      double latitude = locate.getLatLong()[0];
+      double longitude = locate.getLatLong()[1];
+      firebase.setJobCoordinates(jobName,latitude,longitude);
+    }
+    firebase.addJob(job);
   }
   public User getInstance(){
     if(employer == null){

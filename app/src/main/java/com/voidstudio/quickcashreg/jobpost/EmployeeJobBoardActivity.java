@@ -12,14 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.InAppActivityEmployee;
 import com.voidstudio.quickcashreg.R;
 
 import java.util.ArrayList;
 
 import users.Employee;
-import users.Employer;
 
 public class EmployeeJobBoardActivity extends AppCompatActivity implements RecyclerAdapter.ItemClickListener {
 

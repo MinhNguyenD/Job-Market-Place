@@ -11,6 +11,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.voidstudio.quickcashreg.Register.RegisterActivity;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 /**
  * Activity for log in.
@@ -101,7 +102,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         inAppEmployee.putExtra(WELCOME, "Hi Employee, you logged in");
         inAppEmployee.putExtra("USERNAME", getUserName());
         inAppEmployee.putExtra("PASSWORD", getPassword());
-        inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
+        //inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
         startActivity(inAppEmployee);
     }
 

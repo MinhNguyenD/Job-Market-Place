@@ -2,8 +2,7 @@ package com.voidstudio.quickcashreg.EmployeeRecommendation;
 
 import android.location.Location;
 
-import com.voidstudio.quickcashreg.Firebase;
-import com.voidstudio.quickcashreg.Location.GPS;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;
@@ -12,10 +11,9 @@ import users.Employee;
 
 public class EmployeeRecommendation {
     private final Firebase firebase;
-    GPS gps ;
 
     public EmployeeRecommendation(){
-        firebase = new Firebase();
+        firebase = Firebase.getInstance();
     }
 
     public Firebase getFirebase() {
@@ -36,7 +34,7 @@ public class EmployeeRecommendation {
 
     public static boolean isValidEmployee(Job job, Employee employee, double maxDistance){
         Location jobLocation = job.getLocation();
-        Location employeeLocation = employee.getLocation();
+        Location employeeLocation = employee.getLocationFromDatabase();
         double distance = jobLocation.distanceTo(employeeLocation);
 
         boolean validSalary = employee.getMinimumSalaryAccepted() < Double.parseDouble(job.getWage());

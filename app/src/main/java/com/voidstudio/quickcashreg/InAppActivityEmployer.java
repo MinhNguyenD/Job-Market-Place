@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
 
@@ -25,7 +27,7 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
     public static final String USERNAME = "Username";
     public static final String PASSWORD = "Password";
 
-    private static Firebase firebase;
+    private final Firebase firebase = Firebase.getInstance();
     private SharedPreferences sp;
     public static Employer employer;
     @Override
@@ -48,12 +50,16 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         jobPost.setOnClickListener(InAppActivityEmployer.this);
 
 
-        firebase = Firebase.getInstance();
         sp = getSharedPreferences("login", MODE_PRIVATE);
         username = sp.getString(USERNAME,"");
         password = sp.getString(PASSWORD,"");
         email = firebase.getEmailAddress(username);
         employer = new Employer(username, email, password);
+        employer.startLocating(this);
+        employer.setLocation(employer.locate.getMyLocation());
+        firebase.setUserCoordinates(username,employer.locate.getMyLocation());
+        Toast.makeText(this,
+                employer.getLatLong()[0]+","+employer.getLatLong()[1],Toast.LENGTH_LONG).show();
 
     }
 

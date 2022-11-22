@@ -1,6 +1,17 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.firebase;
+
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.EMAIL;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.JOB_LOCATION;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LATITUDE;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LOCATION;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LONGITUDE;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.PASSWORD;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.TYPE;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.USERNAME;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.USERS;
 
 import android.location.Location;
+import android.location.LocationManager;
 
 import androidx.annotation.NonNull;
 
@@ -18,32 +29,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 import users.Employee;
+import users.UserConstants;
 
 public class Firebase {
   static final String FIREBASE_URL =
           "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-  private static FirebaseDatabase firebaseDB;
-  private static Firebase firebase;
-  private static DatabaseReference firebaseDBReference;
-  private final String USERS = "users";
-  private final String JOBS = "jobs";
+  protected static FirebaseDatabase firebaseDB;
+  protected static Firebase firebase;
+  protected static DatabaseReference firebaseDBReference;
+  protected final String JOBS = "jobs";
 
-  private static DatabaseReference users_ref;
-  private static DatabaseReference jobs_ref;
+  protected static DatabaseReference users_ref;
+  protected static DatabaseReference jobs_ref;
 
-  protected ArrayList<Employee> recommendList = new ArrayList<>();
+  public ArrayList<Employee> recommendList = new ArrayList<>();
 
-  protected String firebaseString;
-  protected String pass;
+  public String firebaseString;
+  public String pass;
+  public double[] coordinates;
 
   private boolean exists = false;
-  protected boolean employee = false;
+  public boolean employee = false;
   public Firebase() {
     firebaseDB = FirebaseDatabase.getInstance();
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
 
     jobs_ref = firebaseDB.getReference("jobs");
     users_ref = firebaseDB.getReference("users");
+    //firebaseDB.setPersistenceEnabled(false);
   }
 
   /**
@@ -53,6 +66,7 @@ public class Firebase {
   public static Firebase getInstance() {
     if(firebase == null) {
       firebase = new Firebase();
+
     }
     return firebase;
   }
@@ -70,18 +84,18 @@ public class Firebase {
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
   }
 
-  protected String getEmailAddress(String username) {
-    String email = getValueFromUser(username, "email");
+  public String getEmailAddress(String username) {
+    String email = getValueFromUser(username, EMAIL);
 
     return email;
   }
 
-  protected String getUserType(String username){
-    return getValueFromUser(username, "type");
+  public String getUserType(String username){
+    return getValueFromUser(username, TYPE);
   }
 
-  protected String getPassword(String username){
-    return getValueFromUser(username, "password");
+  public String getPassword(String username){
+    return getValueFromUser(username, PASSWORD);
   }
 
 
@@ -93,7 +107,7 @@ public class Firebase {
    * @param userName user associated with the entered email
    */
   public Task<Void> setEmailAddress(String email, String userName) {
-    firebaseDBReference.child("users").child(userName).child("email").setValue(email);
+    firebaseDBReference.child(USERS).child(userName).child(EMAIL).setValue(email);
     return null;
   }
 
@@ -105,9 +119,10 @@ public class Firebase {
    * @param userName associated user
    */
   public Task<Void> setUserType(String userType, String userName) {
-    firebaseDBReference.child("users").child(userName).child("userType").setValue(userType);
+    firebaseDBReference.child(USERS).child(userName).child(TYPE).setValue(userType);
     return null;
   }
+
 
   /**
    * Save password into database
@@ -116,12 +131,73 @@ public class Firebase {
    * @param userName associated user
    */
   public Task<Void> setPassword(String password, String userName) {
-    firebaseDBReference.child("users").child(userName).child("password").setValue(password);
+    firebaseDBReference.child(USERS).child(userName).child(PASSWORD).setValue(password);
+    return null;
+  }
+  public Task<Void> setJobCoordinates(String jobName, double latitude, double longitude){
+    firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION).
+            child(LONGITUDE).setValue(latitude);
+    firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION).
+            child(LATITUDE).setValue(longitude);
     return null;
   }
 
+  public double[] getJobCoordinates(String jobName){
+    Query queer = firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION);
+    queer.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if(snapshot.child(LATITUDE).getValue()!=null&&snapshot.child(LONGITUDE).getValue()!= null) {
+          double longitude = (double)snapshot.child(LATITUDE).getValue();
+          double latitude = (double)snapshot.child(LONGITUDE).getValue();
+          coordinates = new double[2];
+          coordinates[0] = longitude;
+          coordinates[1] = latitude;
+        }
+
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return coordinates;
+  }
+
+  public void setUserCoordinates(String username, Location location){
+    double[] coords = {location.getLatitude(), location.getLongitude()};
+    firebaseDBReference.child(USERS).child(username).child(LONGITUDE).setValue(coords[0]);
+    firebaseDBReference.child(USERS).child(username).child(LATITUDE).setValue(coords[1]);
+  }
+
+  public double[] getUserCoordinates(String username){
+    Query queer = firebaseDBReference.child(USERS).child(username).child(LOCATION);
+    queer.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if(snapshot.child(LATITUDE).getValue()!=null&&snapshot.child(LONGITUDE).getValue()!= null) {
+           double longitude = (double)snapshot.child(LATITUDE).getValue();
+           double latitude = (double)snapshot.child(LONGITUDE).getValue();
+           coordinates = new double[2];
+           coordinates[0] = longitude;
+           coordinates[1] = latitude;
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return coordinates;
+  }
+
+
+
+
   private void existingUserHelper(String username){
-    final Query users = firebaseDBReference.child("users");
+    final Query users = firebaseDBReference.child(USERS);
     users.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -148,7 +224,7 @@ public class Firebase {
   }
 
   private void getValueHelper(String username, String value){
-    Query user = firebaseDB.getReference().child("users").child(username).child(value);
+    Query user = firebaseDB.getReference().child(USERS).child(username).child(value);
     user.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -156,7 +232,7 @@ public class Firebase {
           Object sc = snapshot.getValue();
           if(sc != null) {
             firebaseString = sc.toString();
-            if(firebaseString.equals("Employee")) employee = true;
+            if(firebaseString.equals(UserConstants.EMPLOYEE)) employee = true;
             pass = firebaseString;
           }
         }
@@ -186,27 +262,26 @@ public class Firebase {
   }
 
   //Both of these should be in log in(THIS IS FOR DEBUGGING)
-  protected boolean checkIfPasswordMatches(String username, String password){
+  public boolean checkIfPasswordMatches(String username, String password){
     return getPassword(username).equals(password);
   }
 
   public void addUser(String username, String password, String email, String type, String minimumSalary){
     Map<String, Object> map = new HashMap<>();
-    map.put("name", username);
-    map.put("password", password);
+    map.put(USERNAME, username);
+    map.put(PASSWORD, password);
     map.put("minimumSalary", minimumSalary);
     map.put("orderFinished", "0");
-    map.put("email", email);
-    map.put("type", type);
+    map.put(EMAIL, email);
+    map.put(TYPE, type);
     firebaseDBReference.child(USERS).child(username).updateChildren(map);
   }
 
-  public void addJob(String jobName, String jobWage, String jobTag, String userName){
+  public void addJob(Job job){
     Map<String, Object> map = new HashMap<>();
-    Job job = new Job(jobName,jobWage,jobTag,userName);
-    map.put(jobName, job);
+    map.put(job.getJobName(), job);
     firebaseDBReference.child(JOBS).updateChildren(map);
-    firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
+    firebaseDBReference.child(USERS).child(job.getUser()).child(JOBS).updateChildren(map);
   }
 
   public ArrayList<Job> getJobsFromUser(String username){
@@ -271,25 +346,34 @@ public class Firebase {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         recommendList = new ArrayList<>();
         for (DataSnapshot ds: snapshot.getChildren()) {
-          String type = ds.child("type").getValue(String.class);
-          if (!type.equals("Employee")) {
+          String type = ds.child(TYPE).getValue(String.class);
+          if (!type.equals(UserConstants.EMPLOYEE)) {
             continue;
           }
-          String name = ds.child("name").getValue(String.class);
-          String email = ds.child("email").getValue(String.class);
+          String name = ds.child(USERNAME).getValue(String.class);
+          String email = ds.child(EMAIL).getValue(String.class);
           String miniSalary = ds.child("minimumSalary").getValue(String.class);
           String orderFinished = ds.child("orderFinished").getValue(String.class);
-
-          String latitude = ds.child("latitude").getValue(String.class);
-          String longitude = ds.child("longitude").getValue(String.class);
-
-          Location location = new Location("name");
-          location.setLongitude(Double.parseDouble(longitude));
-          location.setLatitude(Double.parseDouble(latitude));
-
-          Employee employee = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
-
-          recommendList.add(employee);
+          String password = ds.child(PASSWORD).getValue(String.class);
+          double latitude =0.0;
+          double longitude=0.0;
+          if(ds.hasChild(LATITUDE)&& ds.hasChild(LONGITUDE)) {
+             latitude = ds.child(LATITUDE).getValue(Double.class);
+             longitude = ds.child(LONGITUDE).getValue(Double.class);
+          }
+          if((latitude == 0.0 )|| longitude == 0.0){
+            Employee e = new Employee(name,email,password);
+            recommendList.add(e);
+          }
+          else {
+            Location location = new Location(LocationManager.GPS_PROVIDER);
+            location.setLongitude(longitude);
+            location.setLatitude(latitude);
+            Employee e = new Employee(name, email, Integer.parseInt(orderFinished),
+                    Double.parseDouble(miniSalary), location);
+            e.setLocation(location);
+            recommendList.add(e);
+          }
         }
       }
 
@@ -298,4 +382,18 @@ public class Firebase {
       }
     });
   }
+
+  public Map<String,String> getUserInfo(String username){
+    Map<String, String> map = new HashMap<>();
+    map.put("name", username);
+    map.put("password", getPassword(username));
+    map.put("email", getEmailAddress(username));
+    map.put("type", getUserType(username));
+    return map;
+  }
+
+
+
+
+
 }

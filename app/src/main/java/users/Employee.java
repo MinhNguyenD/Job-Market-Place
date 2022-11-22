@@ -3,7 +3,7 @@ package users;
 import android.location.Location;
 
 import com.google.android.gms.tasks.Task;
-import com.voidstudio.quickcashreg.Firebase;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;
@@ -28,7 +28,8 @@ public class Employee extends User {
         firebase = new Firebase();
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
-        this.location = location;
+        startLocating(location);
+        setLocation(location);
     }
 
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location, Firebase firebase){
@@ -37,7 +38,7 @@ public class Employee extends User {
         this.firebase = firebase;
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
-        this.location = location;
+        locate.setLocation(location);
     }
 
     public void setMinimumSalaryAccepted(double minimumSalaryAccepted) {
@@ -113,6 +114,17 @@ public class Employee extends User {
 
     public String recommendInfo() {
         return "Name: " + this.username + " Email: " + this.email;
+    }
+
+    public Location getLocationFromDatabase(){
+        double[] coords = firebase.getUserCoordinates(username);
+        if(coords!= null) {
+            Location location = new Location(" ");
+            location.setLongitude(coords[0]);
+            location.setLatitude(coords[1]);
+            return location;
+        }
+        else return null;
     }
 }
 

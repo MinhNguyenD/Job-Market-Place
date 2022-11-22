@@ -14,7 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-
+/**
+ * This class is responsible for getting location.
+ */
 public class GPS extends Service implements LocationListener {
   protected LocationManager locationManager;
   Context mContext;
@@ -31,6 +33,7 @@ public class GPS extends Service implements LocationListener {
     this.mContext = mContext;
     location = getLocation();
   }
+
 
   @Override
   public void onLocationChanged(@NonNull Location location) {
@@ -56,7 +59,7 @@ public class GPS extends Service implements LocationListener {
   }
 
   public Location getLocation() {
-
+    if(mContext == null) return location;
     locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
     boolean isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
