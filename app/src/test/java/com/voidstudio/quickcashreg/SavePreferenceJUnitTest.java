@@ -1,11 +1,11 @@
 package com.voidstudio.quickcashreg;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
-
-import static org.junit.Assert.*;
 
 import users.Employee;
 
@@ -14,7 +14,10 @@ public class SavePreferenceJUnitTest {
     static final String PREF = "Tag 1";
     @BeforeClass
     public static void setup() {
+
         mockEmployee = Mockito.mock(Employee.class);
+        
+
     }
 
     @AfterClass
