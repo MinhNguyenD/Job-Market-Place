@@ -56,6 +56,7 @@ public class Firebase {
 
     jobs_ref = firebaseDB.getReference("jobs");
     users_ref = firebaseDB.getReference("users");
+    //firebaseDB.setPersistenceEnabled(false);
   }
 
   /**
