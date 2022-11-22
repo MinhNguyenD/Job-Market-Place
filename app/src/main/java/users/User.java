@@ -18,9 +18,9 @@ public abstract class User {
   protected String email;
   protected String userType;
   public ILocation locate;
-  private static final Firebase firebase = Firebase.getInstance();
+  private static Firebase firebase;
   public User(){
-
+    firebase = Firebase.getInstance();
   }
 
 
