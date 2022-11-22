@@ -1,6 +1,10 @@
 package com.voidstudio.quickcashreg.firebase;
 
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.EMAIL;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.JOB_LOCATION;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LATITUDE;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LOCATION;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LONGITUDE;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.PASSWORD;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.TYPE;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.USERNAME;
@@ -29,18 +33,19 @@ import users.UserConstants;
 public class Firebase {
   static final String FIREBASE_URL =
           "https://quickcash-bd58f-default-rtdb.firebaseio.com/";
-  private static FirebaseDatabase firebaseDB;
-  private static Firebase firebase;
-  private static DatabaseReference firebaseDBReference;
-  private final String JOBS = "jobs";
+  protected static FirebaseDatabase firebaseDB;
+  protected static Firebase firebase;
+  protected static DatabaseReference firebaseDBReference;
+  protected final String JOBS = "jobs";
 
-  private static DatabaseReference users_ref;
-  private static DatabaseReference jobs_ref;
+  protected static DatabaseReference users_ref;
+  protected static DatabaseReference jobs_ref;
 
   public ArrayList<Employee> recommendList = new ArrayList<>();
 
   public String firebaseString;
   public String pass;
+  public double[] coordinates;
 
   private boolean exists = false;
   public boolean employee = false;
@@ -115,6 +120,7 @@ public class Firebase {
     return null;
   }
 
+
   /**
    * Save password into database
    * Note: We use username as an unique ID for a user
@@ -125,6 +131,63 @@ public class Firebase {
     firebaseDBReference.child(USERS).child(userName).child(PASSWORD).setValue(password);
     return null;
   }
+  public Task<Void> setJobCoordinates(String jobName, Location location){
+    double[] coords = {location.getLatitude(), location.getLongitude()};
+    firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION).
+            child(LONGITUDE).setValue(coords[0]);
+    firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION).
+            child(LATITUDE).setValue(coords[1]);
+    return null;
+  }
+
+  public double[] getJobCoordinates(String jobName){
+    Query queer = firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION);
+    queer.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object sc = snapshot.getValue();
+        if(sc!=null) {
+          coordinates = (double[])sc;
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return coordinates;
+  }
+
+  public void setUserCoordinates(String username, Location location){
+    double[] coords = {location.getLatitude(), location.getLongitude()};
+    firebaseDBReference.child(USERS).child(username).child(LONGITUDE).setValue(coords[0]);
+    firebaseDBReference.child(USERS).child(username).child(LATITUDE).setValue(coords[1]);
+  }
+
+  public double[] getUserCoordinates(String username){
+    Query queer = firebaseDBReference.child(USERS).child(username).child(LOCATION);
+    queer.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        if(snapshot.child(LATITUDE).getValue()!=null&&snapshot.child(LONGITUDE).getValue()!= null) {
+           double longitude = (double)snapshot.child(LATITUDE).getValue();
+           double latitude = (double)snapshot.child(LATITUDE).getValue();
+           coordinates[0] = longitude;
+           coordinates[1] = latitude;
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return coordinates;
+  }
+
+
+
 
   private void existingUserHelper(String username){
     final Query users = firebaseDBReference.child(USERS);
@@ -207,12 +270,11 @@ public class Firebase {
     firebaseDBReference.child(USERS).child(username).updateChildren(map);
   }
 
-  public void addJob(String jobName, String jobWage, String jobTag, String userName){
+  public void addJob(Job job){
     Map<String, Object> map = new HashMap<>();
-    Job job = new Job(jobName,jobWage,jobTag,userName);
-    map.put(jobName, job);
+    map.put(job.getJobName(), job);
     firebaseDBReference.child(JOBS).updateChildren(map);
-    firebaseDBReference.child(USERS).child(userName).child(JOBS).updateChildren(map);
+    firebaseDBReference.child(USERS).child(job.getUser()).child(JOBS).updateChildren(map);
   }
 
   public ArrayList<Job> getJobsFromUser(String username){
@@ -285,17 +347,20 @@ public class Firebase {
           String email = ds.child(EMAIL).getValue(String.class);
           String miniSalary = ds.child("minimumSalary").getValue(String.class);
           String orderFinished = ds.child("orderFinished").getValue(String.class);
-
-          String latitude = ds.child("latitude").getValue(String.class);
-          String longitude = ds.child("longitude").getValue(String.class);
-
-          Location location = new Location("name");
-          location.setLongitude(Double.parseDouble(longitude));
-          location.setLatitude(Double.parseDouble(latitude));
-
-
-          Employee employee = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
-          recommendList.add(employee);
+          String password = ds.child(PASSWORD).getValue(String.class);
+          String latitude = ds.child(LATITUDE).getValue(String.class);
+          String longitude = ds.child(LONGITUDE).getValue(String.class);
+          if(latitude == null || longitude ==null){
+            Employee e = new Employee(name,email,password);
+            recommendList.add(e);
+          }
+          else {
+            Location location = new Location("name");
+            location.setLongitude(Double.parseDouble(longitude));
+            location.setLatitude(Double.parseDouble(latitude));
+            Employee e = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
+            recommendList.add(e);
+          }
         }
       }
 

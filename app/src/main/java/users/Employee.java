@@ -114,6 +114,14 @@ public class Employee extends User {
     public String recommendInfo() {
         return "Name: " + this.username + " Email: " + this.email;
     }
+
+    public Location getLocationFromDatabase(){
+        double[] coords = firebase.getUserCoordinates(username);
+        Location location = new Location(" ");
+        location.setLongitude(coords[0]);
+        location.setLatitude(coords[1]);
+        return location;
+    }
 }
 
 

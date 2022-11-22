@@ -32,7 +32,11 @@ public class Employer extends User {
 
 
   public void setJob(String jobName, String jobWage, String jobTag){
-    firebase.addJob(jobName,jobWage,jobTag,username);
+    Job job = new Job(jobName, jobWage, jobTag, username);
+    firebase.addJob(job);
+    if(locate.getMyLocation()!=null){
+      firebase.setJobCoordinates(jobName,locate.getMyLocation());
+    }
   }
   public User getInstance(){
     if(employer == null){

@@ -14,12 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.voidstudio.quickcashreg.EmployeeRecommendation.EmployeeRecommendationActivity;
-import com.voidstudio.quickcashreg.firebase.Firebase;
-import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.TextReader;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 import users.Employer;
+import users.User;
 
 public class JobPostActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,7 +29,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   public static final String JOB_TAG_4 = "Tag4";
   public static final String JOB_TAG_5 = "Tag5";
 
-  private static Firebase firebase;
+
 
   private Spinner jobTags;
   private String tag;
@@ -49,13 +49,11 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.job_post);
-    firebase = new Firebase();
+    Firebase firebase = Firebase.getInstance();
     Intent thisIntent = getIntent();
     sp = getSharedPreferences("login", MODE_PRIVATE);
     username = sp.getString(USERNAME,"");
-    password = sp.getString(PASSWORD,"");
-    email = sp.getString("EMAIL","");
-    employer = InAppActivityEmployer.employer;
+    employer = (Employer) User.getUser(username);
     Button postButton = findViewById(R.id.postJobButton);
     postButton.setOnClickListener(JobPostActivity.this);
 
@@ -97,6 +95,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   }
 
   private void postJob(String jobName, String jobWage, String jobTag){
+    if(employer.locate == null) employer.startLocating(this);
     employer.setJob(jobName,jobWage,jobTag);
   }
 
