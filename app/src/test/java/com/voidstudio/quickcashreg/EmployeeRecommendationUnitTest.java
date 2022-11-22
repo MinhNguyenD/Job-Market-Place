@@ -86,7 +86,7 @@ public class EmployeeRecommendationUnitTest {
         //pilot.setLocation(location2);
         Mockito.when(job.getLocation()).thenReturn(location2);
         Mockito.when(job.getWage()).thenReturn("0.12");
-
+        Mockito.when(employee.getOrderFinished()).thenReturn(0);
         assertFalse(EmployeeRecommendation.isValidEmployee(job, employee,maxDistance));
     }
 
