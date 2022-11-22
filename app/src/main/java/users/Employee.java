@@ -28,7 +28,8 @@ public class Employee extends User {
         firebase = new Firebase();
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
-        locate.setLocation(location);
+        startLocating(location);
+        setLocation(location);
     }
 
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location, Firebase firebase){
@@ -117,10 +118,13 @@ public class Employee extends User {
 
     public Location getLocationFromDatabase(){
         double[] coords = firebase.getUserCoordinates(username);
-        Location location = new Location(" ");
-        location.setLongitude(coords[0]);
-        location.setLatitude(coords[1]);
-        return location;
+        if(coords!= null) {
+            Location location = new Location(" ");
+            location.setLongitude(coords[0]);
+            location.setLatitude(coords[1]);
+            return location;
+        }
+        else return null;
     }
 }
 

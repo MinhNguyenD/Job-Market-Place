@@ -2,7 +2,6 @@ package com.voidstudio.quickcashreg.EmployeeRecommendation;
 
 import android.location.Location;
 
-import com.voidstudio.quickcashreg.Location.GPS;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 
@@ -12,7 +11,6 @@ import users.Employee;
 
 public class EmployeeRecommendation {
     private final Firebase firebase;
-    GPS gps ;
 
     public EmployeeRecommendation(){
         firebase = Firebase.getInstance();
