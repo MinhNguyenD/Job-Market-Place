@@ -3,13 +3,11 @@ package com.voidstudio.quickcashreg.Location;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.voidstudio.quickcashreg.firebase.Firebase;
-
 public class JobLocation implements ILocation{
-  private final Firebase firebase;
+  //private final Firebase firebase;
   private String jobName;
   public JobLocation(String jobName){
-    firebase = Firebase.getInstance();
+    //firebase = Firebase.getInstance();
     this.jobName = jobName;
   }
   @Override

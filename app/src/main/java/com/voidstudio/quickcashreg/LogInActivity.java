@@ -102,7 +102,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         inAppEmployee.putExtra(WELCOME, "Hi Employee, you logged in");
         inAppEmployee.putExtra("USERNAME", getUserName());
         inAppEmployee.putExtra("PASSWORD", getPassword());
-        inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
+        //inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
         startActivity(inAppEmployee);
     }
 

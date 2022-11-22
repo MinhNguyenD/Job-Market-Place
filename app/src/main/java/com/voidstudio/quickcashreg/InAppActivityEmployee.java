@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,12 +22,13 @@ import com.voidstudio.quickcashreg.jobpost.EmployeeJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.SavePreferenceActivity;
 
 import users.Employee;
+import users.UserConstants;
 
 public class InAppActivityEmployee extends AppCompatActivity implements View.OnClickListener {
   private static String username;
   private static String password;
   private static String email;
-  private static String userType;
+  private static String userType = UserConstants.EMPLOYEE;
 
   public static final String USERNAME = "Username";
   public static final String PASSWORD = "Password";
@@ -55,9 +57,15 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     password = sp.getString(PASSWORD,"");
     email = firebase.getEmailAddress(username);
 
-    userType =  firebase.getUserType(username);
+
     //TODO: REFACTOR SO THAT SHARED PREF CAN STORE USERTYPE
     employee = new Employee(username,email,userType,password);
+
+    employee.startLocating(this);
+    employee.setLocation(employee.locate.getMyLocation());
+    firebase.setUserCoordinates(username,employee.locate.getMyLocation());
+    Toast.makeText(this,
+            employee.getLatLong()[0]+","+employee.getLatLong()[1],Toast.LENGTH_LONG).show();
 
     Button logOutButton = findViewById(R.id.employeeLogOut);
     logOutButton.setOnClickListener(InAppActivityEmployee.this);
@@ -77,12 +85,12 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     Button savePreference = findViewById(R.id.setPreference);
     savePreference.setOnClickListener(InAppActivityEmployee.this);
 
-    sp = getSharedPreferences("login", MODE_PRIVATE);
+    /*sp = getSharedPreferences("login", MODE_PRIVATE);
     username = sp.getString("Username","");
     password = sp.getString("Password","");
     email = sp.getString("EMAIL","");
-
-    employee = new Employee(username, email, password);
+*/
+    employee = new Employee(username, email,userType,password);
 
     // Check if the employee has seen the new job posting or not, if not, pop up the notification
     SharedPreferences jobPostNoti = getSharedPreferences("jobPost", MODE_PRIVATE);
