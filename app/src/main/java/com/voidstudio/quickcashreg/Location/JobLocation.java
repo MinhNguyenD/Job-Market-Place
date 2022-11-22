@@ -4,10 +4,8 @@ import android.location.Location;
 import android.location.LocationManager;
 
 public class JobLocation implements ILocation{
-  //private final Firebase firebase;
   private String jobName;
   public JobLocation(String jobName){
-    //firebase = Firebase.getInstance();
     this.jobName = jobName;
   }
   @Override
@@ -24,7 +22,9 @@ public class JobLocation implements ILocation{
 
   @Override
   public void setLocation(Location location) {
-      firebase.setJobCoordinates(jobName,location);
+      double latitude = location.getLatitude();
+      double longitude = location.getLongitude();
+      firebase.setJobCoordinates(jobName,latitude,longitude);
   }
 
   @Override

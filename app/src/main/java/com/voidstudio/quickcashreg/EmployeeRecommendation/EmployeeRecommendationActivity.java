@@ -40,11 +40,14 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
         String title = input.getString("Title");
 
         job = new Job(title, wage, tag, name);
-        Location location = new Location(name);
-        location.setLatitude(0);
-        location.setLongitude(0);
-        job.setLocation(location);
-
+        Location location = new Location("gps");
+        job.getLocation();
+        double[] coords = job.jobLocation.getLatLong();
+        if(coords != null) {
+            location.setLatitude(coords[0]);
+            location.setLongitude(coords[1]);
+            job.setLocation(location);
+        }
         recommendEmployeeList = findViewById(R.id.recommendationEmployeeList);
         seekBarForDistance = (SeekBar)findViewById(R.id.seekBarForDistance);
         distanceInput = (TextView)findViewById(R.id.distanceInput);

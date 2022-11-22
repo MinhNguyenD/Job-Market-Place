@@ -6,7 +6,7 @@ import android.location.Location;
 
 import androidx.core.app.ActivityCompat;
 
-public class UserLocation implements  ILocation{
+public class UserLocation implements ILocation{
 
   private GPS gps;
   Location location;

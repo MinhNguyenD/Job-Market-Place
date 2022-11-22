@@ -14,7 +14,7 @@ public class Job {
   private String datePosted;
   private Location location;
   private String hardLocation;
-  private ILocation jobLocation;
+  public ILocation jobLocation;
 
 
 
@@ -43,6 +43,8 @@ public class Job {
       return null;
     }
   }
+
+
 
   public String getUser() {
     return user;

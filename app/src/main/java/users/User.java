@@ -97,6 +97,11 @@ public abstract class User {
     return locate.getMyLocation() != null;
   }
 
+  public boolean startLocating(Location l){
+    locate = new UserLocation(l);
+    return locate.getMyLocation()!=null;
+  }
+
 
 
 

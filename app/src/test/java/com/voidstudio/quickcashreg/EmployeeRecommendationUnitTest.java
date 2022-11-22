@@ -33,6 +33,7 @@ public class EmployeeRecommendationUnitTest {
     static JobLocation jobLocation;
 
 
+
     @BeforeClass
     public static void setup() {
         location1 = Mockito.mock(Location.class);
@@ -46,6 +47,7 @@ public class EmployeeRecommendationUnitTest {
         Mockito.when(location2.getLatitude()).thenReturn(0.0);
         Mockito.when(location2.getLongitude()).thenReturn(0.0);
         Mockito.when(location2.distanceTo(location1)).thenReturn((float)30.0);
+
     }
 
     @AfterClass
@@ -59,36 +61,35 @@ public class EmployeeRecommendationUnitTest {
         double[] mockCoords = {0.0,0.0};
         //Employee employee1 =new Employee("steven", "steven@dal.ca", 20, 20, location1);
         //Job pilot = new Job("pilot", "30", "Tag 1", "Boss");
-        Mockito.when(firebase.setJobCoordinates("pilot",location2)).thenReturn(null);
+        Mockito.when(firebase.setJobCoordinates("pilot",location2.getLatitude(),location2.getLongitude())).thenReturn(null);
         //pilot.setLocation(location2);
         Mockito.when(jobLocation.getLatLong()).thenReturn(mockCoords);
         Mockito.when(employee.getLatLong()).thenReturn(mockCoords);
-        Mockito.when(firebase.setJobCoordinates("pilot",location2)).thenReturn(null);
+        Mockito.when(firebase.setJobCoordinates("pilot",location2.getLatitude(),location2.getLongitude())).thenReturn(null);
         //pilot.setLocation(location2);
         Mockito.when(job.getLocation()).thenReturn(location2);
         Mockito.when(job.getWage()).thenReturn("60");
         Mockito.when(employee.getMinimumSalaryAccepted()).thenReturn(0.0);
         Mockito.when(employee.getOrderFinished()).thenReturn(100);
-       assertTrue(EmployeeRecommendation.isValidEmployee(job, employee ,maxDistance));
+        assertTrue(EmployeeRecommendation.isValidEmployee(job, employee ,maxDistance));
 
     }
 
     //test if the employee is not valid for recommendation
     //because salary of the job and the minimum salary accepted of the employee are the same (30/hour)
     @Test
-    public void getRecommendationInvalidEmployee(){
+    public void getRecommendationInvalidEmployee() {
         double maxDistance = 50;
-        double[] mockCoords = {0.0,0.0};
-        //Employee employee2 = new Employee("callum", "cal@dal.ca", 30,30, location1);
+        double[] mockCoords = {0.0, 0.0};
+        //Employee employee2 = new Employee("callum", "cal@dal.ca", 30, 30, location1, firebase);
         Job pilot = new Job("pilot", "30", "Tag 1", "Boss");
         Mockito.when(jobLocation.getLatLong()).thenReturn(mockCoords);
-        Mockito.when(firebase.setJobCoordinates("pilot",location2)).thenReturn(null);
+        Mockito.when(firebase.setJobCoordinates("pilot", location2.getLatitude(),location2.getLongitude())).thenReturn(null);
         //pilot.setLocation(location2);
         Mockito.when(job.getLocation()).thenReturn(location2);
         Mockito.when(job.getWage()).thenReturn("0.12");
         Mockito.when(employee.getOrderFinished()).thenReturn(0);
-        assertFalse(EmployeeRecommendation.isValidEmployee(job, employee,maxDistance));
+        assertFalse(EmployeeRecommendation.isValidEmployee(job, employee, maxDistance));
     }
 
-
-}
+    }

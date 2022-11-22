@@ -11,6 +11,7 @@ import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.USERNAME;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.USERS;
 
 import android.location.Location;
+import android.location.LocationManager;
 
 import androidx.annotation.NonNull;
 
@@ -65,6 +66,7 @@ public class Firebase {
   public static Firebase getInstance() {
     if(firebase == null) {
       firebase = new Firebase();
+
     }
     return firebase;
   }
@@ -132,12 +134,11 @@ public class Firebase {
     firebaseDBReference.child(USERS).child(userName).child(PASSWORD).setValue(password);
     return null;
   }
-  public Task<Void> setJobCoordinates(String jobName, Location location){
-    double[] coords = {location.getLatitude(), location.getLongitude()};
+  public Task<Void> setJobCoordinates(String jobName, double latitude, double longitude){
     firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION).
-            child(LONGITUDE).setValue(coords[0]);
+            child(LONGITUDE).setValue(latitude);
     firebaseDBReference.child(JOB_LOCATION).child(jobName).child(LOCATION).
-            child(LATITUDE).setValue(coords[1]);
+            child(LATITUDE).setValue(longitude);
     return null;
   }
 
@@ -146,10 +147,14 @@ public class Firebase {
     queer.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
-        Object sc = snapshot.getValue();
-        if(sc!=null) {
-          coordinates = (double[])sc;
+        if(snapshot.child(LATITUDE).getValue()!=null&&snapshot.child(LONGITUDE).getValue()!= null) {
+          double longitude = (double)snapshot.child(LATITUDE).getValue();
+          double latitude = (double)snapshot.child(LONGITUDE).getValue();
+          coordinates = new double[2];
+          coordinates[0] = longitude;
+          coordinates[1] = latitude;
         }
+
       }
 
       @Override
@@ -173,7 +178,8 @@ public class Firebase {
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         if(snapshot.child(LATITUDE).getValue()!=null&&snapshot.child(LONGITUDE).getValue()!= null) {
            double longitude = (double)snapshot.child(LATITUDE).getValue();
-           double latitude = (double)snapshot.child(LATITUDE).getValue();
+           double latitude = (double)snapshot.child(LONGITUDE).getValue();
+           coordinates = new double[2];
            coordinates[0] = longitude;
            coordinates[1] = latitude;
         }
@@ -349,17 +355,23 @@ public class Firebase {
           String miniSalary = ds.child("minimumSalary").getValue(String.class);
           String orderFinished = ds.child("orderFinished").getValue(String.class);
           String password = ds.child(PASSWORD).getValue(String.class);
-          String latitude = ds.child(LATITUDE).getValue(String.class);
-          String longitude = ds.child(LONGITUDE).getValue(String.class);
-          if(latitude == null || longitude ==null){
+          double latitude =0.0;
+          double longitude=0.0;
+          if(ds.hasChild(LATITUDE)&& ds.hasChild(LONGITUDE)) {
+             latitude = ds.child(LATITUDE).getValue(Double.class);
+             longitude = ds.child(LONGITUDE).getValue(Double.class);
+          }
+          if((latitude == 0.0 )|| longitude == 0.0){
             Employee e = new Employee(name,email,password);
             recommendList.add(e);
           }
           else {
-            Location location = new Location("name");
-            location.setLongitude(Double.parseDouble(longitude));
-            location.setLatitude(Double.parseDouble(latitude));
-            Employee e = new Employee(name, email, Integer.parseInt(orderFinished), Double.parseDouble(miniSalary), location);
+            Location location = new Location(LocationManager.GPS_PROVIDER);
+            location.setLongitude(longitude);
+            location.setLatitude(latitude);
+            Employee e = new Employee(name, email, Integer.parseInt(orderFinished),
+                    Double.parseDouble(miniSalary), location);
+            e.setLocation(location);
             recommendList.add(e);
           }
         }
