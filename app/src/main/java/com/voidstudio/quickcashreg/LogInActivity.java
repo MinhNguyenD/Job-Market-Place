@@ -32,7 +32,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private final TextReader textReader = new TextReader();
     private static Firebase firebase;
     private final LogIn logIn = new LogIn(this);
-
     public SharedPreferences sp;
 
 
@@ -40,6 +39,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+        firebase = Firebase.getInstance();
         Button backToRegisterScreen = (Button)findViewById(R.id.logInRegisterButton);
         backToRegisterScreen.setOnClickListener(LogInActivity.this);
 
@@ -64,7 +64,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         }
 
         // Please do not move this command position, moving it to the top of onCreate will mess up login
-        firebase = Firebase.getInstance();
+
     }
 
     /**
@@ -92,6 +92,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         inAppEmployer.putExtra(WELCOME, "Hi Employer, you logged in");
         inAppEmployer.putExtra(USERNAME, getUserName());
         startActivity(inAppEmployer);
+        finish();
     }
 
     public void goToInAppActivityEmployee() {
@@ -101,6 +102,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         inAppEmployee.putExtra("PASSWORD", getPassword());
         inAppEmployee.putExtra("EMAIL",firebase.getEmailAddress(getUserName()));
         startActivity(inAppEmployee);
+        finish();
     }
 
     /**

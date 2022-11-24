@@ -1,0 +1,16 @@
+
+r
+java:S1104"WMake newJobAlert a static final constant or non-public and provide accessors if needed.(©½Êïüÿÿÿÿ
+q
+java:S1104"VMake newJobSeen a static final constant or non-public and provide accessors if needed.(Šïøÿÿÿÿ
+j
+java:S1104"TMake firebase a static final constant or non-public and provide accessors if needed.(ä‘»¿
+2
+java:S1700"Rename field "employee"(ü´Ï»ÿÿÿÿÿ
+—
+java:S1186b"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(‘°Ú‹
+L
+java:S2696B"6Make the enclosing method "static" or remove this set.(¢³Öç
+Q	java:S125["<This block of commented-out lines of code should be removed.( Ğ¸·
+L
+java:S2696g"6Make the enclosing method "static" or remove this set.(¼ê“ 

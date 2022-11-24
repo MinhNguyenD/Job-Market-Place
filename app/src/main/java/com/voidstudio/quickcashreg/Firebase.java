@@ -35,15 +35,15 @@ public class Firebase {
 
   protected String firebaseString;
   protected String pass;
+  protected String email;
 
   private boolean exists = false;
   protected boolean employee = false;
   public Firebase() {
-    firebaseDB = FirebaseDatabase.getInstance();
-    firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+    initializeDatabase();
 
-    jobs_ref = firebaseDB.getReference("jobs");
-    users_ref = firebaseDB.getReference("users");
+    jobs_ref = firebaseDB.getReference(JOBS);
+    users_ref = firebaseDB.getReference(USERS);
   }
 
   /**
@@ -67,7 +67,7 @@ public class Firebase {
 
   public void initializeDatabase(){
     firebaseDB = FirebaseDatabase.getInstance(FIREBASE_URL);
-    firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
+    firebaseDBReference = firebaseDB.getReference();
   }
 
   protected String getEmailAddress(String username) {
@@ -121,7 +121,7 @@ public class Firebase {
   }
 
   private void existingUserHelper(String username){
-    final Query users = firebaseDBReference.child("users");
+    final Query users = firebaseDBReference.child(USERS);
     users.
             addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
@@ -148,7 +148,7 @@ public class Firebase {
   }
 
   private void getValueHelper(String username, String value){
-    Query user = firebaseDB.getReference().child("users").child(username).child(value);
+    Query user = firebaseDBReference.child(USERS).child(username).child(value).orderByChild(value);
     user.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -156,8 +156,18 @@ public class Firebase {
           Object sc = snapshot.getValue();
           if(sc != null) {
             firebaseString = sc.toString();
-            if(firebaseString.equals("Employee")) employee = true;
-            pass = firebaseString;
+
+            if(value.equals("type") && firebaseString.equals("Employee")) {
+              employee = true;
+            }
+
+            if (value.equals("password")) {
+              pass = firebaseString;
+            }
+
+            if (value.equals("email")) {
+              email = firebaseString;
+            }
           }
         }
       }

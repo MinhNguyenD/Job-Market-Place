@@ -1,0 +1,9 @@
+
+‚
+java:S1319"lThe type of "observerList" should be an interface such as "List" rather than the implementation "ArrayList".(Ø¶å
+n
+java:S1104"XMake observerList a static final constant or non-public and provide accessors if needed.(Ø¶å
+;
+java:S3010"%Remove this assignment of "firebase".(²È’ù
+Q
+java:S2696'"6Make the enclosing method "static" or remove this set.(©ş–Åùÿÿÿÿ

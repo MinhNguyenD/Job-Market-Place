@@ -13,7 +13,7 @@ public class Employee extends User {
     protected int orderFinished;
     protected double minimumSalaryAccepted;
 
-        // For observing employer
+    // For observing employer
     public boolean newJobAlert;
     public boolean newJobSeen;
 

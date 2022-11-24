@@ -1,0 +1,12 @@
+
+o	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(×‚¼ß
+n
+java:S1450"SRemove the "mMap" field and declare it as a local variable in the relevant methods.(—­ƒÌÿÿÿÿÿ
+6
+java:S2129" Remove this "String" constructor(ñß
+6
+java:S2129" Remove this "String" constructor(‡ò¢“
+V
+java:S1854O";Remove this useless assignment to local variable "rCircle".(„…ğ¥ûÿÿÿÿ
+G
+java:S1481O",Remove this unused "rCircle" local variable.(„…ğ¥ûÿÿÿÿ

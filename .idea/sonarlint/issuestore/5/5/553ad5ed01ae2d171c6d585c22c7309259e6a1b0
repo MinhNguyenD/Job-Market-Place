@@ -1,0 +1,9 @@
+
+…
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(×Â¬P
+~
+java:S1319"iThe type of "employees" should be an interface such as "List" rather than the implementation "ArrayList".(×Â¬P
+4
+java:S2178/"Correct this "&" to "&&".(æÛ…¿üÿÿÿÿ
+4
+java:S2178/"Correct this "&" to "&&".(æÛ…¿üÿÿÿÿ
