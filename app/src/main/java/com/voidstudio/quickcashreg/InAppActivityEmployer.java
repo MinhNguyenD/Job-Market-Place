@@ -55,7 +55,10 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         password = sp.getString(PASSWORD,"");
         email = firebase.getEmailAddress(username);
         employer = new Employer(username, email, password);
-        employer.startLocating(this);
+
+        employer.startLocating(InAppActivityEmployer.this);
+        Toast.makeText(this,"Enable Location",Toast.LENGTH_LONG).show();
+
         employer.setLocation(employer.locate.getMyLocation());
         firebase.setUserCoordinates(username,employer.locate.getMyLocation());
         Toast.makeText(this,
