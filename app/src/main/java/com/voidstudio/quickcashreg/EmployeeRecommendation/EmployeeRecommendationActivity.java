@@ -37,9 +37,10 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
         String name = input.getString("Name");
         String tag = input.getString("Tag");
         String wage = input.getString("Wage");
+        String duration = input.getString("Duration");
         String title = input.getString("Title");
 
-        job = new Job(title, wage, tag, name);
+        job = new Job(title, wage, duration, tag, name);
         Location location = new Location("gps");
         job.getLocation();
         double[] coords = job.jobLocation.getLatLong();

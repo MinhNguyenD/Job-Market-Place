@@ -30,6 +30,15 @@ public class Job {
     jobLocation = new JobLocation(jobName);
   }
 
+  public Job(String jobName, String wage, String duration, String tag, String user){
+    this.jobName = jobName;
+    this.wage = wage;
+    this.expectedDuration = duration;
+    this.tag = tag;
+    this.user = user;
+    jobLocation = new JobLocation(jobName);
+  }
+
 
   public void setLocation(Location location) {
     jobLocation.setLocation(location);
@@ -74,6 +83,6 @@ public class Job {
 
   @Override
   public String toString(){
-    return jobName+" "+wage+" "+tag+"  Posted by:" + user;
+    return jobName+" "+wage+" "+ expectedDuration + " " + tag+"  Posted by:" + user;
   }
 }
