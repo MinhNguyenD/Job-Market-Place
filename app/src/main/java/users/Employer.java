@@ -1,5 +1,7 @@
 package users;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
@@ -51,6 +53,16 @@ public class Employer extends User {
     return myJobs;
   }
 
+  @Override
+  public void setMinimumSalaryAccepted(double minimumSalaryAccepted) {
+    Log.d("N/A","Not applicable to this user type");
+  }
+
+  @Override
+  public double getMinimumSalaryAccepted() {
+    Log.d("N/A","Not applicable to this user type");
+    return 0.0;
+  }
 }
 
 

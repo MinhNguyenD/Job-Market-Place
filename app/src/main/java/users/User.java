@@ -53,6 +53,9 @@ public abstract class User {
     this.email = email;
   }
 
+  public abstract void setMinimumSalaryAccepted(double minimumSalaryAccepted);
+  public abstract double getMinimumSalaryAccepted();
+
 
   public void setLocation(Location location){
     locate.setLocation(location);

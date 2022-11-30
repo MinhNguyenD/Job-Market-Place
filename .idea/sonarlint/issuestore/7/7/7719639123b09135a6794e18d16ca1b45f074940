@@ -1,0 +1,18 @@
+
+t
+java:S2293>"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ëì´­þÿÿÿÿ
+l
+java:S1450"VRemove the "jobItem" field and declare it as a local variable in the relevant methods.(¹ÁÏ¾
+Q
+java:S2696%"6Make the enclosing method "static" or remove this set.(ˆåÃàýÿÿÿÿ
+Q
+java:S2696&"6Make the enclosing method "static" or remove this set.(òä¸âúÿÿÿÿ
+Q
+java:S2696'"6Make the enclosing method "static" or remove this set.(ˆÀðãûÿÿÿÿ
+L
+java:S2696("6Make the enclosing method "static" or remove this set.(£©¢†
+V	java:S125V"<This block of commented-out lines of code should be removed.(Úµíúÿÿÿÿ
+V	java:S125^"<This block of commented-out lines of code should be removed.(Ê…Óýÿÿÿÿ
+Q	java:S125`"<This block of commented-out lines of code should be removed.(µ¨–æ
+A
+java:S1068"+Remove this unused "jobItem" private field.(¹ÁÏ¾
