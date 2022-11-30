@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Employer extends User {
   private static Firebase firebase;
   private static Employer employer;
-  private ArrayList<Job> myJobs;
+  public ArrayList<Job> myJobs;
   public ArrayList<Employee> observerList;
 
   protected static Employee employee;

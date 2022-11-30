@@ -113,6 +113,22 @@ public class LogInActivityEspressoTests {
     intended(hasComponent(RegisterActivity.class.getName()));
   }
 
+  @Test
+  public void checkIfCanLogIn(){
+    Espresso.onView(withId(R.id.textPassword)).perform(click()).perform(typeText("123456"));
+    Espresso.closeSoftKeyboard();
+    Espresso.onView(withId(R.id.logInUserName)).perform(click()).perform((typeText("callum")));
+    Espresso.closeSoftKeyboard();
+    Espresso.onIdle();
+    Espresso.onView(withId(R.id.continueButton)).perform(click());//Incorrect password
+    Espresso.onIdle();
+    Espresso.onView(withId(R.id.continueButton)).perform(click());//This user does not exist
+    Espresso.onIdle();
+    Espresso.onView(withId(R.id.continueButton)).perform(click());//Success
+    Espresso.onIdle();
+    intended(hasComponent(InAppActivityEmployer.class.getName()));//Works
+  }
+
 
 
 

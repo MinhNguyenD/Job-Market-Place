@@ -51,12 +51,14 @@ public class Firebase {
   private boolean exists = false;
   public boolean employee = false;
   public Firebase() {
+
     firebaseDB = FirebaseDatabase.getInstance();
+    firebaseDB.setPersistenceEnabled(false);
     firebaseDBReference = firebaseDB.getReferenceFromUrl(FIREBASE_URL);
 
     jobs_ref = firebaseDB.getReference("jobs");
     users_ref = firebaseDB.getReference("users");
-    //firebaseDB.setPersistenceEnabled(false);
+
   }
 
   /**
