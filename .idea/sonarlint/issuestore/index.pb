@@ -1,8 +1,6 @@
 
 s
 Capp/src/main/java/com/voidstudio/quickcashreg/posting/UserPost.java,1\f\1f7d91fa1fb68c2bd2c497659dd2f6b3636bcc23
-t
-Dapp/src/main/java/com/voidstudio/quickcashreg/firebase/Firebase.java,2\9\294685358ba98933631e5ab6d9064a7360d7b848
 ê
 `app/src/main/java/com/voidstudio/quickcashreg/EmployeeRecommendation/EmployeeRecommendation.java,5\1\51338f84fcce7e2d61df4946848a8da7e571b680
 r
