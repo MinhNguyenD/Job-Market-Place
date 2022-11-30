@@ -1,5 +1,7 @@
 package users;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
@@ -49,6 +51,24 @@ public class Employer extends User {
 
   public ArrayList<Job> getMyJobs(){
     return myJobs;
+  }
+  @Override
+  public void setOrderFinished(int orderFinished){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+  }
+  @Override
+  public int getOrderFinished(){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+    return 0;
+  }
+  @Override
+  public void setMinimumSalaryAccepted(double minimumSalaryAccepted){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+  }
+  @Override
+  public double getMinimumSalaryAccepted(){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+    return 0.0;
   }
 
 }
