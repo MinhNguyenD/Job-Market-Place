@@ -1,6 +1,7 @@
 package users;
 
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.firebase.Firebase;
@@ -19,13 +20,13 @@ public class Employee extends User {
 
     public Firebase firebase;
     private static User employee;
-    private static String preference;
+    private String preference;
     private ArrayList<Job> allJob;
 
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location){
         this.username = username;
         this.email = email;
-        firebase = new Firebase();
+        firebase = Firebase.getInstance();
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
         startLocating(location);
@@ -97,11 +98,12 @@ public class Employee extends User {
     }
 
     public void setJob(String jobName, String jobWage, String jobTag){
-
+        // Employee cannot set a job but employer can.
+        Log.d("N/A", "Operation not applicable to this user type");
     }
 
     public void setPreference(String preference) {
-        Employee.preference = preference;
+        this.preference = preference;
     }
 
     public String getPreference() {

@@ -55,11 +55,16 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         password = sp.getString(PASSWORD,"");
         email = firebase.getEmailAddress(username);
         employer = new Employer(username, email, password);
-        employer.startLocating(this);
-        employer.setLocation(employer.locate.getMyLocation());
-        firebase.setUserCoordinates(username,employer.locate.getMyLocation());
-        Toast.makeText(this,
-                employer.getLatLong()[0]+","+employer.getLatLong()[1],Toast.LENGTH_LONG).show();
+        if(employer.startLocating(this)){
+            employer.setLocation(employer.locate.getMyLocation());
+            firebase.setUserCoordinates(username,employer.locate.getMyLocation());
+            Toast.makeText(this,
+                    employer.getLatLong()[0]+","+employer.getLatLong()[1],Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this,"Allow location service", Toast.LENGTH_LONG).show();
+        }
+
 
     }
 

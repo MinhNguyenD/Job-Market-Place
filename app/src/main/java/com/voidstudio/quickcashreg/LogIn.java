@@ -11,7 +11,7 @@ import users.User;
 
 public class LogIn {
   private final LogInActivity logInActivity;
-  private static Firebase firebase;
+  private final Firebase firebase;
 
   private static final String EMPTY_CREDENTIALS = "Username or password is empty";
   private static final String USER_DOES_NOT_EXIST = "This username does not exist";
@@ -23,8 +23,8 @@ public class LogIn {
   protected boolean employee;
 
   public LogIn(LogInActivity logInActivity) {
-    this.logInActivity = logInActivity;
     firebase = Firebase.getInstance();
+    this.logInActivity = logInActivity;
   }
 
 
