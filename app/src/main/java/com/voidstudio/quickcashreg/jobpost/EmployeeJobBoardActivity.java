@@ -84,16 +84,16 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
     String preference = employee.getPreference();
 
     if (preference != null && !preference.equals("")) {
-      for (Job job: jobList) {
-        if (job.getTag().equals(employee.getPreference())) {
-          Toast.makeText(this, job.getTag(), Toast.LENGTH_SHORT).show();
-          tasks.add(job.toString());
+      for (Job j: jobList) {
+        if (j.getTag().equals(employee.getPreference())) {
+          Toast.makeText(this, j.getTag(), Toast.LENGTH_SHORT).show();
+          tasks.add(j.toString());
         }
       }
     }
     else {
-      for (Job job: jobList) {
-        tasks.add(job.toString());
+      for (Job j: jobList) {
+        tasks.add(j.toString());
       }
     }
 //    if(employer != null) {

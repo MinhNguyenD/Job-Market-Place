@@ -56,6 +56,7 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         email = firebase.getEmailAddress(username);
         employer = new Employer(username, email, password);
         if(employer.startLocating(this)){
+            employer.startLocating(this);
             employer.setLocation(employer.locate.getMyLocation());
             firebase.setUserCoordinates(username,employer.locate.getMyLocation());
             Toast.makeText(this,

@@ -4,6 +4,7 @@ import android.location.Location;
 
 import com.voidstudio.quickcashreg.Location.ILocation;
 import com.voidstudio.quickcashreg.Location.JobLocation;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 public class Job {
   private String jobName;
@@ -32,7 +33,9 @@ public class Job {
 
 
   public void setLocation(Location location) {
-    jobLocation.setLocation(location);
+    if(location != null) {
+      jobLocation.setLocation(location);
+    }
   }
 
   public Location getLocation() {
@@ -70,6 +73,11 @@ public class Job {
 
   public String getJobName() {
     return jobName;
+  }
+  public static Job getFromString(String jobString){
+    Firebase firebase = Firebase.getInstance();
+    String jName = jobString.split(" ")[0];
+    return firebase.getJob(jName);
   }
 
   @Override

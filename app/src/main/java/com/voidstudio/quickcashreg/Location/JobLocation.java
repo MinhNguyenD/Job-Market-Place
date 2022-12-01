@@ -3,18 +3,26 @@ package com.voidstudio.quickcashreg.Location;
 import android.location.Location;
 import android.location.LocationManager;
 
+/**
+ * Job can only be assigned a location, it itself can never get a location.
+ */
 public class JobLocation implements ILocation{
   private String jobName;
   public JobLocation(String jobName){
     this.jobName = jobName;
   }
+
+  /**
+   * This method gets the job location from firebase
+   * @return returns the job location
+   */
   @Override
   public Location getMyLocation() {
     Location jobLocation = new Location(LocationManager.GPS_PROVIDER);
     double[] coords = getLatLong();
     if(coords != null) {
-      jobLocation.setLongitude(getLatLong()[0]);
-      jobLocation.setLatitude(getLatLong()[1]);
+      jobLocation.setLongitude(coords[0]);
+      jobLocation.setLatitude(coords[1]);
       return jobLocation;
     }
     else return null;

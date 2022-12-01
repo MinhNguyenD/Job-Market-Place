@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import static com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity.MY_PREFS;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,8 +21,13 @@ public class JobDetailsActivity extends AppCompatActivity {
     Intent sentItem = getIntent();
     String item = sentItem.getStringExtra("selectedItem");
     TextView statusLabel = findViewById(R.id.statusLabel);
-    String itemLocation = getItemLocation(item);
-    String statusText = "Location: " + itemLocation;
+    Job job = Job.getFromString(item);
+    if(job == null){
+      job = Job.getFromString(item);
+    }
+    job.getLocation();
+    //String itemLocation = sentItem.getStringExtra("Location");
+    String statusText = "Location: " + job.getLocation().getLongitude()+" "+job.getLocation().getLongitude();
     statusLabel.setText(statusText);
 
     //  ImageButton mapButton = findViewById(R.id.mapButton);
@@ -38,12 +45,11 @@ public class JobDetailsActivity extends AppCompatActivity {
   }
 
   protected String getLocationCoordinate(String itemLocation) {
-    SharedPreferences sharedPreferences = getSharedPreferences(EmployerJobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
+    SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
     return sharedPreferences.getString(itemLocation, null);
   }
-
-  protected String getItemLocation(String item) {
-    SharedPreferences sharedPreferences = getSharedPreferences(EmployerJobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
-    return sharedPreferences.getString(item, null);
+  protected String getItemLocation() {
+    SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
+    return sharedPreferences.getString("Location", null);
   }
 }

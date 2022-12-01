@@ -1,0 +1,25 @@
+
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+w
+Gapp/src/test/java/com/voidstudio/quickcashreg/UserLocationUnitTest.java,f\6\f695ffdbc7f24864167984529983969cf573a45a
+Z
+*app/src/main/java/users/UserConstants.java,d\0\d0b2ff3085cb8fdd37bdf3f8468078ca31cababd
+Å
+Qapp/src/test/java/com/voidstudio/quickcashreg/EmployeeRecommendationUnitTest.java,c\4\c4414515ae04f8cc3086fe7169fc51cedc411ea4
+u
+Eapp/src/main/java/com/voidstudio/quickcashreg/Location/ILocation.java,3\e\3e8e5a0084170dbcd8b6ce880a21fff11a20d165
+t
+Dapp/src/main/java/com/voidstudio/quickcashreg/Register/Register.java,c\4\c435bbae0cc3591494b7dd12e674a31ad12481ba
+p
+@app/src/main/java/com/voidstudio/quickcashreg/LogInActivity.java,3\5\35ed826c3acec6fffad69b70e5eac5a688f94f71
+Ñ
+Tapp/src/androidTest/java/com/voidstudio/quickcashreg/LogInActivityEspressoTests.java,a\6\a673e41195818d787745652e68685aebe8c08868
+z
+Japp/src/main/java/com/voidstudio/quickcashreg/jobpost/JobPostActivity.java,9\d\9d3b4e5fd8f71003eaa853285ce413ebab7f7756
+U
+%app/src/main/java/users/Employee.java,4\0\402d9904efd493fe6a887d0424b908498675a7c2
+ï
+eapp/src/androidTest/java/com/voidstudio/quickcashreg/jobPostEspresso/JobPostActivityEspressoTest.java,c\0\c0f35e2ea35bd1efc0751de8217c6a6641f1816b
+ì
+capp/src/androidTest/java/com/voidstudio/quickcashreg/jobPostEspresso/JobDetailsEspressoTesting.java,3\3\33a6585547b1132fa7956e8949f498cce5d3af33

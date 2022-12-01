@@ -1,0 +1,16 @@
+
+n	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(—Î®Y
+s
+java:S1450"^Remove the "userNameExisted" field and declare it as a local variable in the relevant methods.(î¸ä,
+;
+java:S3010"%Remove this assignment of "firebase".(²È’ù
+g
+java:S5998"LRefactor this repetition that can lead to a stack overflow for large inputs.(Œ½ÖÂşÿÿÿÿ
+W
+java:S1126'"AReplace this if-then-else statement by a single return statement.(¨Àë·
+\
+java:S11261"AReplace this if-then-else statement by a single return statement.(ô‘…¤ıÿÿÿÿ
+W
+java:S1126>"AReplace this if-then-else statement by a single return statement.(Çà»û
+\
+java:S1126Q"AReplace this if-then-else statement by a single return statement.(ÚœĞãúÿÿÿÿ

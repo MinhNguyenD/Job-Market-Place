@@ -25,13 +25,16 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
   static String extractedJob;
   static String extractedWage;
   static String extractedTag;
-  private static String jobItem;
+  private String jobItem;
+  private ArrayList<Job> jobList;
   private Employer employer;
+  protected Intent intent;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employer_job_board);
     employer = InAppActivityEmployer.employer;
+    intent = new Intent(EmployerJobBoardActivity.this,JobDetailsActivity.class);
     if(getIntent().getExtras() != null) {
       Bundle bundle = getIntent().getExtras();
       extractedJob = bundle.getString("Job");
@@ -46,21 +49,26 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
     SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     for (int i = 0; i < tasks.size(); i++) {
-      if (i % 2 == 0) {
-        editor.putString(tasks.get(i), "Halifax");
-      } else {
-        editor.putString(tasks.get(i), "Dhaka");
+      editor.putString("selectedItem",tasks.get(i));
+      if(jobList != null){
+        jobList.get(i).getLocation();
+        if(jobList.get(i).getLocation()!= null) {
+          intent.putExtra("Location",
+                  (jobList.get(i).jobLocation.getLatLong()[0]) +
+                          "," + jobList.get(i).jobLocation.getLatLong()[1]);
+        }else{
+          intent.putExtra("Location", employer.getLocation().getLatitude()+" "+
+                  employer.getLocation().getLongitude());
+        }
       }
     }
     //also add the lat long
-    editor.putString("JobCity", "44.65,-63.58");
-    editor.putString("Dhaka", "23.81,90.41");
     editor.apply();
   }
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<String>();
-    ArrayList<Job> jobList = employer.getMyJobs();
+    jobList = employer.getMyJobs();
     for(Job job:jobList){
       tasks.add(job.toString());
     }
@@ -78,7 +86,6 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
   }
 
   protected void showDetails(String selectedTask) {
-    Intent intent = new Intent(this, JobDetailsActivity.class);
     intent.putExtra("selectedItem", selectedTask);
     startActivity(intent);
   }

@@ -341,6 +341,33 @@ public class Firebase {
     });
     return arrJob;
   }
+
+  public Job getJob(String jobName){
+    Query query = firebaseDBReference.child(JOBS);
+    final Job[] retrievedJob = new Job[1];
+    query.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for(DataSnapshot sc : snapshot.getChildren()){
+          Job job;
+          if(sc.exists() && sc.getChildrenCount()>0) {
+            job = sc.getValue(Job.class);
+            if(job!=null){
+              if(job.getJobName().equals(jobName)){
+                retrievedJob[0] = job;
+              }
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
+      }
+    });
+    return retrievedJob[0];
+  }
  
   public void listenerForUser_Ref() {
     users_ref.addValueEventListener(new ValueEventListener() {
