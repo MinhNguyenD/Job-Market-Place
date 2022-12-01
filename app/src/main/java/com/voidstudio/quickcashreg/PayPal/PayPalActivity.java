@@ -22,12 +22,15 @@ import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+
+import users.Employer;
 
 public class PayPalActivity extends AppCompatActivity {
     ActivityResultLauncher activityResultLauncher;
@@ -39,6 +42,7 @@ public class PayPalActivity extends AppCompatActivity {
     TextView paymentConfirm;
 
     String paidAmount = "";
+    public Employer employer = InAppActivityEmployer.employer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +78,7 @@ public class PayPalActivity extends AppCompatActivity {
                             JSONObject payObj = new JSONObject(paymentDetails);
                             String payID = payObj.getJSONObject("response").getString("id");
                             String state = payObj.getJSONObject("response").getString("state");
-                            paymentConfirm.setText("Payment " + state + "\n with payment id is " + payID);
+                            paymentConfirm.setText("Payment " + state + "\n with payment id is " + payID + "\nBalance: " + employer.getBalance());
                         } catch (JSONException e) {
                             // handling json exception on below line
                             Log.e("Error", "an extremely unlikely failure occurred: ", e);
@@ -93,6 +97,7 @@ public class PayPalActivity extends AppCompatActivity {
 
     private void processPayment() {
         paidAmount = editAmount.getText().toString();
+        employer.makePayment((double)(Double.parseDouble(paidAmount)));
         PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(paidAmount)), "CAD", "Employee Payment", PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
