@@ -1,5 +1,7 @@
 package users;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
@@ -9,8 +11,9 @@ import java.util.ArrayList;
 public class Employer extends User {
   private static Firebase firebase;
   private static Employer employer;
-  private ArrayList<Job> myJobs;
+  public ArrayList<Job> myJobs;
   public ArrayList<Employee> observerList;
+  private double balance;
 
   protected static Employee employee;
   public Employer(String username, String email, String password){
@@ -20,6 +23,7 @@ public class Employer extends User {
     firebase = Firebase.getInstance();
     observerList = new ArrayList<>();
     myJobs = firebase.getJobsFromUser(username);
+    balance = 2000;
   }
 
   protected Task<Void> search(){
@@ -50,6 +54,35 @@ public class Employer extends User {
 
   public ArrayList<Job> getMyJobs(){
     return myJobs;
+  }
+  @Override
+  public void setOrderFinished(int orderFinished){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+  }
+  @Override
+  public int getOrderFinished(){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+    return 0;
+  }
+  @Override
+  public void setMinimumSalaryAccepted(double minimumSalaryAccepted){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+  }
+  @Override
+  public double getMinimumSalaryAccepted(){
+    Log.d("N/A", UserConstants.NOT_APPLICABLE);
+    return 0.0;
+  }
+
+  public double getBalance() {
+    return this.balance;
+  }
+  public double makePayment(double amount) {
+    balance = balance - amount;
+    if (balance < 0) {
+      balance = 0;
+    }
+    return balance;
   }
 
 }

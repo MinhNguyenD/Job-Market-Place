@@ -14,14 +14,19 @@ import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 
+import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity;
+import com.voidstudio.quickcashreg.jobpost.Job;
 import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+
+import users.Employer;
+import users.User;
 
 public class JobPostActivityEspressoTest {
 
@@ -32,6 +37,8 @@ public class JobPostActivityEspressoTest {
   private static final String JOB_TAG = "Tag";
 
   private static final String EMPLOYER = "Scumbag";
+  static User employer;
+  static Job job;
 
   @Rule
   public ActivityScenarioRule<JobPostActivity> jobPostActivityActivityScenarioRule =
@@ -39,6 +46,8 @@ public class JobPostActivityEspressoTest {
 
   @BeforeClass
   public static void setup(){
+    employer = new Employer("Username","Email","Password");
+    job = new Job(JOB_NAME,JOB_WAGE,JOB_TAG,EMPLOYER);
     Intents.init();
   }
 
@@ -54,6 +63,9 @@ public class JobPostActivityEspressoTest {
 
   @Test
   public void switchToJobBoardActivityTest(){
+    InAppActivityEmployer.employer = (Employer)employer;
+    ((Employer) employer).myJobs.add(job);
+
     onView(withId(R.id.jobTitle)).perform(typeText(JOB_NAME));
     onView(withId(R.id.wageEdit)).perform(typeText(JOB_WAGE));
     onView(withId(R.id.wageEdit)).perform(closeSoftKeyboard());

@@ -56,6 +56,8 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
     employer = (Employer) User.getUser(username);
     Button postButton = findViewById(R.id.postJobButton);
     postButton.setOnClickListener(JobPostActivity.this);
+    Button myJobsButton = findViewById(R.id.myJobsButton);
+    myJobsButton.setOnClickListener(JobPostActivity.this);
 
     setUpJobTagSpinner();
     jobTagsSpinnerListener();
@@ -124,7 +126,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
       Toast.makeText(JobPostActivity.this, "Posted", Toast.LENGTH_SHORT).show();
 
       Intent postedSwitch = new Intent(JobPostActivity.this, EmployeeRecommendationActivity.class);
-
+      //TODO: User should get in taxi here
       postedSwitch.putExtra("Title", getJobTitle());
       postedSwitch.putExtra("Wage", getWage());
       postedSwitch.putExtra("Duration", getDuration());
@@ -133,6 +135,10 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
 
 //      postJob(getJobTitle(),getWage(),tag);
       startActivity(postedSwitch);
+    }
+    if(view.getId() == R.id.myJobsButton){
+      Intent myJobsSwitch = new Intent(JobPostActivity.this, EmployerJobBoardActivity.class);
+      startActivity(myJobsSwitch);
     }
 
   }

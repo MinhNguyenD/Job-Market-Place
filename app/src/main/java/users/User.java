@@ -80,6 +80,11 @@ public abstract class User {
 
   public abstract void setJob(String jobName, String jobWage, String jobDuration, String jobTag);
 
+  public abstract void setOrderFinished(int orderFinished);
+  public abstract int getOrderFinished();
+  public abstract void setMinimumSalaryAccepted(double minimumSalaryAccepted);
+  public abstract double getMinimumSalaryAccepted();
+
 
   abstract User getInstance();
 

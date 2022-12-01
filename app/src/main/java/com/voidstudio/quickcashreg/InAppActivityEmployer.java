@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.PayPal.PayPalActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
@@ -49,17 +50,25 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
         Button jobPost = findViewById(R.id.JobPost);
         jobPost.setOnClickListener(InAppActivityEmployer.this);
 
+        Button makePayment = findViewById(R.id.payEmployee);
+        makePayment.setOnClickListener(InAppActivityEmployer.this);
+
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
         username = sp.getString(USERNAME,"");
         password = sp.getString(PASSWORD,"");
         email = firebase.getEmailAddress(username);
         employer = new Employer(username, email, password);
-        employer.startLocating(this);
-        employer.setLocation(employer.locate.getMyLocation());
-        firebase.setUserCoordinates(username,employer.locate.getMyLocation());
-        Toast.makeText(this,
-                employer.getLatLong()[0]+","+employer.getLatLong()[1],Toast.LENGTH_LONG).show();
+        if(employer.startLocating(this)){
+            employer.setLocation(employer.locate.getMyLocation());
+            firebase.setUserCoordinates(username,employer.locate.getMyLocation());
+            Toast.makeText(this,
+                    employer.getLatLong()[0]+","+employer.getLatLong()[1],Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(this,"Allow location service", Toast.LENGTH_LONG).show();
+        }
+
 
     }
 
@@ -94,6 +103,10 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
             jobPostIntent.putExtra("PASSWORD", password);
             jobPostIntent.putExtra("EMAIL",email);
             startActivity(jobPostIntent);
+        }
+        if(view.getId() == R.id.payEmployee) {
+            Intent paypalIntent = new Intent(InAppActivityEmployer.this, PayPalActivity.class);
+            startActivity(paypalIntent);
         }
     }
 

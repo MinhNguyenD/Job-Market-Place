@@ -33,8 +33,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     //Edit text reader helper method using delegation
     private final TextReader textReader = new TextReader();
-    private static Firebase firebase;
-    private final LogIn logIn = new LogIn(this);
+    private Firebase firebase;
+    private LogIn logIn;
 
     public SharedPreferences sp;
 
@@ -68,6 +68,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
         // Please do not move this command position, moving it to the top of onCreate will mess up login
         firebase = Firebase.getInstance();
+        logIn = new LogIn(this);
     }
 
     /**
