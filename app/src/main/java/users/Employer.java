@@ -13,6 +13,7 @@ public class Employer extends User {
   private static Employer employer;
   public ArrayList<Job> myJobs;
   public ArrayList<Employee> observerList;
+  private double balance;
 
   protected static Employee employee;
   public Employer(String username, String email, String password){
@@ -22,6 +23,7 @@ public class Employer extends User {
     firebase = Firebase.getInstance();
     observerList = new ArrayList<>();
     myJobs = firebase.getJobsFromUser(username);
+    balance = 2000;
   }
 
   protected Task<Void> search(){
@@ -69,6 +71,17 @@ public class Employer extends User {
   public double getMinimumSalaryAccepted(){
     Log.d("N/A", UserConstants.NOT_APPLICABLE);
     return 0.0;
+  }
+
+  public double getBalance() {
+    return this.balance;
+  }
+  public double makePayment(double amount) {
+    balance = balance - amount;
+    if (balance < 0) {
+      balance = 0;
+    }
+    return balance;
   }
 
 }
