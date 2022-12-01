@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.PayPal.PayPalActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.EmployerJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.JobPostActivity;
@@ -48,6 +49,9 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
 
         Button jobPost = findViewById(R.id.JobPost);
         jobPost.setOnClickListener(InAppActivityEmployer.this);
+
+        Button makePayment = findViewById(R.id.payEmployee);
+        makePayment.setOnClickListener(InAppActivityEmployer.this);
 
 
         sp = getSharedPreferences("login", MODE_PRIVATE);
@@ -94,6 +98,10 @@ public class InAppActivityEmployer extends AppCompatActivity implements View.OnC
             jobPostIntent.putExtra("PASSWORD", password);
             jobPostIntent.putExtra("EMAIL",email);
             startActivity(jobPostIntent);
+        }
+        if(view.getId() == R.id.payEmployee) {
+            Intent paypalIntent = new Intent(InAppActivityEmployer.this, PayPalActivity.class);
+            startActivity(paypalIntent);
         }
     }
 
