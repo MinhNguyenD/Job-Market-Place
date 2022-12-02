@@ -277,7 +277,7 @@ public class JobPostingActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Job selectJob = (Job) (listView.getItemAtPosition(position));
                 Intent intent = new Intent(getApplicationContext(), JobDetailsActivity.class);
-                intent.putExtra("selectedJob", selectJob.toString());
+                intent.putExtra("selectedItem", selectJob.getJobName());
                 startActivity(intent);
             }
         });
