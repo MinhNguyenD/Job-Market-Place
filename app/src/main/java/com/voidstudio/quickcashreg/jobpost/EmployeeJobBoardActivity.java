@@ -27,10 +27,9 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
   static String extractedJob;
   static String extractedWage;
   static String extractedTag;
-  private static Employee employee;
+  private Employee employee;
   private static String preference;
-  private static Job job;
-  private static Firebase firebase;
+  private static final Firebase firebase = Firebase.getInstance();
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +79,7 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<>();
-    ArrayList<Job> jobList = employee.getAllJobs();
+    ArrayList<Job> jobList = (ArrayList<Job>) firebase.getAllJobs();
     String preference = employee.getPreference();
 
     if (preference != null && !preference.equals("")) {

@@ -10,7 +10,7 @@ public class Job {
   private String wage;
   private String tag;
   private String user;
-  private String expectedDuration;
+  private String duration;
   private String datePosted;
   private Location location;
   private String hardLocation;
@@ -59,9 +59,12 @@ public class Job {
   }
 
 
+  public void setDuration(String dur){
+    duration = dur;
+  }
 
   public String getDuration() {
-    return expectedDuration;
+    return duration;
   }
 
   public String getDatePosted() {

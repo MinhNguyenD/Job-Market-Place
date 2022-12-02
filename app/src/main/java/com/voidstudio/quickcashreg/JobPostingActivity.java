@@ -81,7 +81,7 @@ public class JobPostingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_job_posting);
         firebase = Firebase.getInstance();
 
-        allJobsList = firebase.getAllJobs();
+        allJobsList = (ArrayList<Job>) firebase.getAllJobs();
         setUpList(allJobsList);
 
         onItemClickListener();
@@ -373,7 +373,7 @@ public class JobPostingActivity extends AppCompatActivity{
                 }
                 else if(filterId[0].contains("Tag")){
                     if (filterId[0].equals(job.getTag())) {
-                        if (currentSearchText == "") {
+                        if (currentSearchText.equals("")) {
                             filteredJobList.add(job);
                         } else {
                             if (job.getJobName().toUpperCase().contains(currentSearchText.toUpperCase())) {

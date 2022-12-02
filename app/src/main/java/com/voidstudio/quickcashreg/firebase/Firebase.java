@@ -26,6 +26,7 @@ import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import users.Employee;
@@ -317,8 +318,8 @@ public class Firebase {
     return arrJob;
   }
 
-  public ArrayList<Job> getAllJobs(){
-    ArrayList<Job> arrJob = new ArrayList<>();
+  public List<Job> getAllJobs(){
+    List<Job> arrJob = new ArrayList<>();
     Query query = firebaseDBReference.child(JOBS);
     query.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override

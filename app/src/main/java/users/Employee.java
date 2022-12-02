@@ -18,7 +18,7 @@ public class Employee extends User {
     public boolean newJobAlert;
     public boolean newJobSeen;
 
-    public Firebase firebase;
+
     private static User employee;
     private String preference;
     private ArrayList<Job> allJob;
@@ -26,7 +26,6 @@ public class Employee extends User {
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location){
         this.username = username;
         this.email = email;
-        firebase = Firebase.getInstance();
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
         startLocating(location);
@@ -36,7 +35,6 @@ public class Employee extends User {
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location, Firebase firebase){
         this.username = username;
         this.email = email;
-        this.firebase = firebase;
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
         locate.setLocation(location);
@@ -76,7 +74,7 @@ public class Employee extends User {
         this.email = email;
         this.password = password;
         firebase = Firebase.getInstance();
-        allJob = firebase.getAllJobs();
+        allJob = (ArrayList<Job>) firebase.getAllJobs();
     }
 
     public Employee(String username, String password) {
@@ -111,7 +109,7 @@ public class Employee extends User {
     }
 
     public ArrayList<Job> getAllJobs() {
-        return allJob;
+        return (ArrayList<Job>) firebase.getAllJobs();
     }
 
     public String recommendInfo() {
