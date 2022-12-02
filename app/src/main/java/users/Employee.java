@@ -97,7 +97,7 @@ public class Employee extends User {
         return null;
     }
 
-    public void setJob(String jobName, String jobWage, String jobTag){
+    public void setJob(String jobName, String jobWage, String duration, String jobTag){
         // Employee cannot set a job but employer can.
         Log.d("N/A", "Operation not applicable to this user type");
     }
