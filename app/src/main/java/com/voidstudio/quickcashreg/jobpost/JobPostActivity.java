@@ -96,9 +96,17 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
     return tr.getFromEditText(wage);
   }
 
-  private void postJob(String jobName, String jobWage, String jobTag){
+
+  private String getDuration(){
+    EditText wage = findViewById(R.id.durationEdit);
+    TextReader tr = new TextReader();
+    return tr.getFromEditText(wage);
+  }
+
+
+  private void postJob(String jobName, String jobWage, String jobDuration, String jobTag){
     if(employer.locate == null) employer.startLocating(this);
-    employer.setJob(jobName,jobWage,jobTag);
+    employer.setJob(jobName,jobWage,jobDuration,jobTag);
   }
 
   private void saveJobPostState() {
@@ -113,7 +121,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
   @Override
   public void onClick(View view){
     if(view.getId() == R.id.postJobButton) {
-      postJob(getJobTitle(),getWage(),tag);
+      postJob(getJobTitle(),getWage(), getDuration(),tag);
       saveJobPostState();
       Toast.makeText(JobPostActivity.this, "Posted", Toast.LENGTH_SHORT).show();
 
@@ -121,6 +129,7 @@ public class JobPostActivity extends AppCompatActivity implements View.OnClickLi
       //TODO: User should get in taxi here
       postedSwitch.putExtra("Title", getJobTitle());
       postedSwitch.putExtra("Wage", getWage());
+      postedSwitch.putExtra("Duration", getDuration());
       postedSwitch.putExtra("Tag", tag);
       postedSwitch.putExtra("Name", USERNAME);
 

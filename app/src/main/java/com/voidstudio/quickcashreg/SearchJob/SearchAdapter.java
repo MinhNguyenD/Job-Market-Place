@@ -1,4 +1,4 @@
-package com.voidstudio.quickcashreg;
+package com.voidstudio.quickcashreg.SearchJob;
 
 import android.widget.ArrayAdapter;
 import com.voidstudio.quickcashreg.jobpost.Job;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.voidstudio.quickcashreg.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

@@ -78,7 +78,7 @@ public abstract class User {
 
   abstract boolean validate();
 
-  public abstract void setJob(String jobName, String jobWage, String jobTag);
+  public abstract void setJob(String jobName, String jobWage, String jobDuration, String jobTag);
 
   public abstract void setOrderFinished(int orderFinished);
   public abstract int getOrderFinished();

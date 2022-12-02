@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import com.voidstudio.quickcashreg.SearchJob.JobPostingActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.EmployeeJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.SavePreferenceActivity;

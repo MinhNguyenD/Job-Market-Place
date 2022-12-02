@@ -24,6 +24,7 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
   RecyclerAdapter adapter;
   static String extractedJob;
   static String extractedWage;
+  static String extractedDuration;
   static String extractedTag;
   private static String jobItem;
   private Employer employer;
@@ -36,8 +37,9 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
       Bundle bundle = getIntent().getExtras();
       extractedJob = bundle.getString("Job");
       extractedWage = bundle.getString("Wage");
+      extractedDuration = bundle.getString("Duration");
       extractedTag = bundle.getString("Tag");
-      jobItem = extractedJob + " " + extractedWage + " " + extractedTag;
+      jobItem = extractedJob + " " + extractedWage + " " + extractedDuration + " " +  extractedTag;
     }
     this.loadSmallTasks();
   }

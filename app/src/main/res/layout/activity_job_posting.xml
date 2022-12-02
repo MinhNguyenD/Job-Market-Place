@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".JobPostingActivity">
+    tools:context=".SearchJob.JobPostingActivity">
 
     <android.widget.SearchView
         android:id="@+id/search_bar"
@@ -29,24 +29,6 @@
             android:background="@color/colorPrimary"
             android:onClick="allFilterTapped"
             />
-        <!--        <Button-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:text="Filter2"-->
-        <!--            android:id="@+id/Filter2"-->
-        <!--            android:background="@color/colorPrimary"-->
-        <!--            />-->
-
-
-        <!--        <Button-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:text="Filter3"-->
-        <!--            android:id="@+id/Filter3"-->
-        <!--            android:background="@color/colorPrimary"-->
-        <!--            />-->
 
     </LinearLayout>
 
@@ -86,6 +68,22 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/minimumWage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/maximumWage"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown" />
+
+
     </LinearLayout>
 
     <!--    <TextView-->
