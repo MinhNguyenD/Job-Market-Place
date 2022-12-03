@@ -63,6 +63,9 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
 //    String statusText = "Location: " + itemLocation;
 
 
+
+
+
     //  ImageButton mapButton = findViewById(R.id.mapButton);
     //  mapButton.setOnClickListener(new View.OnClickListener() {
 //
