@@ -68,6 +68,7 @@ public class Employee extends User {
     }
 
     public static Employee getInstance(String username){
+        firebase = Firebase.getInstance();
         if(employee == null){
             employee = new Employee(username, firebase.getEmailAddress(username),
                     firebase.getPassword(username));
@@ -77,6 +78,7 @@ public class Employee extends User {
 
 
     public Employee(String username, String email, String password){
+        firebase = Firebase.getInstance();
         this.username = username;
         this.email = email;
         this.password = password;
@@ -84,16 +86,19 @@ public class Employee extends User {
     }
 
     public Employee(String username, String password) {
+        firebase = Firebase.getInstance();
         this.username = username;
         this.password = password;
-
+        allJob = (ArrayList<Job>)firebase.getAllJobs();
     }
 
     public Employee(String username, String email, String userType, String password){
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.userType = userType;
+        firebase = Firebase.getInstance();
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        allJob = (ArrayList<Job>)firebase.getAllJobs();
     }
 
     protected Task<Void> search(){
@@ -118,6 +123,7 @@ public class Employee extends User {
     }
 
     public ArrayList<Job> getAllJobs() {
+        firebase = Firebase.getInstance();
         if(allJob == null){
             allJob = (ArrayList<Job>) firebase.getAllJobs();
         }

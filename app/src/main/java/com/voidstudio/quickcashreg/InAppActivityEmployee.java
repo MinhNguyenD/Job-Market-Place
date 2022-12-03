@@ -61,12 +61,16 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
 
     //TODO: REFACTOR SO THAT SHARED PREF CAN STORE USERTYPE
     employee = new Employee(username,email,userType,password);
-
-    employee.startLocating(this);
-    employee.setLocation(employee.locate.getMyLocation());
-    firebase.setUserCoordinates(username,employee.locate.getMyLocation());
-    Toast.makeText(this,
-            employee.getLatLong()[0]+","+employee.getLatLong()[1],Toast.LENGTH_LONG).show();
+    if(employee.startLocating(this)) {
+      employee.startLocating(this);
+      employee.setLocation(employee.locate.getMyLocation());
+      firebase.setUserCoordinates(username, employee.locate.getMyLocation());
+      Toast.makeText(this,
+              employee.getLatLong()[0] + "," + employee.getLatLong()[1], Toast.LENGTH_LONG).show();
+    }
+    else{
+      Toast.makeText(this,"Allow location service", Toast.LENGTH_LONG).show();
+    }
 
     Button logOutButton = findViewById(R.id.employeeLogOut);
     logOutButton.setOnClickListener(InAppActivityEmployee.this);
@@ -86,12 +90,7 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
     Button savePreference = findViewById(R.id.setPreference);
     savePreference.setOnClickListener(InAppActivityEmployee.this);
 
-    /*sp = getSharedPreferences("login", MODE_PRIVATE);
-    username = sp.getString("Username","");
-    password = sp.getString("Password","");
-    email = sp.getString("EMAIL","");
-*/
-    employee = new Employee(username, email,userType,password);
+
 
     // Check if the employee has seen the new job posting or not, if not, pop up the notification
     SharedPreferences jobPostNoti = getSharedPreferences("jobPost", MODE_PRIVATE);

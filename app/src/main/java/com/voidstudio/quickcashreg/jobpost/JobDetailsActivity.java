@@ -18,7 +18,6 @@ import com.voidstudio.quickcashreg.management.EmployeeContractManager;
 import com.voidstudio.quickcashreg.management.IContractManager;
 
 import users.Employee;
-import users.Employer;
 import users.User;
 
 public class JobDetailsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -62,12 +61,6 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
     }
     if(username != null){
         e = Employee.getInstance(username);
-      if(u instanceof Employee){
-        e = (Employee)u;
-        e.setUsername(username);
-      }else{
-        u = Employer.getInstance(username);
-      }
     }
 
     TextView jobName = findViewById(R.id.job_name_textView);
