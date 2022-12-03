@@ -63,8 +63,16 @@ public class Job {
     return user;
   }
 
+  public void setUser(String username){
+    this.user = username;
+  }
+
   public String getTag() {
     return tag;
+  }
+
+  public void setWage(String wage){
+    this.wage = wage;
   }
 
   public String getWage() {

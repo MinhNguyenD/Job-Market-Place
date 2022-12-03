@@ -17,6 +17,7 @@ public abstract class User {
   protected String password;
   protected String email;
   protected String userType;
+  protected double balance;
   public ILocation locate;
   private static Firebase firebase;
   public User(){
@@ -95,6 +96,13 @@ public abstract class User {
 
   public double[] getLatLong(){
     return locate.getLatLong();
+  }
+
+  public double getBalance(){
+    return balance;
+  }
+  public void setBalance(double priceChange){
+    balance+=priceChange;
   }
 
   public boolean startLocating(Context context){

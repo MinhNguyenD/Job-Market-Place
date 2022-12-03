@@ -23,6 +23,9 @@ public class JobDetailsActivity extends AppCompatActivity {
     String statusText = "Location: " + itemLocation;
     statusLabel.setText(statusText);
 
+
+
+
     //  ImageButton mapButton = findViewById(R.id.mapButton);
     //  mapButton.setOnClickListener(new View.OnClickListener() {
 //
