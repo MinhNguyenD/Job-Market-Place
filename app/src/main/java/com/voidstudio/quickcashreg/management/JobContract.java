@@ -8,7 +8,7 @@ import users.Employee;
  * Job Contract requests Contract Manager
  */
 public class JobContract {
-
+  private Job job;
   private String jobName;
   private String employeeName;
   private String employerName;
@@ -27,6 +27,7 @@ public class JobContract {
    * @param e
    */
   public JobContract(Job job, Employee e){
+    this.job = job;
    this.jobName = job.getJobName();
    this.employerName = job.getUser();
    this.employeeName = e.getUsername();
@@ -100,4 +101,5 @@ public class JobContract {
   public void setIsPaid(boolean paid){
     this.isPaid = paid;
   }
+  public Job getJob(){return this.job;}
 }

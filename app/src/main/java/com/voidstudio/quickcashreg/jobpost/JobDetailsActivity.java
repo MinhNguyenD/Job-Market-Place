@@ -9,13 +9,21 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.InAppActivityEmployee;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.UserApplicationActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
+import com.voidstudio.quickcashreg.management.EmployeeContractManager;
+
+import users.Employee;
 
 public class JobDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
   private static Firebase firebase;
+  private Employee employee = InAppActivityEmployee.employee;
+  private EmployeeContractManager manager = InAppActivityEmployee.manager;
+  private Job job;
+
   private static final String JOB_NAME = "job name";
   private static final String JOB_DURATION = "job duration";
   private static final String JOB_DATE_POSTED = "job date posted";
@@ -43,6 +51,8 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
     extractedDuration = bundle.getString(JOB_DURATION);
     extractedDatePosted=bundle.getString(JOB_DATE_POSTED);
     extractedJobEmployer=bundle.getString(JOB_EMPLOYER);
+    job = new Job(extractedJobName, extractedWage, extractedDuration, extractedTag, extractedJobEmployer, extractedDatePosted);
+//    String jobName, String wage, String duration, String tag, String user
 
     TextView jobName = findViewById(R.id.job_name_textView);
     jobName.setText(extractedJobName);
@@ -92,10 +102,11 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
 
   public void onClick(View view) {
     if(view.getId() == R.id.applyJob){
-      Toast.makeText(this, "The application is accepted", Toast.LENGTH_LONG).show();
-      //TODO: Implement the application process
-      Intent employment = new Intent(JobDetailsActivity.this, UserApplicationActivity.class);
-      startActivity(employment);
+        Toast.makeText(this, "The application is accepted", Toast.LENGTH_LONG).show();
+        //TODO: Implement the application process
+        manager.acceptContract(job);
+        Intent employment = new Intent(JobDetailsActivity.this, UserApplicationActivity.class);
+        startActivity(employment);
     }
   }
 
