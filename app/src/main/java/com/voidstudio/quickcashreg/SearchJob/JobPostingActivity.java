@@ -56,6 +56,15 @@ public class JobPostingActivity extends AppCompatActivity{
     private Spinner maxWageSpinner;
     private String selectedMaxWage;
 
+    private static final String JOB_NAME = "job name";
+    private static final String JOB_DURATION = "job duration";
+    private static final String JOB_DATE_POSTED = "job date posted";
+    private static final String JOB_TAG = "job tag";
+    private static final String JOB_EMPLOYER = "job employer";
+    private static final String JOB_WAGE = "job wage";
+
+
+
     private static ArrayList<String> selectedFilters = new ArrayList<String>();
 
     public static final String OPTION_KM_DISTANCE1 = "1 km";
@@ -277,7 +286,12 @@ public class JobPostingActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Job selectJob = (Job) (listView.getItemAtPosition(position));
                 Intent intent = new Intent(getApplicationContext(), JobDetailsActivity.class);
-                intent.putExtra("selectedItem", selectJob.getJobName());
+                intent.putExtra(JOB_NAME, selectJob.getJobName());
+                intent.putExtra(JOB_DATE_POSTED, selectJob.getDatePosted());
+                intent.putExtra(JOB_DURATION, selectJob.getDuration());
+                intent.putExtra(JOB_WAGE, selectJob.getWage());
+                intent.putExtra(JOB_EMPLOYER, selectJob.getUser());
+                intent.putExtra(JOB_TAG, selectJob.getTag());
                 startActivity(intent);
             }
         });
