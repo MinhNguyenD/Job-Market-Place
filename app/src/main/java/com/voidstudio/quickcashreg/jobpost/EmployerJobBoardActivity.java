@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import static com.voidstudio.quickcashreg.jobpost.JobPostActivity.USERNAME;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -81,6 +83,7 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void showDetails(String selectedTask) {
     Intent intent = new Intent(this, JobDetailsActivity.class);
+    intent.putExtra(USERNAME,employer.getUsername());
     intent.putExtra("selectedItem", selectedTask);
     startActivity(intent);
   }

@@ -1,14 +1,18 @@
 package com.voidstudio.quickcashreg.EmployeeRecommendation;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.jobpost.Job;
@@ -24,6 +28,7 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
     EmployeeRecommendation employeeRecommendation = new EmployeeRecommendation();
     Firebase firebase;
     Job job;
+    Button skip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,8 +60,9 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
 
         setupSeekBarListener();
         firebase.listenerForUser_Ref();
+        skip = (Button) findViewById(R.id.skip);
+        skip.setOnClickListener(this::onClick);
     }
-
 
     public void setupSeekBarListener() {
         seekBarForDistance.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -82,7 +88,7 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
     private void getRecommendInfo(double maxDistance) {
         ArrayList<Employee> employees= firebase.getRecommendList();
 
-        ArrayList<Employee> recommendList = employeeRecommendation.getRecommendation(job, employees, getMaxDistanceInKM());
+        ArrayList<Employee> recommendList = employeeRecommendation.getRecommendation(job, employees, maxDistance);
         String[] recommendInfoList = new String[recommendList.size()];
 
         for (int i = 0; i < recommendList.size(); i++) {
@@ -94,6 +100,7 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
     private void setList(String[] recommendInfoList) {
         ArrayAdapter<String> arr = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, recommendInfoList);
         recommendEmployeeList.setAdapter(arr);
+        int b = 0;
     }
 
     public int getSeekBarForDistanceValue() {
@@ -105,7 +112,12 @@ public class EmployeeRecommendationActivity extends AppCompatActivity {
         return getSeekBarForDistanceValue() * 3;
     }
 
-
+    public void onClick(View view) {
+        if (view.getId() == R.id.skip) {
+            Intent postedSwitch = new Intent(EmployeeRecommendationActivity.this, InAppActivityEmployer.class);
+            startActivity(postedSwitch);
+        }
+    }
 }
 
 

@@ -1,18 +1,14 @@
 package com.voidstudio.quickcashreg.SearchJob;
 
-import android.widget.ArrayAdapter;
-import com.voidstudio.quickcashreg.jobpost.Job;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
-import com.voidstudio.quickcashreg.R;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import com.voidstudio.quickcashreg.R;
+import com.voidstudio.quickcashreg.jobpost.Job;
 
 import java.util.List;
 public class SearchAdapter extends ArrayAdapter<Job> {
@@ -20,6 +16,7 @@ public class SearchAdapter extends ArrayAdapter<Job> {
     {
         super(context,resource,jobList);
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)

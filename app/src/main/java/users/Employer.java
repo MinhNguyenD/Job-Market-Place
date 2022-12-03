@@ -16,6 +16,7 @@ public class Employer extends User {
   private double balance;
 
   protected static Employee employee;
+  private static String username;
   public Employer(String username, String email, String password){
     this.username = username;
     this.email = email;
@@ -45,9 +46,10 @@ public class Employer extends User {
     myJobs.add(job);
     firebase.addJob(job);
   }
-  public User getInstance(){
+  public static Employer getInstance(String u){
     if(employer == null){
-      employer = new Employer(username, email, password);
+      firebase = Firebase.getInstance();
+      employer = new Employer(u, firebase.getEmailAddress(u), firebase.getPassword(u));
     }
     return employer;
   }

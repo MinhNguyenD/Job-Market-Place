@@ -18,28 +18,32 @@ public class Employee extends User {
     public boolean newJobAlert;
     public boolean newJobSeen;
 
-    public Firebase firebase;
-    private static User employee;
+    public static Firebase firebase;
+    private static Employee employee;
     private String preference;
     private ArrayList<Job> allJob;
+
+    private String username;
+    private String password;
+    private String email;
 
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location){
         this.username = username;
         this.email = email;
-        firebase = Firebase.getInstance();
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
         startLocating(location);
         setLocation(location);
+        firebase = Firebase.getInstance();
     }
 
     public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location, Firebase firebase){
         this.username = username;
         this.email = email;
-        this.firebase = firebase;
         this.orderFinished = orderFinished;
         this.minimumSalaryAccepted = minimumSalaryAccepted;
         locate.setLocation(location);
+        firebase = Firebase.getInstance();
     }
 
     public void setMinimumSalaryAccepted(double minimumSalaryAccepted) {
@@ -63,9 +67,10 @@ public class Employee extends User {
 
     }
 
-    public User getInstance(){
+    public static Employee getInstance(String username){
         if(employee == null){
-            employee = new Employee(username, email, password);
+            employee = new Employee(username, firebase.getEmailAddress(username),
+                    firebase.getPassword(username));
         }
         return employee;
     }
@@ -75,14 +80,13 @@ public class Employee extends User {
         this.username = username;
         this.email = email;
         this.password = password;
-        firebase = Firebase.getInstance();
-        allJob = firebase.getAllJobs();
+        allJob = (ArrayList<Job>)firebase.getAllJobs();
     }
 
     public Employee(String username, String password) {
         this.username = username;
         this.password = password;
-        firebase = Firebase.getInstance();
+
     }
 
     public Employee(String username, String email, String userType, String password){
@@ -90,7 +94,6 @@ public class Employee extends User {
     this.email = email;
     this.password = password;
     this.userType = userType;
-//    firebase = Firebase.getInstance();
     }
 
     protected Task<Void> search(){
@@ -100,6 +103,10 @@ public class Employee extends User {
     public void setJob(String jobName, String jobWage, String duration, String jobTag){
         // Employee cannot set a job but employer can.
         Log.d("N/A", "Operation not applicable to this user type");
+    }
+    @Override
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public void setPreference(String preference) {
@@ -111,7 +118,15 @@ public class Employee extends User {
     }
 
     public ArrayList<Job> getAllJobs() {
+        if(allJob == null){
+            allJob = (ArrayList<Job>) firebase.getAllJobs();
+        }
         return allJob;
+    }
+
+    @Override
+    public String getUsername(){
+        return this.username;
     }
 
     public String recommendInfo() {
