@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg.SearchJob;
 
+import static com.voidstudio.quickcashreg.jobpost.JobPostActivity.USERNAME;
+
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -13,11 +15,10 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.voidstudio.quickcashreg.InAppActivityEmployee;
-import com.voidstudio.quickcashreg.Location.JobLocation;
+import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.Job;
 import com.voidstudio.quickcashreg.jobpost.JobDetailsActivity;
-import com.voidstudio.quickcashreg.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -122,7 +123,7 @@ public class JobPostingActivity extends AppCompatActivity{
         setContentView(R.layout.activity_job_posting);
         firebase = Firebase.getInstance();
         employee = InAppActivityEmployee.employee;
-        allJobsList = firebase.getAllJobs();
+        allJobsList = (ArrayList<Job>) firebase.getAllJobs();
         setUpList(allJobsList);
 
         onItemClickListener();
@@ -286,6 +287,7 @@ public class JobPostingActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Job selectJob = (Job) (listView.getItemAtPosition(position));
                 Intent intent = new Intent(getApplicationContext(), JobDetailsActivity.class);
+                intent.putExtra(USERNAME,((Employee) employee).getUsername());
                 intent.putExtra(JOB_NAME, selectJob.getJobName());
                 intent.putExtra(JOB_DATE_POSTED, selectJob.getDatePosted());
                 intent.putExtra(JOB_DURATION, selectJob.getDuration());

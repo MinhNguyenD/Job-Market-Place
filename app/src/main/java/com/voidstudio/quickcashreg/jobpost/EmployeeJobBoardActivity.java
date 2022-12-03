@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.InAppActivityEmployee;
 import com.voidstudio.quickcashreg.R;
+import com.voidstudio.quickcashreg.firebase.Firebase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import users.Employee;
 
@@ -27,10 +28,8 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
   static String extractedJob;
   static String extractedWage;
   static String extractedTag;
-  private static Employee employee;
-  private static String preference;
-  private static Job job;
-  private static Firebase firebase;
+  private Employee employee;
+  private Job job;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,20 +79,22 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<>();
-    ArrayList<Job> jobList = employee.getAllJobs();
+    List<Job> jobList = employee.getAllJobs();
     String preference = employee.getPreference();
 
     if (preference != null && !preference.equals("")) {
-      for (Job job: jobList) {
-        if (job.getTag().equals(employee.getPreference())) {
-          Toast.makeText(this, job.getTag(), Toast.LENGTH_SHORT).show();
-          tasks.add(job.toString());
+      for (Job j: jobList) {
+        if (j.getTag().equals(employee.getPreference())) {
+          Toast.makeText(this, j.getTag(), Toast.LENGTH_SHORT).show();
+          tasks.add(j.toString());
         }
       }
     }
     else {
-      for (Job job: jobList) {
-        tasks.add(job.toString());
+      Firebase firebase = Firebase.getInstance();
+      jobList = firebase.getAllJobs();
+      for (Job j: jobList) {
+        tasks.add(j.toString());
       }
     }
 //    if(employer != null) {

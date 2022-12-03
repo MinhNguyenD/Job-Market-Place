@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import static com.voidstudio.quickcashreg.jobpost.JobPostActivity.USERNAME;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.UserApplicationActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
+import com.voidstudio.quickcashreg.management.EmployeeContractManager;
+import com.voidstudio.quickcashreg.management.IContractManager;
+
+import users.Employee;
+import users.Employer;
+import users.User;
 
 public class JobDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-  private static Firebase firebase;
+  private Firebase firebase;
   private static final String JOB_NAME = "job name";
   private static final String JOB_DURATION = "job duration";
   private static final String JOB_DATE_POSTED = "job date posted";
@@ -23,13 +31,18 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
   private static final String JOB_EMPLOYER = "job employer";
   private static final String JOB_WAGE = "job wage";
 
-  private static String extractedJobName;
-  private static String extractedWage;
-  private static String extractedTag;
-  private static String extractedDuration;
-  private static String extractedDatePosted;
-  private static String extractedJobEmployer;
+  private  String extractedJobName;
+  private  String extractedWage;
+  private  String extractedTag;
+  private  String extractedDuration;
+  private  String extractedDatePosted;
+  private  String extractedJobEmployer;
+  private String username;
+  private User u;
+  private Employee e;
+  private Job job;
 
+  //private static final User user;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -37,12 +50,25 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
     firebase = Firebase.getInstance();
     Intent sentItem = getIntent();
     Bundle bundle = getIntent().getExtras();
-    extractedJobName = bundle.getString(JOB_NAME);
-    extractedWage = bundle.getString(JOB_WAGE);
-    extractedTag = bundle.getString(JOB_TAG);
-    extractedDuration = bundle.getString(JOB_DURATION);
-    extractedDatePosted=bundle.getString(JOB_DATE_POSTED);
-    extractedJobEmployer=bundle.getString(JOB_EMPLOYER);
+    if(bundle != null) {
+      username = bundle.getString(USERNAME);
+      extractedJobName = bundle.getString(JOB_NAME);
+      extractedWage = bundle.getString(JOB_WAGE);
+      extractedTag = bundle.getString(JOB_TAG);
+      extractedDuration = bundle.getString(JOB_DURATION);
+      extractedDatePosted = bundle.getString(JOB_DATE_POSTED);
+      extractedJobEmployer = bundle.getString(JOB_EMPLOYER);
+      job = new Job(extractedJobName,extractedWage,extractedTag,extractedJobEmployer);
+    }
+    if(username != null){
+        e = Employee.getInstance(username);
+      if(u instanceof Employee){
+        e = (Employee)u;
+        e.setUsername(username);
+      }else{
+        u = Employer.getInstance(username);
+      }
+    }
 
     TextView jobName = findViewById(R.id.job_name_textView);
     jobName.setText(extractedJobName);
@@ -59,41 +85,23 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
     Button applyButton = findViewById(R.id.applyJob);
     applyButton.setOnClickListener(JobDetailsActivity.this);
 
-//    String itemLocation = getItemLocation(item);
-//    String statusText = "Location: " + itemLocation;
 
-
-
-
-
-    //  ImageButton mapButton = findViewById(R.id.mapButton);
-    //  mapButton.setOnClickListener(new View.OnClickListener() {
-//
-    //    @Override
-    //    public void onClick(View view) {
-    //      String locCoord = getLocationCoordinate(itemLocation);
-    //      Intent mapIntent = new Intent(getBaseContext(), GoogleMapsActivity.class);
-    //      mapIntent.putExtra("city", itemLocation);
-    //      mapIntent.putExtra("taskLocation", locCoord);
-    //      startActivity(mapIntent);
-    //    }
-    //  });
   }
 
-//  protected String getLocationCoordinate(String itemLocation) {
-//    SharedPreferences sharedPreferences = getSharedPreferences(EmployerJobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
-//    return sharedPreferences.getString(itemLocation, null);
-//  }
-//
-//  protected String getItemLocation(String item) {
-//    SharedPreferences sharedPreferences = getSharedPreferences(EmployerJobBoardActivity.MY_PREFS, Context.MODE_PRIVATE);
-//    return sharedPreferences.getString(item, null);
-//  }
+
 
   public void onClick(View view) {
     if(view.getId() == R.id.applyJob){
-      Toast.makeText(this, "The application is accepted", Toast.LENGTH_LONG).show();
+
       //TODO: Implement the application process
+      if(e != null){
+        IContractManager employeeContractManager = new EmployeeContractManager(e);
+        employeeContractManager.acceptContract(job);
+        Toast.makeText(this, "The application is accepted", Toast.LENGTH_LONG).show();
+      }
+      else{
+        Toast.makeText(this,"You cannot apply as this user type",Toast.LENGTH_LONG).show();
+      }
       Intent employment = new Intent(JobDetailsActivity.this, UserApplicationActivity.class);
       startActivity(employment);
     }

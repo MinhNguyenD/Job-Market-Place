@@ -14,6 +14,12 @@ public interface IContractManager {
 
   void setContractStatus(JobContract jc, String status);
 
+  ArrayList<JobContract> getCompletedContracts();
+
+  ArrayList<JobContract> getIncompletedContracts();
+
+  ArrayList<String> getPaymentList();
+
 
 
 

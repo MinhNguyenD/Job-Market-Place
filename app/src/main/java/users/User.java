@@ -87,7 +87,7 @@ public abstract class User {
   public abstract double getMinimumSalaryAccepted();
 
 
-  abstract User getInstance();
+
 
 
   public Location getLocation() {

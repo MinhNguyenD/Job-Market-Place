@@ -58,8 +58,8 @@ public class EmployeeJUnitTests {
     Mockito.when(location2.getLongitude()).thenReturn(0.0);
     Mockito.when(location2.distanceTo(location1)).thenReturn((float)30.0);
     employee = new Employee(USERNAME,PASSWORD);
-
     employee.setEmail(EMAIL);
+
     //employee.setLocation(location1);
 
   }
@@ -79,6 +79,7 @@ public class EmployeeJUnitTests {
 
   @Test
   public void testRecommendedInfoStringCorrect(){
+    employee.setEmail(EMAIL);
     String res = employee.recommendInfo();
     assertTrue(res.equals("Name: " + USERNAME + " Email: " + EMAIL));
   }

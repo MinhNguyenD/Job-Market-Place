@@ -21,6 +21,7 @@ public class JobContract {
 
 
 
+
   /**
    * Contructor to be used by manager
    * @param job

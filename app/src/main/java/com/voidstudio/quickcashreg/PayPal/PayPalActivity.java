@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -24,11 +25,15 @@ import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.voidstudio.quickcashreg.InAppActivityEmployer;
 import com.voidstudio.quickcashreg.R;
+import com.voidstudio.quickcashreg.management.EmployerContractManager;
+import com.voidstudio.quickcashreg.management.IContractManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import users.Employer;
 
@@ -40,18 +45,26 @@ public class PayPalActivity extends AppCompatActivity {
     Button payButton;
     EditText editAmount;
     TextView paymentConfirm;
+    ListView paymentListView;
 
     String paidAmount = "";
     public Employer employer = InAppActivityEmployer.employer;
+    private IContractManager employerContractManager;
+    private ArrayList<String> paymentList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.paypal_activity);
         config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX).clientId(Config.PAYPAL_CLIENT_ID);
+        employerContractManager = new EmployerContractManager(employer);
+
 
         editAmount = findViewById(R.id.paymentAmount);
         payButton = findViewById(R.id.payButton);
         paymentConfirm = findViewById(R.id.paymentInfo);
+        paymentListView = findViewById(R.id.payList);
+        paymentList =  employerContractManager.getPaymentList();
+        setUpList(paymentList);
 
         initializeActivityLauncher();
 
@@ -61,6 +74,16 @@ public class PayPalActivity extends AppCompatActivity {
                 processPayment();
             }
         });
+    }
+
+    private void setUpList(ArrayList<String> payList)
+    {
+        setAdapter(payList);
+    }
+    private void setAdapter(List<String> payList)
+    {
+        PaySearchAdapter adapter = new PaySearchAdapter(getApplicationContext(), 0, payList);
+        paymentListView.setAdapter(adapter);
     }
 
     private void initializeActivityLauncher() {

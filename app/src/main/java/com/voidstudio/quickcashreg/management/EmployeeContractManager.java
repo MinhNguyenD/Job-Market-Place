@@ -49,6 +49,15 @@ public class EmployeeContractManager implements IContractManager {
     return (ArrayList<JobContract>) completedContracts;
   }
 
+  @Override
+  public ArrayList<JobContract> getIncompletedContracts() {
+    return null;
+  }
+
+  @Override
+  public ArrayList<String> getPaymentList() {
+    return null;
+  }
 
 
 }
