@@ -9,8 +9,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.voidstudio.quickcashreg.EmploymentHistoryActivity;
 import com.voidstudio.quickcashreg.R;
+import com.voidstudio.quickcashreg.UserApplicationActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 
 public class JobDetailsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -94,7 +94,7 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
     if(view.getId() == R.id.applyJob){
       Toast.makeText(this, "The application is accepted", Toast.LENGTH_LONG).show();
       //TODO: Implement the application process
-      Intent employment = new Intent(JobDetailsActivity.this, EmploymentHistoryActivity.class);
+      Intent employment = new Intent(JobDetailsActivity.this, UserApplicationActivity.class);
       startActivity(employment);
     }
   }
