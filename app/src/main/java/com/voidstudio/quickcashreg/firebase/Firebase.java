@@ -349,7 +349,7 @@ public class Firebase {
         recommendList = new ArrayList<>();
         for (DataSnapshot ds: snapshot.getChildren()) {
           String type = ds.child(TYPE).getValue(String.class);
-          if (!type.equals(UserConstants.EMPLOYEE)) {
+          if (type == null || !type.equals(UserConstants.EMPLOYEE)) {
             continue;
           }
           String name = ds.child(USERNAME).getValue(String.class);
