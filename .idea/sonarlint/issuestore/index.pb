@@ -1,8 +1,4 @@
 
-w
-Gapp/src/main/java/com/voidstudio/quickcashreg/Location/JobLocation.java,5\8\5880c45778c266ce1ba9bff79134fb4dce5eccbe
-x
-Happ/src/main/java/com/voidstudio/quickcashreg/InAppActivityEmployee.java,5\e\5e9b4c2e4cfcc1fca883f204ed6d8c18dcc27fa8
 Å
 Qapp/src/main/java/com/voidstudio/quickcashreg/management/ManagementConstants.java,e\b\ebecb1aebb2aee193535135a0faa784c820f09af
 t

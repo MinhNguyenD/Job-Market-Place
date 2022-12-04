@@ -1,5 +1,7 @@
 package com.voidstudio.quickcashreg.jobpost;
 
+import static com.voidstudio.quickcashreg.InAppActivityEmployee.USERNAME;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,10 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.voidstudio.quickcashreg.InAppActivityEmployee;
 import com.voidstudio.quickcashreg.R;
-import com.voidstudio.quickcashreg.firebase.Firebase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import users.Employee;
 
@@ -79,7 +79,7 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void loadSmallTasks() {
     ArrayList<String> tasks = new ArrayList<>();
-    List<Job> jobList = employee.getAllJobs();
+    ArrayList<Job> jobList = (ArrayList<Job>) employee.getAllJobs();
     String preference = employee.getPreference();
 
     if (preference != null && !preference.equals("")) {
@@ -90,9 +90,9 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
         }
       }
     }
-    else {
-      Firebase firebase = Firebase.getInstance();
-      jobList = firebase.getAllJobs();
+   else {
+      //Firebase firebase = Firebase.getInstance();
+      //jobList = firebase.getAllJobs();
       for (Job j: jobList) {
         tasks.add(j.toString());
       }
@@ -121,6 +121,7 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
   protected void showDetails(String selectedTask) {
     Intent intent = new Intent(this, JobDetailsActivity.class);
     intent.putExtra("selectedItem", selectedTask);
+    intent.putExtra(USERNAME,employee.getUsername());
     startActivity(intent);
   }
 
