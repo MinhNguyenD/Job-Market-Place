@@ -110,17 +110,17 @@ public class ManagerJUnitTests {
   public void testEmployeeManagerAddsContract(){
     EmployeeContractManager employeeContractManager = new EmployeeContractManager(employee);
     employeeContractManager.acceptContract(job);
-    assertFalse(employeeContractManager.getIncompleteContracts().isEmpty());
+    assertFalse(employeeContractManager.getIncompletedContracts().isEmpty());
   }
 
   @Test
   public void testEmployeeManagerCompletesAddedContract(){
     EmployeeContractManager employeeContractManager = new EmployeeContractManager(employee);
     employeeContractManager.acceptContract(job);
-    employeeContractManager.setContractStatus(employeeContractManager.getIncompleteContracts().get(0),
+    employeeContractManager.setContractStatus(employeeContractManager.getIncompletedContracts().get(0),
             ManagementConstants.COMPLETED);
     assertFalse(employeeContractManager.getCompletedContracts().isEmpty());
-    assertTrue("Incomplete Contracts not updated",employeeContractManager.getIncompleteContracts().isEmpty());
+    assertTrue("Incomplete Contracts not updated",employeeContractManager.getIncompletedContracts().isEmpty());
   }
 
 
