@@ -1,7 +1,5 @@
 package com.voidstudio.quickcashreg;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +9,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.voidstudio.quickcashreg.SearchJob.SearchAdapter;
 import com.voidstudio.quickcashreg.jobpost.Job;
 import com.voidstudio.quickcashreg.jobpost.JobDetailsActivity;
 import com.voidstudio.quickcashreg.management.EmployeeContractManager;
+import com.voidstudio.quickcashreg.management.IContractManager;
 import com.voidstudio.quickcashreg.management.JobContract;
 
 import java.util.ArrayList;
@@ -30,22 +31,18 @@ public class UserApplicationActivity extends AppCompatActivity {
     private static final String JOB_TAG = "job tag";
     private static final String JOB_EMPLOYER = "job employer";
     private static final String JOB_WAGE = "job wage";
-    private static Employee employee;
-    private static EmployeeContractManager manager;
     private ListView listViewInProgress;
     private ListView listViewCompleted;
     private TextView notification;
-    private ArrayList<JobContract> jobContractsInProgress;
-    private ArrayList<JobContract> jobContractsCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_application);
-        employee = InAppActivityEmployee.employee;
-        manager = InAppActivityEmployee.manager;
-        jobContractsInProgress = manager.getIncompleteContracts();
-        jobContractsCompleted = manager.getCompletedContracts();
+        Employee employee = InAppActivityEmployee.employee;
+        IContractManager manager = EmployeeContractManager.getInstance(employee);
+        ArrayList<JobContract> jobContractsInProgress = manager.getIncompletedContracts();
+        ArrayList<JobContract> jobContractsCompleted = manager.getCompletedContracts();
         listViewInProgress = (ListView)findViewById(R.id.listView1);
         listViewCompleted = (ListView)findViewById(R.id.listView2);
         ArrayList<Job> inProgressJobList = new ArrayList<>();
@@ -61,12 +58,12 @@ public class UserApplicationActivity extends AppCompatActivity {
             notification.setText("No In Progress Job Right Now");
         }
 
-        ArrayList<Job> CompletedJobList = new ArrayList<>();
+        ArrayList<Job> completedJobList = new ArrayList<>();
         if(jobContractsCompleted.size() > 0) {
             for (JobContract c : jobContractsCompleted) {
-                CompletedJobList.add(c.getJob());
+                completedJobList.add(c.getJob());
             }
-            setAdapter(inProgressJobList, listViewCompleted);
+            setAdapter(completedJobList, listViewCompleted);
         }
         else{
             notification = findViewById(R.id.CompletedNotification);

@@ -1,7 +1,5 @@
 package com.voidstudio.quickcashreg.jobpost;
 
-import static com.voidstudio.quickcashreg.jobpost.JobPostActivity.USERNAME;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +21,12 @@ import users.Employer;
 public class EmployerJobBoardActivity extends AppCompatActivity implements RecyclerAdapter.ItemClickListener {
 
   public static final String MY_PREFS = "MY_PREFS";
+  private static final String JOB_NAME = "job name";
+  private static final String JOB_DURATION = "job duration";
+  private static final String JOB_DATE_POSTED = "job date posted";
+  private static final String JOB_TAG = "job tag";
+  private static final String JOB_EMPLOYER = "job employer";
+  private static final String JOB_WAGE = "job wage";
   RecyclerAdapter adapter;
   static String extractedJob;
   static String extractedWage;
@@ -83,8 +87,21 @@ public class EmployerJobBoardActivity extends AppCompatActivity implements Recyc
 
   protected void showDetails(String selectedTask) {
     Intent intent = new Intent(this, JobDetailsActivity.class);
-    intent.putExtra(USERNAME,employer.getUsername());
-    intent.putExtra("selectedItem", selectedTask);
+    Job selectJob = new Job();
+    for(Job j : employer.getMyJobs()){
+      if(j.getJobName().equals(selectedTask.split(",")[0])){
+        selectJob = j;
+      }
+    }
+    intent.putExtra(JobPostActivity.USERNAME,employer.getUsername());
+    if(selectJob.getJobName()!=null) {
+      intent.putExtra(JOB_NAME, selectJob.getJobName());
+      intent.putExtra(JOB_DATE_POSTED, selectJob.getDatePosted());
+      intent.putExtra(JOB_DURATION, selectJob.getDuration());
+      intent.putExtra(JOB_WAGE, selectJob.getWage());
+      intent.putExtra(JOB_EMPLOYER, selectJob.getUser());
+      intent.putExtra(JOB_TAG, selectJob.getTag());
+    }
     startActivity(intent);
   }
 

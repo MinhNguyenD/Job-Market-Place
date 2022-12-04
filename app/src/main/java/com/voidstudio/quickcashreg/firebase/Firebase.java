@@ -1,6 +1,9 @@
 package com.voidstudio.quickcashreg.firebase;
 
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.CONTRACTS;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.EMAIL;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.JOB_CONTRACTS_COMPLETED;
+import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.JOB_CONTRACTS_IN_PROGRESS;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.JOB_LOCATION;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LATITUDE;
 import static com.voidstudio.quickcashreg.firebase.FirebaseConstants.LOCATION;
@@ -23,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.voidstudio.quickcashreg.jobpost.Job;
+import com.voidstudio.quickcashreg.management.JobContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;

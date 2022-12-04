@@ -1,6 +1,7 @@
 package com.voidstudio.quickcashreg.jobpost;
 
 import static com.voidstudio.quickcashreg.jobpost.JobPostActivity.USERNAME;
+import static com.voidstudio.quickcashreg.management.ManagementConstants.COMPLETED;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +12,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.voidstudio.quickcashreg.InAppActivityEmployee;
 import com.voidstudio.quickcashreg.R;
 import com.voidstudio.quickcashreg.UserApplicationActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.management.EmployeeContractManager;
 import com.voidstudio.quickcashreg.management.IContractManager;
+import com.voidstudio.quickcashreg.management.JobContract;
+
+import java.util.ArrayList;
 
 import users.Employee;
 import users.User;
@@ -38,6 +41,7 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
   private  String extractedDatePosted;
   private  String extractedJobEmployer;
   private String username;
+  private IContractManager manager;
   private User u;
   private Employee e;
   private Job job;
@@ -78,6 +82,9 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
     jobTag.setText(extractedTag);
     Button applyButton = findViewById(R.id.applyJob);
     applyButton.setOnClickListener(JobDetailsActivity.this);
+    Button completeButton = findViewById(R.id.Complete);
+    completeButton.setOnClickListener(JobDetailsActivity.this);
+
 
 
   }
@@ -89,12 +96,29 @@ public class JobDetailsActivity extends AppCompatActivity implements View.OnClic
 
       //TODO: Implement the application process
       if(e != null){
-        IContractManager employeeContractManager = new EmployeeContractManager(e);
+        IContractManager employeeContractManager = EmployeeContractManager.getInstance(e);
         employeeContractManager.acceptContract(job);
         Toast.makeText(this, "The application is accepted", Toast.LENGTH_LONG).show();
       }
       else{
         Toast.makeText(this,"You cannot apply as this user type",Toast.LENGTH_LONG).show();
+      }
+      Intent employment = new Intent(JobDetailsActivity.this, UserApplicationActivity.class);
+      startActivity(employment);
+    }
+    if(view.getId() == R.id.Complete){
+      if(e != null){
+        IContractManager employeeContractManager = EmployeeContractManager.getInstance(e);
+        ArrayList<JobContract> incompletedContracts = employeeContractManager.getIncompletedContracts();
+        for(JobContract jc : incompletedContracts){
+          if(jc.getJobName().equals(job.getJobName())){
+            employeeContractManager.setContractStatus(jc,COMPLETED);
+          }
+        }
+        Toast.makeText(this, "The job is now completed", Toast.LENGTH_LONG).show();
+      }
+      else{
+        Toast.makeText(this,"You cannot complete jobs as this user type",Toast.LENGTH_LONG).show();
       }
       Intent employment = new Intent(JobDetailsActivity.this, UserApplicationActivity.class);
       startActivity(employment);

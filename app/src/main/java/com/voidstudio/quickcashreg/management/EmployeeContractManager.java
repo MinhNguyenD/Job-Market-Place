@@ -11,10 +11,16 @@ public class EmployeeContractManager implements IContractManager {
 
 
   private final Employee employee;
-
+  static EmployeeContractManager m;
   public EmployeeContractManager(Employee e){
     this.employee = e;
+  }
 
+  public static EmployeeContractManager getInstance(Employee e){
+    if(m == null){
+      m = new EmployeeContractManager(e);
+    }
+    return m;
   }
 
   @Override
@@ -42,17 +48,14 @@ public class EmployeeContractManager implements IContractManager {
     }
   }
 
-  public ArrayList<JobContract> getIncompleteContracts(){
+  @Override
+  public ArrayList<JobContract> getIncompletedContracts(){
     return (ArrayList<JobContract>) inProgressContracts;
   }
   public ArrayList<JobContract> getCompletedContracts(){
     return (ArrayList<JobContract>) completedContracts;
   }
 
-  @Override
-  public ArrayList<JobContract> getIncompletedContracts() {
-    return null;
-  }
 
   @Override
   public ArrayList<String> getPaymentList() {

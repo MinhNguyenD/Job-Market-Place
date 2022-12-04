@@ -15,9 +15,18 @@ public class EmployerContractManager implements IContractManager{
 
   private ArrayList<String> paymentList;
 
+  static EmployerContractManager m;
+
   public EmployerContractManager(Employer e){
     this.employer = e;
     createPaymentList();
+  }
+
+  public static EmployerContractManager getInstance(Employer e){
+    if(m==null){
+      m = new EmployerContractManager(e);
+    }
+    return m;
   }
 
 

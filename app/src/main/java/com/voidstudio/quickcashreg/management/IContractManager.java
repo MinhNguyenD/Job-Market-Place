@@ -10,6 +10,7 @@ public interface IContractManager {
   List<JobContract> inProgressContracts = new ArrayList<>();
   List<JobContract> completedContracts = new ArrayList<>();
 
+
   void acceptContract(Job j);
 
   void setContractStatus(JobContract jc, String status);
