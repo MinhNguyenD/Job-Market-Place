@@ -21,6 +21,7 @@ import com.voidstudio.quickcashreg.SearchJob.JobPostingActivity;
 import com.voidstudio.quickcashreg.firebase.Firebase;
 import com.voidstudio.quickcashreg.jobpost.EmployeeJobBoardActivity;
 import com.voidstudio.quickcashreg.jobpost.SavePreferenceActivity;
+import com.voidstudio.quickcashreg.management.EmployeeContractManager;
 
 import users.Employee;
 import users.UserConstants;
@@ -41,6 +42,7 @@ public class InAppActivityEmployee extends AppCompatActivity implements View.OnC
   int notificationID = 0;
   //private Employee employee;
   public static Employee employee;
+  public static EmployeeContractManager manager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

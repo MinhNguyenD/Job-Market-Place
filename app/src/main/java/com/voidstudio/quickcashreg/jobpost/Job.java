@@ -5,7 +5,10 @@ import android.location.Location;
 import com.voidstudio.quickcashreg.Location.ILocation;
 import com.voidstudio.quickcashreg.Location.JobLocation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Job {
   private String jobName;
@@ -39,6 +42,16 @@ public class Job {
     this.duration = duration;
     this.tag = tag;
     this.datePosted = new Date().toString();
+    this.user = user;
+    jobLocation = new JobLocation(jobName);
+  }
+
+  public Job(String jobName, String wage, String duration, String tag, String user, String datePosted) {
+    this.jobName = jobName;
+    this.wage = wage;
+    this.duration = duration;
+    this.tag = tag;
+    this.datePosted = datePosted;
     this.user = user;
     jobLocation = new JobLocation(jobName);
   }
