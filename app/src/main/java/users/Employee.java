@@ -37,14 +37,6 @@ public class Employee extends User {
         firebase = Firebase.getInstance();
     }
 
-    public Employee(String username, String email, int orderFinished, double minimumSalaryAccepted, Location location, Firebase firebase){
-        this.username = username;
-        this.email = email;
-        this.orderFinished = orderFinished;
-        this.minimumSalaryAccepted = minimumSalaryAccepted;
-        locate.setLocation(location);
-        firebase = Firebase.getInstance();
-    }
 
     public void setMinimumSalaryAccepted(double minimumSalaryAccepted) {
         this.minimumSalaryAccepted = minimumSalaryAccepted;

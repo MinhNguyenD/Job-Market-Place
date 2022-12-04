@@ -71,7 +71,7 @@ public class ManagerJUnitTests {
     Mockito.when(location2.getLatitude()).thenReturn(0.0);
     Mockito.when(location2.getLongitude()).thenReturn(0.0);
     Mockito.when(location2.distanceTo(location1)).thenReturn((float)30.0);
-    employee = new Employee(USERNAME,PASSWORD);
+    employee = new Employee(USERNAME,EMAIL,PASSWORD);
     employer = new Employer(USERNAME,EMAIL,PASSWORD);
 
     employee.setEmail(EMAIL);
@@ -99,7 +99,7 @@ public class ManagerJUnitTests {
     Mockito.when(location2.getLatitude()).thenReturn(0.0);
     Mockito.when(location2.getLongitude()).thenReturn(0.0);
     Mockito.when(location2.distanceTo(location1)).thenReturn((float)30.0);
-    employee = new Employee(USERNAME,PASSWORD);
+    employee = new Employee(USERNAME,EMAIL,PASSWORD);
     employer = new Employer(USERNAME,EMAIL,PASSWORD);
 
     employee.setEmail(EMAIL);
