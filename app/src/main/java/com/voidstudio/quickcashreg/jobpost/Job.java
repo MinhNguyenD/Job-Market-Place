@@ -5,10 +5,7 @@ import android.location.Location;
 import com.voidstudio.quickcashreg.Location.ILocation;
 import com.voidstudio.quickcashreg.Location.JobLocation;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 public class Job {
   private String jobName;
@@ -108,6 +105,6 @@ public class Job {
 
   @Override
   public String toString(){
-    return jobName+" Wage:"+wage+" Duration:"+ duration + " Tag:" + tag+"  Posted by:" + user + " on " + datePosted;
+    return jobName+",Wage:"+wage+" Duration:"+ duration + " Tag:" + tag+"  Posted by:" + user + " on " + datePosted;
   }
 }

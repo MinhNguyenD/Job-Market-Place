@@ -145,9 +145,11 @@
     <TextView
         android:id="@+id/job_name_textView"
         android:layout_width="86dp"
-        android:layout_height="36dp"
+        android:layout_height="0dp"
         android:layout_marginTop="36dp"
+        android:layout_marginBottom="614dp"
         android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/Complete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.068"
         app:layout_constraintStart_toEndOf="@+id/job_name"
@@ -163,7 +165,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <Button
+        android:id="@+id/Complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="89dp"
+        android:text="Complete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/applyJob"
+        app:layout_constraintTop_toBottomOf="@+id/job_name_textView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

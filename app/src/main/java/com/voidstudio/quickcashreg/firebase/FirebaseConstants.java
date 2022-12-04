@@ -12,5 +12,8 @@ public class FirebaseConstants {
   public static final String LATITUDE = "Latitude";
   public static final String LONGITUDE = "Longitude";
   public static final String JOB_LOCATION = "Job Location";
+  public static final String CONTRACTS = "Contracts";
+  public static final String JOB_CONTRACTS_IN_PROGRESS = "Job Contracts(In progress)";
+  public static final String JOB_CONTRACTS_COMPLETED = "Job Contracts(Completed)";
 
 }
