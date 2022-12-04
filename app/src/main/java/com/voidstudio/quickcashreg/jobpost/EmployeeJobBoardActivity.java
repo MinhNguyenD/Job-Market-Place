@@ -36,29 +36,8 @@ public class EmployeeJobBoardActivity extends AppCompatActivity implements Recyc
     super.onCreate(savedInstanceState);
     setContentView(R.layout.employee_job_board);
     employee = InAppActivityEmployee.employee;
-//    Bundle bundle = getIntent().getExtras();
-//    if(employer != null && bundle.getString("Job")!=null){
-//      extractedJob = bundle.getString("Job");
-//      extractedWage = bundle.getString("Wage");
-//      extractedTag = bundle.getString("Tag");
-//      job = new Job(extractedJob,extractedWage,extractedTag,employer.getUsername());
-//    }
     this.loadSmallTasks();
   }
-
-//  @Override
-//  protected void onResume() {
-//    super.onResume();
-//    employee = InAppActivityEmployee.employee;
-//    if (employee == null) {
-//      Toast.makeText(this, "Employee is null", Toast.LENGTH_SHORT).show();
-//    } else {
-//      Toast.makeText(this, "Employee is not null", Toast.LENGTH_SHORT).show();
-//    }
-//    //preference = employee.getPreference();
-//    Toast.makeText(this, "Im back!", Toast.LENGTH_SHORT).show();
-//    loadSmallTasks();
-//  }
 
   protected void storeTasksAndLocation2SharedPrefs(ArrayList<String> tasks) {
     SharedPreferences sharedPreferences = getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE);
